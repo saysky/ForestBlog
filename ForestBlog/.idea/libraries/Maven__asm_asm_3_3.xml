@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: asm:asm:3.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/asm/asm/3.3/asm-3.3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/asm/asm/3.3/asm-3.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/asm/asm/3.3/asm-3.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

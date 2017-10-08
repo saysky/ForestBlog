@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.alibaba:druid:1.0.16">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/com/alibaba/druid/1.0.16/druid-1.0.16.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/com/alibaba/druid/1.0.16/druid-1.0.16-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/com/alibaba/druid/1.0.16/druid-1.0.16-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

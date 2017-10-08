@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.0.8">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/woodstox-core-asl/4.0.8/woodstox-core-asl-4.0.8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/woodstox-core-asl/4.0.8/woodstox-core-asl-4.0.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/woodstox-core-asl/4.0.8/woodstox-core-asl-4.0.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

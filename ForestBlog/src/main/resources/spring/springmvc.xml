@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+
+    <!-- 扫描所有的Controller -->
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.Home"></context:component-scan>
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.Admin"></context:component-scan>
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.Common"></context:component-scan>
+
+    <!-- 一个配置节解决映射器和适配器的配置注解配置 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 配置视图解析器
+        进行jsp解析，默认使用jstl标签，classpath下得有jstl的包
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <!--配置前缀和后缀，也可以不指定-->
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--&lt;!&ndash;文件上传&ndash;&gt;-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传最大尺寸为50MB-->
+        <property name="maxUploadSizePerFile" value="52428800"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="resolveLazily" value="true"/>
+    </bean>
+
+
+
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/css/**" location="/resource/assets/css/"></mvc:resources>
+    <mvc:resources mapping="/js/**" location="/resource/assets/js/"></mvc:resources>
+    <mvc:resources mapping="/img/**" location="/resource/assets/img/"></mvc:resources>
+    <!--<mvc:resources mapping="/uploads/**" location="/resource/uploads/"></mvc:resources>-->
+    <mvc:resources mapping="/plugin/**" location="/resource/assets/plugin/"></mvc:resources>
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.liuyanzhao.blog.Interceptor.HomeResourceInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin"/>
+            <bean class="com.liuyanzhao.blog.Interceptor.SecurityInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <bean class="com.liuyanzhao.blog.Interceptor.SecurityInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin"/>
+            <bean class="com.liuyanzhao.blog.Interceptor.AdminResourceInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <bean class="com.liuyanzhao.blog.Interceptor.AdminResourceInterceptor"/>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+</beans>

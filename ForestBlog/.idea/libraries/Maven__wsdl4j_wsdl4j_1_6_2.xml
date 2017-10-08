@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: wsdl4j:wsdl4j:1.6.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
