@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.codehaus.woodstox:stax2-api:3.0.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/stax2-api/3.0.2/stax2-api-3.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/stax2-api/3.0.2/stax2-api-3.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../maven/localRepository/org/codehaus/woodstox/stax2-api/3.0.2/stax2-api-3.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

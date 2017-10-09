@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.OptionsMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Options" >
+    <id column="option_id" property="optionId" jdbcType="INTEGER" />
+    <result column="option_site_title" property="optionSiteTitle" jdbcType="VARCHAR" />
+    <result column="option_site_descrption" property="optionSiteDescrption" jdbcType="VARCHAR" />
+    <result column="option_meta_descrption" property="optionMetaDescrption" jdbcType="VARCHAR" />
+    <result column="option_meta_keyword" property="optionMetaKeyword" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_avatar" property="optionAboutsiteAvatar" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_title" property="optionAboutsiteTitle" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_content" property="optionAboutsiteContent" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_wechat" property="optionAboutsiteWechat" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_qq" property="optionAboutsiteQq" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_github" property="optionAboutsiteGithub" jdbcType="VARCHAR" />
+    <result column="option_aboutsite_weibo" property="optionAboutsiteWeibo" jdbcType="VARCHAR" />
+    <result column="option_tongji" property="optionTongji" jdbcType="VARCHAR" />
+    <result column="option_status" property="optionStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    option_id, option_site_title, option_site_descrption, option_meta_descrption, option_meta_keyword, 
+    option_aboutsite_avatar, option_aboutsite_title, option_aboutsite_content, option_aboutsite_wechat, 
+    option_aboutsite_qq, option_aboutsite_github, option_aboutsite_weibo, option_tongji, 
+    option_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from options
+    where option_id = #{optionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from options
+    where option_id = #{optionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Options" >
+    insert into options (option_id, option_site_title, option_site_descrption, 
+      option_meta_descrption, option_meta_keyword, 
+      option_aboutsite_avatar, option_aboutsite_title, 
+      option_aboutsite_content, option_aboutsite_wechat, 
+      option_aboutsite_qq, option_aboutsite_github, 
+      option_aboutsite_weibo, option_tongji, option_status
+      )
+    values (#{optionId,jdbcType=INTEGER}, #{optionSiteTitle,jdbcType=VARCHAR}, #{optionSiteDescrption,jdbcType=VARCHAR}, 
+      #{optionMetaDescrption,jdbcType=VARCHAR}, #{optionMetaKeyword,jdbcType=VARCHAR}, 
+      #{optionAboutsiteAvatar,jdbcType=VARCHAR}, #{optionAboutsiteTitle,jdbcType=VARCHAR}, 
+      #{optionAboutsiteContent,jdbcType=VARCHAR}, #{optionAboutsiteWechat,jdbcType=VARCHAR}, 
+      #{optionAboutsiteQq,jdbcType=VARCHAR}, #{optionAboutsiteGithub,jdbcType=VARCHAR}, 
+      #{optionAboutsiteWeibo,jdbcType=VARCHAR}, #{optionTongji,jdbcType=VARCHAR}, #{optionStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.liuyanzhao.blog.entity.Options" >
+    insert into options
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="optionId != null" >
+        option_id,
+      </if>
+      <if test="optionSiteTitle != null" >
+        option_site_title,
+      </if>
+      <if test="optionSiteDescrption != null" >
+        option_site_descrption,
+      </if>
+      <if test="optionMetaDescrption != null" >
+        option_meta_descrption,
+      </if>
+      <if test="optionMetaKeyword != null" >
+        option_meta_keyword,
+      </if>
+      <if test="optionAboutsiteAvatar != null" >
+        option_aboutsite_avatar,
+      </if>
+      <if test="optionAboutsiteTitle != null" >
+        option_aboutsite_title,
+      </if>
+      <if test="optionAboutsiteContent != null" >
+        option_aboutsite_content,
+      </if>
+      <if test="optionAboutsiteWechat != null" >
+        option_aboutsite_wechat,
+      </if>
+      <if test="optionAboutsiteQq != null" >
+        option_aboutsite_qq,
+      </if>
+      <if test="optionAboutsiteGithub != null" >
+        option_aboutsite_github,
+      </if>
+      <if test="optionAboutsiteWeibo != null" >
+        option_aboutsite_weibo,
+      </if>
+      <if test="optionTongji != null" >
+        option_tongji,
+      </if>
+      <if test="optionStatus != null" >
+        option_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="optionId != null" >
+        #{optionId,jdbcType=INTEGER},
+      </if>
+      <if test="optionSiteTitle != null" >
+        #{optionSiteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="optionSiteDescrption != null" >
+        #{optionSiteDescrption,jdbcType=VARCHAR},
+      </if>
+      <if test="optionMetaDescrption != null" >
+        #{optionMetaDescrption,jdbcType=VARCHAR},
+      </if>
+      <if test="optionMetaKeyword != null" >
+        #{optionMetaKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteAvatar != null" >
+        #{optionAboutsiteAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteTitle != null" >
+        #{optionAboutsiteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteContent != null" >
+        #{optionAboutsiteContent,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteWechat != null" >
+        #{optionAboutsiteWechat,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteQq != null" >
+        #{optionAboutsiteQq,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteGithub != null" >
+        #{optionAboutsiteGithub,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteWeibo != null" >
+        #{optionAboutsiteWeibo,jdbcType=VARCHAR},
+      </if>
+      <if test="optionTongji != null" >
+        #{optionTongji,jdbcType=VARCHAR},
+      </if>
+      <if test="optionStatus != null" >
+        #{optionStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liuyanzhao.blog.entity.Options" >
+    update options
+    <set >
+      <if test="optionSiteTitle != null" >
+        option_site_title = #{optionSiteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="optionSiteDescrption != null" >
+        option_site_descrption = #{optionSiteDescrption,jdbcType=VARCHAR},
+      </if>
+      <if test="optionMetaDescrption != null" >
+        option_meta_descrption = #{optionMetaDescrption,jdbcType=VARCHAR},
+      </if>
+      <if test="optionMetaKeyword != null" >
+        option_meta_keyword = #{optionMetaKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteAvatar != null" >
+        option_aboutsite_avatar = #{optionAboutsiteAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteTitle != null" >
+        option_aboutsite_title = #{optionAboutsiteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteContent != null" >
+        option_aboutsite_content = #{optionAboutsiteContent,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteWechat != null" >
+        option_aboutsite_wechat = #{optionAboutsiteWechat,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteQq != null" >
+        option_aboutsite_qq = #{optionAboutsiteQq,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteGithub != null" >
+        option_aboutsite_github = #{optionAboutsiteGithub,jdbcType=VARCHAR},
+      </if>
+      <if test="optionAboutsiteWeibo != null" >
+        option_aboutsite_weibo = #{optionAboutsiteWeibo,jdbcType=VARCHAR},
+      </if>
+      <if test="optionTongji != null" >
+        option_tongji = #{optionTongji,jdbcType=VARCHAR},
+      </if>
+      <if test="optionStatus != null" >
+        option_status = #{optionStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where option_id = #{optionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liuyanzhao.blog.entity.Options" >
+    update options
+    set option_site_title = #{optionSiteTitle,jdbcType=VARCHAR},
+      option_site_descrption = #{optionSiteDescrption,jdbcType=VARCHAR},
+      option_meta_descrption = #{optionMetaDescrption,jdbcType=VARCHAR},
+      option_meta_keyword = #{optionMetaKeyword,jdbcType=VARCHAR},
+      option_aboutsite_avatar = #{optionAboutsiteAvatar,jdbcType=VARCHAR},
+      option_aboutsite_title = #{optionAboutsiteTitle,jdbcType=VARCHAR},
+      option_aboutsite_content = #{optionAboutsiteContent,jdbcType=VARCHAR},
+      option_aboutsite_wechat = #{optionAboutsiteWechat,jdbcType=VARCHAR},
+      option_aboutsite_qq = #{optionAboutsiteQq,jdbcType=VARCHAR},
+      option_aboutsite_github = #{optionAboutsiteGithub,jdbcType=VARCHAR},
+      option_aboutsite_weibo = #{optionAboutsiteWeibo,jdbcType=VARCHAR},
+      option_tongji = #{optionTongji,jdbcType=VARCHAR},
+      option_status = #{optionStatus,jdbcType=INTEGER}
+    where option_id = #{optionId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 用户管理的service -->
+    <bean id="userService" class="com.liuyanzhao.blog.service.impl.UserServiceImpl"/>
+
+    <!-- 文章管理的service -->
+    <bean id="articleService" class="com.liuyanzhao.blog.service.impl.ArticleServiceImpl"/>
+
+    <!-- 分类管理的service -->
+    <bean id="categoryService" class="com.liuyanzhao.blog.service.impl.CategoryServiceImpl"/>
+
+    <!-- 标签管理的service -->
+    <bean id="tagService" class="com.liuyanzhao.blog.service.impl.TagServiceImpl"/>
+
+    <!--链接管理的service-->
+    <bean id="linkService" class="com.liuyanzhao.blog.service.impl.LinkServiceImpl"/>
+
+    <!--页面管理的service-->
+    <bean id="pageService" class="com.liuyanzhao.blog.service.impl.PageServiceImpl"/>
+
+    <!--网站信息管理的service-->
+    <bean id="optionService" class="com.liuyanzhao.blog.service.impl.OptionsServiceImpl"/>
+
+    <!--评论管理的service-->
+    <bean id="commentService" class="com.liuyanzhao.blog.service.impl.CommentServiceImpl"/>
+
+    <!--评论管理的service-->
+    <bean id="noticeService" class="com.liuyanzhao.blog.service.impl.NoticeServiceImpl"/>
+
+    <!--菜单管理的service-->
+    <bean id="menuService" class="com.liuyanzhao.blog.service.impl.MenuServiceImpl"/>
+
+
+
+    <!--常用功能-->
+    <bean id="functions" class="com.liuyanzhao.blog.util.Functions"/>
+
+
+</beans>

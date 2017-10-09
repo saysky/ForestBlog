@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.custom.PageMapperCustom" >
+
+
+    <sql id="page_table_all_columns">
+        page_id,
+        page_key,
+        page_title,
+        page_content,
+        page_create_time,
+        page_update_time,
+        page_view_count,
+        page_comment_count,
+        page_status
+    </sql>
+
+    <!--获得页面列表-->
+    <select id="listPage" resultType="com.liuyanzhao.blog.entity.custom.PageCustom">
+        SELECT
+        <include refid="page_table_all_columns"/>
+        FROM `page`
+        <where>
+            <if test="status!=null">
+                page_status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <!--根据key获得-->
+    <select id="getPageByKey" resultType="com.liuyanzhao.blog.entity.custom.PageCustom">
+        SELECT
+        <include refid="page_table_all_columns"/>
+        FROM
+        `page`
+        <where>
+            <if test="status!=null">
+                page_status=#{status} AND
+            </if>
+            page_key=#{key}
+        </where>
+    </select>
+
+
+</mapper>
+
+

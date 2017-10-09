@@ -1,0 +1,165 @@
+@font-face {
+    font-family: 'TeXGyreScholaRegular';
+    src: url('texgyreschola-regular-webfont.eot');
+    src: url('texgyreschola-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('texgyreschola-regular-webfont.woff') format('woff'),
+    url('texgyreschola-regular-webfont.ttf') format('truetype'),
+    url('texgyreschola-regular-webfont.svg#TeXGyreScholaRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'TeXGyreScholaBold';
+    src: url('texgyreschola-bold-webfont.eot');
+    src: url('texgyreschola-bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('texgyreschola-bold-webfont.woff') format('woff'),
+    url('texgyreschola-bold-webfont.ttf') format('truetype'),
+    url('texgyreschola-bold-webfont.svg#TeXGyreScholaBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.clear:after { clear: both }
+.clear { zoom: 1 }
+.left { float: left }
+.right { float: right }
+
+
+#main #header_404 h1 {
+    position: relative;
+    display: block;
+    font: 72px 'TeXGyreScholaBold', Arial, sans-serif;
+    color: #009688;
+    text-shadow: 2px 2px #f7f7f7;
+    text-align: center;
+}
+#main #header_404 h1 span.sub {
+    position: relative;
+    font-size: 21px;
+    top: -20px;
+    padding: 0 10px;
+    font-style: italic;
+}
+#main #header_404 h1 span.icon {
+    position: relative;
+    display: inline-block;
+    top: -6px;
+    margin: 0 10px 5px 0;
+    background: #009688;
+    width: 50px;
+    height: 50px;
+    -moz-box-shadow: 1px 2px white;
+    -webkit-box-shadow: 1px 2px white;
+    box-shadow: 1px 2px white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    color: #dfdfdf;
+    font-size: 46px;
+    line-height: 48px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0;
+}
+#main #content_404 {
+    position: relative;
+    width: 100%;
+    background: white;
+    -moz-box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);
+    -webkit-box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);
+    box-shadow: 0 0 0 3px #ededed inset, 0 0 0 1px #a2a2a2, 0 0 20px rgba(0,0,0,.15);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    z-index: 5;
+}
+#main #content_404 h2 {
+    background: url(404_s-divider.jpg) no-repeat;
+    background-position: bottom;
+    padding: 12px 0 22px 0;
+    font: 20px 'TeXGyreScholaRegular', Arial, sans-serif;
+    color: #8e8e8e;
+    text-align: center;
+}
+#main #content_404 p {
+    position: relative;
+    padding: 20px;
+    font-size: 13px;
+    line-height: 25px;
+    color: #b5b5b5;
+}
+#main #content_404 .utilities {
+    padding: 20px;
+    padding-bottom: 30px;
+}
+#main #content_404 .utilities form .input-container {
+    position: relative;
+    width: 290px;
+}
+#main #content_404 .utilities form .input-container input[type=text] {
+    width: 280px;
+    height: 34px;
+    padding: 0 8px;
+    background: white;
+    outline: none;
+    border:1px solid #8e8e8e;
+    -moz-box-shadow: 0 3px 3px rgba(0,0,0,.05) inset;
+    -webkit-box-shadow: 0 3px 3px rgba(0,0,0,.05) inset;
+    box-shadow: 0 3px 3px rgba(0,0,0,.05) inset;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #8e8e8e;
+    -webkit-font-smoothing: antialiased;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+}
+#main #content_404 .utilities .input-container input[type=text]:focus {
+    border:1px solid #009688;
+}
+
+#main #content_404 .utilities form  .input-container button#search {
+    position: absolute;
+    display: block;
+    top: 9px;
+    right: 0;
+    margin-right: 15px;
+    background: white url(404_search.png) no-repeat;
+    width: 18px;
+    height: 18px;
+    border: none;
+    cursor: pointer;
+    opacity: .3;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+}
+#main #content_404 .utilities form  .input-container button#search:hover { opacity: .6 }
+#main #content_404 .utilities .button {
+    display: inline-block;
+    height: 34px;
+    margin: 0 0 0 6px;
+    padding: 0 18px;
+    background: #009688;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 34px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+#main #content_404 .utilities .button:hover {
+    background: #006666;
+
+}
+
