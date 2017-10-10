@@ -33,7 +33,7 @@ Q Q：847064370 <br/>
 修改 `db.properties` 文件，该文件很容易找到，在 src/main/resources 中，注意修改数据库地址、表名、用户名和密码。<br/>
 如果不修改，会出现无法启动项目
  
-####4、修改上传文件路径   <br/>
+#### 4、修改上传文件路径   <br/>
 该项目中，文件上传是传到本地，且和项目文件夹不在一起，就是说是分离的。比如你的项目是在D盘，你可以修改上传路径到E盘。当然我们访问上传的图片时，需要   给Tomcat添加静态资源映射，比如访问 localhost:8080/uplaods/1.jpg tomcat可以在你的E盘找到。这个在第5步会说。
 现在是修改上传文件路径，该文件在 src/main/java/com/liuyanzhao/blog/controller/Common/UploadFileController.java
 修改第33行的 `String rootPath ="/www/uploads/";` 为你的 uploads 的路径。<br/>
@@ -65,9 +65,9 @@ docBase-"xxx"是文件路径
 
 如果不修改，会出现内页很多链接不对
  
-#### 下载地址：
+## 下载地址：
 Github地址：https://github.com/saysky/ForestBlog
 （如果可以帮忙点一次Star和Fork）
  
-#### 更新
+## 更新
 上一次更新：2017年10月10日14:02:02
