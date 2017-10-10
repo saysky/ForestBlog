@@ -13,6 +13,9 @@
 
 后台效果图  <br/>
 ![](https://liuyanzhao.com/wp-content/uploads/2017/10/back-1024x611.jpg)
+<br/>
+后台地址：/admin 或者 /login <br/>
+用户名为admin，密码为123456
 
 ## 使用注意
 任何问题都可以联系我 <br/>
