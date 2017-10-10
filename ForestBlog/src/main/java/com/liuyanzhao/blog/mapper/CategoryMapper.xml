@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Category" >
+    <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_pid" property="categoryPid" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_description" property="categoryDescription" jdbcType="VARCHAR" />
+    <result column="category_order" property="categoryOrder" jdbcType="INTEGER" />
+    <result column="category_icon" property="categoryIcon" jdbcType="VARCHAR" />
+    <result column="category_status" property="categoryStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    category_id, category_pid, category_name, category_description, category_order, category_icon, 
+    category_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Category" >
+    insert into category (category_id, category_pid, category_name, 
+      category_description, category_order, category_icon, 
+      category_status)
+    values (#{categoryId,jdbcType=INTEGER}, #{categoryPid,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
+      #{categoryDescription,jdbcType=VARCHAR}, #{categoryOrder,jdbcType=INTEGER}, #{categoryIcon,jdbcType=VARCHAR}, 
+      #{categoryStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liuyanzhao.blog.entity.Category" >
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="categoryPid != null" >
+        category_pid,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="categoryDescription != null" >
+        category_description,
+      </if>
+      <if test="categoryOrder != null" >
+        category_order,
+      </if>
+      <if test="categoryIcon != null" >
+        category_icon,
+      </if>
+      <if test="categoryStatus != null" >
+        category_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryPid != null" >
+        #{categoryPid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDescription != null" >
+        #{categoryDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryOrder != null" >
+        #{categoryOrder,jdbcType=INTEGER},
+      </if>
+      <if test="categoryIcon != null" >
+        #{categoryIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryStatus != null" >
+        #{categoryStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liuyanzhao.blog.entity.Category" >
+    update category
+    <set >
+      <if test="categoryPid != null" >
+        category_pid = #{categoryPid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDescription != null" >
+        category_description = #{categoryDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryOrder != null" >
+        category_order = #{categoryOrder,jdbcType=INTEGER},
+      </if>
+      <if test="categoryIcon != null" >
+        category_icon = #{categoryIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryStatus != null" >
+        category_status = #{categoryStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liuyanzhao.blog.entity.Category" >
+    update category
+    set category_pid = #{categoryPid,jdbcType=INTEGER},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_description = #{categoryDescription,jdbcType=VARCHAR},
+      category_order = #{categoryOrder,jdbcType=INTEGER},
+      category_icon = #{categoryIcon,jdbcType=VARCHAR},
+      category_status = #{categoryStatus,jdbcType=INTEGER}
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+</mapper>
