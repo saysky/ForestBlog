@@ -15,6 +15,10 @@
 ![](https://liuyanzhao.com/wp-content/uploads/2017/10/back-1024x611.jpg)
 
 ## 使用注意
+任何问题都可以联系我 <br/>
+Q Q：847064370 <br/>
+微信：847064370 <br/>
+在线留言：[https://liuyanzhao.com/message.html](https://liuyanzhao.com/message.html)
 
 #### 1、使用IDE导入项目  <br/>
 将项目即（ForestBlog文件夹）放到 某个位置，用IDE(如Eclipse，IntelliJ IDEA)导入，然后可以在IDE里运行 Tomcat，访问项目。
