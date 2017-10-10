@@ -67,6 +67,16 @@ docBase-"xxx"是文件路径
 
 
 如果不修改，会出现内页很多链接不对
+
+#### 其他
+* 请关注数据表字段的类型，比如 article 表的article_content字段的类型是 mediumtext 类型。
+如果你在后台添加内容时候，出现字数过多的情况，可能会出异常(异常500页面已经全部转成404,可以在 web.xml 里去掉)。
+
+* 因为时间仓促和目前所学的东西有限，还有很多东西没有使用，比如 Redis,Shiro 等
+
+
+
+
  
 ## 下载地址：
 Github地址：https://github.com/saysky/ForestBlog
