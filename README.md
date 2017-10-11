@@ -17,6 +17,36 @@
 后台地址：/admin 或者 /login <br/>
 用户名为admin，密码为123456
 
+## 项目部署
+#### 版本
+**tomcat** 7.0.37 / 8.5.12  <br/>
+**maven** 3.5.0  <br/>
+**jdk** 1.8.0   <br/>
+**mysql** 5.7.19   <br/>
+**spring** 4.2.0   <br/>
+**mybatis** 3.4.0   <br/>
+**os** OS X 10.12 / CentOs 6.8   <br/>
+
+以上版本是博主在本机(Mac)和阿里云的服务器上的主要版本信息。
+
+#### 编码
+所有编码统一 UTF-8  <br/>
+包括 数据库,Tomcat的server.xml配置,IDE的编码,xml文件编码
+
+#### 部署可能出现的问题
+1、`class path resource [spring/] cannot be resolved to URL because it does not exist`   <br/>
+解决方案：**请查看你的Maven的target生成的文件是否完整**，可以和项目文件对比。你可以在IDE里依次展开几个文件夹，然后编译运行项目（maven会自动compile和install），然后再查看target是否完整。多次重新编译，一般可以解决问题。
+如果要部署到tomcat或者远程服务器，可以使用maven的命令package。
+
+2、`3 字节的 UTF-8 序列的字节 3 无效`   <br/>
+解决方案：该错误的原因是 **Maven使用的的版本不一致**，请使用maven3.5版本，都在可能会出现上面的报错
+ 
+3、`At least one JAR was scanned for TLDs yet contained no TLDs` <br/>
+解决方案：该问题是tomcat8可能出现的问题，我在linux服务器上部署时遇到的，解决方案是skip掉那些要检查的jar
+具体方法点此：[https://liuyanzhao.com/6341.html](https://liuyanzhao.com/6341.html)
+
+4、待发现补充（希望大家帮我测试，提意见）
+
 ## 使用注意
 任何问题都可以联系我 <br/>
 Q Q：847064370 <br/>
