@@ -5,6 +5,12 @@
 前端采用Layui框架和扒了一个[网站](http://liuyanzhao.com)的前台样式。通过Maven管理依赖。 <br/>
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html)
 
+```` 
+该项目尚不成熟，有很多不足，不规范
+预计十二月份再开发一套 SpringBoot 的博客系统，代码将会更规范，开发会更用心，到时候还会加上一些新的内容，比如 Redis 
+准备作为以后的博客使用，敬请期待。
+````
+
 ## 效果预览
 
 预览地址：http://blog.liuyanzhao.com  <br/>
