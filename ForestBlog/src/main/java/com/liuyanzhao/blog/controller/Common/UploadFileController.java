@@ -1,70 +1,74 @@
 package com.liuyanzhao.blog.controller.Common;
 
+import com.liuyanzhao.blog.entity.custom.ResultVO;
+import com.liuyanzhao.blog.entity.custom.UploadFileVO;
 import org.apache.ibatis.annotations.Param;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class UploadFileController {
     //上传文件
-    @RequestMapping(value = "/uploadFile")
+    //上传文件
+    @RequestMapping(value = "/uploadFile",method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFile(HttpServletRequest request,@Param("file") MultipartFile file) throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSS");
-        String res = sdf.format(new Date());
+    public ResultVO uploadFile(@Param("file")MultipartFile file) throws IOException {
 
-
-        //本地使用
+        //本地使用,上传位置
         //String rootPath ="/Users/liuyanzhao/Documents/uploads/";
         String rootPath ="/www/uploads/";
 
-        //原始名称
-        String originalFilename = file.getOriginalFilename();
-        //新的文件名称
-        String newFileName = res+originalFilename.substring(originalFilename.lastIndexOf("."));
+        //文件的完整名称,如spring.jpeg
+        String filename = file.getOriginalFilename();
+        //文件名,如spring
+        String name = filename.substring(0,filename.indexOf("."));
+        //文件后缀,如.jpeg
+        String suffix = filename.substring(filename.lastIndexOf("."));
+
         //创建年月文件夹
         Calendar date = Calendar.getInstance();
         File dateDirs = new File(date.get(Calendar.YEAR)
                 + File.separator + (date.get(Calendar.MONTH)+1));
 
-        //新文件
-        File newFile = new File(rootPath+File.separator+dateDirs+File.separator+newFileName);
-        //判断目标文件所在的目录是否存在
-        if(!newFile.getParentFile().exists()) {
-            //如果目标文件所在的目录不存在，则创建父目录
-            newFile.getParentFile().mkdirs();
+        //目标文件
+        File descFile = new File(rootPath+File.separator+dateDirs+File.separator+filename);
+        int i = 1;
+        //若文件存在重命名
+        String newFilename = filename;
+        while(descFile.exists()) {
+            newFilename = name+"("+i+")"+suffix;
+            String parentPath = descFile.getParent();
+            descFile = new File(parentPath+File.separator+newFilename);
+            i++;
         }
-        System.out.println(newFile);
+        //判断目标文件所在的目录是否存在
+        if(!descFile.getParentFile().exists()) {
+            //如果目标文件所在的目录不存在，则创建父目录
+            descFile.getParentFile().mkdirs();
+        }
+
         //将内存中的数据写入磁盘
-        file.transferTo(newFile);
+        file.transferTo(descFile);
         //完整的url
-        String fileUrl =  "/uploads/"+date.get(Calendar.YEAR)+ "/"+(date.get(Calendar.MONTH)+1)+ "/"+ newFileName;
+        String fileUrl =  "/uploads/"+dateDirs+ "/"+newFilename;
 
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(0);
+        resultVO.setMsg("成功");
 
-        Map<String,Object> map = new HashMap<String,Object>();
-        Map<String,Object> map2 = new HashMap<String,Object>();
-        map.put("code",0);//0表示成功，1失败
-        map.put("msg","上传成功");//提示消息
-        map.put("data",map2);
-        map2.put("src",fileUrl);//图片url
-        map2.put("title",newFileName);//图片名称，这个会显示在输入框里
-        String result = new JSONObject(map).toString();
-
-        return result;
-
+        UploadFileVO uploadFileVO = new UploadFileVO();
+        uploadFileVO.setTitle(filename);
+        uploadFileVO.setSrc(fileUrl);
+        resultVO.setData(uploadFileVO);
+        return resultVO;
     }
 }

@@ -41,20 +41,11 @@
       <if test="noticeTitle != null" >
         notice_title,
       </if>
-      <if test="noticeContent != null" >
-        notice_content,
-      </if>
-      <if test="noticeCreateTime != null" >
-        notice_create_time,
-      </if>
       <if test="noticeUpdateTime != null" >
         notice_update_time,
       </if>
       <if test="noticeStatus != null" >
         notice_status,
-      </if>
-      <if test="noticeOrder != null" >
-        notice_order,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -64,20 +55,11 @@
       <if test="noticeTitle != null" >
         #{noticeTitle,jdbcType=VARCHAR},
       </if>
-      <if test="noticeContent != null" >
-        #{noticeContent,jdbcType=VARCHAR},
-      </if>
-      <if test="noticeCreateTime != null" >
-        #{noticeCreateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="noticeUpdateTime != null" >
         #{noticeUpdateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="noticeStatus != null" >
         #{noticeStatus,jdbcType=INTEGER},
-      </if>
-      <if test="noticeOrder != null" >
-        #{noticeOrder,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

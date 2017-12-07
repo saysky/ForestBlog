@@ -33,7 +33,7 @@
 
     <div class="layui-tab layui-tab-card">
         <ul class="layui-tab-title">
-            <li class="layui-this">已发布(${publishedArticleListVoList.size()})</li>
+            <li class="layui-this">已发布(${publishedArticleListVoList[0].page.totalCount})</li>
             <li>草稿(${draftArticleList.size()})</li>
         </ul>
         <div class="layui-tab-content">
