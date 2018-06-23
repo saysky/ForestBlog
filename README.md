@@ -1,3 +1,11 @@
+【新消息】基于 SpringBoot 项目(CoderGroup,开发者社区)已上线：[预览地址](http://codergroup.cn)，[开源地址](https://github.com/saysky/CoderGroup)
+<br/>
+<hr/>
+
+重点强调，已经不少于100人问我为什么这个项目跑不起来，为什么没有样式(主要是这两个问题)。很多家伙也不看我后面的说明，我在这里统一回答一下 <br/>
+1. 项目跑不起来，很可能是你的 Tomcat 版本不一致，请更换 Tomcat7 试试，也有可能是 Maven 版本不一致。 <br/>
+2. 没有样式是因为，你需要在项目路径上去掉项目名，即项目首页是 http://localhost:8080 而没有 ForestBlog，关于去掉项目名，IDEA很容易，Eclipse需要配置 Tomcat。
+
 # 关于项目
 
 该项目是博主暑假粗略学完 SSM（Spring+SpringMVC+Mybatis）后，开始着手做的一个博客系统。
@@ -8,8 +16,10 @@
 ```` 
 该项目尚不成熟，有很多不足，不规范
 预计十二月份再开发一套 SpringBoot 的博客系统，代码将会更规范，开发会更用心，到时候还会加上一些新的内容，比如 Redis 
-准备作为以后的博客使用，敬请期待。
+准备作为以后的博客使用，敬请期待(已上线：请百度搜索 CoderGroup,或者访问 http://codergroup.cn)。
 ````
+
+
 
 ## 效果预览
 
@@ -21,12 +31,12 @@
 ![](https://liuyanzhao.com/wp-content/uploads/2017/10/back-1024x611.jpg)
 <br/>
 后台地址：/admin 或者 /login <br/>
-用户名为admin，密码为123456
+用户名为admin，密码为123456  （备注：密码已改，大家可以在本地测试，实在需要的请联系我。因为这个是个人博客，没有做权限管理，所以不少家伙登录后台就开始测试删除功能，搞得我重新导入数据库几次）
 
 ## 项目部署
 #### 版本
-**tomcat** 7.0.37 / 8.5.12  <br/>
-**maven** 3.5.0  <br/>
+**tomcat** 7.0.37(建议版本)  <br/>
+**maven** 3.5.0(建议版本)  <br/>
 **jdk** 1.8.0   <br/>
 **mysql** 5.7.19   <br/>
 **spring** 4.2.0   <br/>
@@ -107,7 +117,9 @@ docBase-"xxx"是文件路径
 解决方案：该问题是tomcat8可能出现的问题，我在linux服务器上部署时遇到的，解决方案是skip掉那些要检查的jar
 具体方法点此：[https://liuyanzhao.com/6341.html](https://liuyanzhao.com/6341.html)
 
-4、待发现补充（希望大家帮我测试，提意见）
+4、Tomcat 版本不一致可能无法启动
+
+5、待发现补充（希望大家帮我测试，提意见）
 
 
 
@@ -120,8 +132,6 @@ docBase-"xxx"是文件路径
 
 
 
-
- 
 ## 下载地址：
 Github地址：https://github.com/saysky/ForestBlog
 （如果可以帮忙点一次Star和Fork）
