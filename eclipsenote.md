@@ -11,6 +11,10 @@
 
 [sping mvc访问.js,.css,.img等静态文件](http://www.cnblogs.com/wenhulu/p/5548867.html)
 
+### Log4j
+
+[rootLogger根配置以及4种日志级别](http://www.cnblogs.com/mengxinrenyu/p/7636400.html)
+
 
 ### Eclipse 部署环境配置
 
