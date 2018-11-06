@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.custom.CategoryMapperCustom" >
+
+    <sql id="category_table_all_column">
+        category_id,category_pid,category_name,category_description,category_order,category_icon,category_status
+    </sql>
+
+    <!--获得分类总数-->
+    <select id="countCategory" resultType="Integer">
+        SELECT COUNT(*) FROM `category`
+        <where>
+                <if test="status!=null">
+                    category_status=#{status}
+                </if>
+        </where>
+    </select>
+
+
+    <select id="listCategory" resultType="com.liuyanzhao.blog.entity.custom.CategoryCustom">
+        SELECT
+        <include refid="category_table_all_column"/>
+        FROM category
+        <where>
+                <if test="status!=null">
+                    category_status=#{status}
+                </if>
+        </where>
+        order by category_status ASC, category_order desc,category_id asc
+    </select>
+
+    <select id="getCategoryById" parameterType="Integer" resultType="com.liuyanzhao.blog.entity.custom.CategoryCustom">
+        SELECT
+        <include refid="category_table_all_column"/>
+        FROM category
+        <where>
+            <if test="status!=null">
+                category_status=#{status} AND
+            </if>
+            category.category_id=#{id}
+        </where>
+    </select>
+
+
+
+    <!--获得含有该分类的文章列表-->
+    <select id="listArticleWithCategoryByPage" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT * FROM `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+             article_parent_category_id=#{cateId} OR
+             article_child_category_id=#{cateId}
+        </where>
+        ORDER BY article_id DESC
+        limit #{startPos},#{pageSize}
+    </select>
+
+    <!--删除分类-->
+    <delete id="deleteCategory" parameterType="Integer">
+        DELETE FROM `category` WHERE category_id=#{value}
+    </delete>
+
+    <!--根据父分类找子分类-->
+    <select id="findChildCategory" parameterType="Integer" resultType="com.liuyanzhao.blog.entity.custom.CategoryCustom">
+        SELECT
+        <include refid="category_table_all_column"/>
+        FROM
+        `category`
+        <where>
+            <if test="status!=null">
+                category_status=#{status} AND
+            </if>
+            category_pid=#{id}
+        </where>
+    </select>
+
+    <!--根据分类名查找分类-->
+
+    <!--根据标签名获取标签-->
+    <select id="getCategoryByName" parameterType="String" resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        <include refid="category_table_all_column"/>
+        FROM
+        `category`
+        WHERE category_name=#{value}
+        limit 1
+    </select>
+</mapper>

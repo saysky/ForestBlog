@@ -1,0 +1,18 @@
+<taglib>
+    <tlib-version>1.0</tlib-version><!-- 代表标签库的版本号 -->
+    <jsp-version>1.2</jsp-version><!-- 代表jsp的版本 -->
+    <short-name>SimpleTag</short-name><!-- 你的标签库的简称 -->
+
+    <tag>
+        <name>htmlFilter</name>
+        <tag-class>com.liuyanzhao.blog.util.others.HtmlFilterTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
+    <tag>
+        <name>htmlFilter</name>
+        <tag-class>com.liuyanzhao.blog.util.others.HtmlFilterTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+</taglib>
+

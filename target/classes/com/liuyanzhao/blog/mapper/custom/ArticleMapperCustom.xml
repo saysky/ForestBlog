@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.custom.ArticleMapperCustom" >
+
+    <sql id="article_table_all_columns">
+        article_id,
+        article_user_id,
+        article_title,
+        article_content,
+        article_parent_category_id,
+        article_child_category_id,
+        article_tag_ids,
+        article_view_count,
+        article_comment_count,
+        article_like_count,
+        article_post_time,
+        article_update_time,
+        article_is_comment,
+        article_status,
+        article_order
+    </sql>
+
+
+    <!--获取文章总数-->
+    <select id="countArticle" resultType="Integer">
+        SELECT COUNT(*) FROM `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <!--获得文章留言总数-->
+    <select id="countArticleComment" resultType="Integer">
+        SELECT SUM(article_comment_count) FROM article
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="countArticleView" resultType="Integer">
+        SELECT SUM(article_view_count) FROM article
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <!--根据id查询用户信息-->
+    <select id="getArticleById" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+            article_id=#{id}
+        </where>
+    </select>
+
+
+    <!--获得所有文章-->
+    <select id="listArticle" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+        ORDER BY article_status ASC, article_order DESC, article_id DESC
+    </select>
+
+
+    <!--文章列表查询-->
+    <select id="getArticleList" parameterType="com.liuyanzhao.blog.entity.custom.ArticleListVo"
+            resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM article
+        <trim prefix="WHERE" prefixOverrides="AND |OR " suffixOverrides="AND |OR">
+           <if test="status!=null">
+              article_status=#{status} AND
+           </if>
+            <if test="articleCustom!=null">
+                <if test="articleCustom.post_title!=null and articleCustom.post_title!=''">
+                    article_title LIKE '%${articleCustom.articleTitle}%'
+                </if>
+            </if>
+        </trim>
+        ORDER BY article_status ASC, article_order DESC, article_id DESC
+
+    </select>
+
+
+    <!--通过分页查询文章-->
+    <select id="listArticleByPage" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+         SELECT
+         <include refid="article_table_all_columns"/>
+         FROM `article`
+         <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+         </where>
+         ORDER BY article_status ASC, article_order DESC, article_id DESC
+         limit #{startPos},#{pageSize}
+    </select>
+
+
+    <!--查询结果统计-->
+    <select id="getSearchResultCount"  resultType="Integer">
+        SELECT count(*) FROM `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+            article_status > 0 AND
+            article_title LIKE "%${query}%" OR
+            article_content LIKE "%${query}%"
+        </where>
+
+    </select>
+
+    <!--文章查询分页显示-->
+    <select id="listSearchResultByPage"  resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+            article_status > 0 AND
+            article_title LIKE '%${query}%' OR
+            article_content LIKE '%${query}%'
+        </where>
+        ORDER BY  article_status ASC, article_order DESC, article_id DESC
+        limit #{startPos},#{pageSize}
+    </select>
+
+    <!--获得相同分类的文章-->
+    <select id="listArticleWithSameCategory"  resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <trim prefix="WHERE" prefixOverrides="AND |OR " suffixOverrides="AND |OR">
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+            <if test="parentCategory!=null">
+                article_parent_category_id=#{parentCategory} OR
+            </if>
+            <if test="childCategory!=null">
+                article_child_category_id=#{childCategory}
+            </if>
+
+        </trim>
+        ORDER BY  article_status ASC, article_order DESC, article_id DESC
+        limit #{limit}
+    </select>
+
+    <!--获得访问量较多的文章-->
+    <select id="listArticleByViewCount" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+        ORDER BY article_view_count DESC,article_order DESC, article_id DESC
+        limit #{limit}
+
+    </select>
+
+
+    <!--获得下一篇的文章-->
+    <select id="getAfterArticle" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            article_id > #{id}
+            <if test="status!=null">
+                AND article_status=#{status}
+            </if>
+        </where>
+        ORDER BY article_id
+        limit 1
+    </select>
+    <!--获得上一篇的文章-->
+    <select id="getPreArticle" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            article_id &lt; #{id}
+            <if test="status!=null">
+               AND article_status=#{status}
+            </if>
+        </where>
+        ORDER BY article_id
+        limit 1
+    </select>
+
+    <!--获得随机文章-->
+    <select id="listRandomArticle" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+        ORDER BY
+        RAND()
+        limit #{limit}
+    </select>
+
+    <!--获得评论数较多的文章列表-->
+    <select id="listArticleByCommentCount" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM
+        `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+        ORDER BY
+        article_comment_count DESC,article_order DESC, article_id DESC
+        limit #{limit}
+    </select>
+
+
+    <!--文章详情页面内容显示-->
+    <select id="getArticleDetailById" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+    </select>
+
+
+    <!--统计该分类下有多少文章-->
+    <select id="countArticleByCategory" resultType="Integer">
+        SELECT count(*)
+        FROM  `article`
+        <where>
+            <if test="status!=null">
+                article_status=#{status} AND
+            </if>
+
+            article_parent_category_id=#{id} OR
+            article_child_category_id=#{id}
+
+        </where>
+    </select>
+
+    <!--统计该标签下有多少文章-->
+    <select id="countArticleByTag" resultType="Integer">
+        SELECT count(*)
+        FROM  `article`
+        <where>
+            article.article_tag_ids = #{id} OR
+            article.article_tag_ids LIKE "${id},%" OR
+            article.article_tag_ids LIKE "%,${id},%" OR
+            article.article_tag_ids LIKE "%,${id}"
+            <if test="status!=null">
+               AND article_status=#{status}
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updateCommentCount" parameterType="Integer">
+        UPDATE `article`
+        SET article_comment_count=
+        (
+              SELECT count(*) FROM `comment`
+              WHERE article.article_id=comment.comment_article_id AND comment_status=1
+        )
+        WHERE article_id=#{articleId}
+    </update>
+
+    <!--获得最后更新的记录-->
+    <select id="getLastUpdateArticle" resultType="com.liuyanzhao.blog.entity.custom.ArticleCustom">
+        SELECT
+        <include refid="article_table_all_columns"/>
+        FROM `article`
+        WHERE article_update_time=
+        (
+          SELECT max(article_update_time) FROM article
+        )
+    </select>
+
+</mapper>

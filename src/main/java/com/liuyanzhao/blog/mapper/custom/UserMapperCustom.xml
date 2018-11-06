@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.custom.UserMapperCustom" >
+
+    <sql id="user_table_all_columns">
+        user_id,
+        user_name,
+        user_pass,
+        user_nickname,
+        user_email,
+        user_url,
+        user_avatar,
+        user_last_login_ip,
+        user_register_time,
+        user_last_login_time,
+        user_status
+    </sql>
+
+    <!--用户列表查询-->
+    <select id="listUser" parameterType="com.liuyanzhao.blog.entity.custom.UserCustom"
+            resultType="com.liuyanzhao.blog.entity.custom.UserCustom">
+        SELECT
+        <include refid="user_table_all_columns"/>
+        FROM `user`
+        ORDER BY `user_status` ASC
+    </select>
+
+    <!--根据用户名或邮箱获得用户-->
+    <select id="getUserByNameOrEmail" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+        SELECT
+        <include refid="user_table_all_columns"/>
+        FROM
+        `user`
+        <where>
+            user_name=#{value} OR user_email=#{value}
+        </where>
+        AND user_status>0
+        limit 1
+    </select>
+
+    <!--根据用户名查用户-->
+    <select id="getUserByName" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+        SELECT
+        <include refid="user_table_all_columns"/>
+        FROM
+        `user`
+        <where>
+            user_name=#{value}
+        </where>
+        limit 1
+    </select>
+
+    <!--根据Email查用户-->
+    <select id="getUserByEmail" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+        SELECT
+        <include refid="user_table_all_columns"/>
+        FROM
+        `user`
+        <where>
+            user_email=#{value}
+        </where>
+        limit 1
+    </select>
+
+
+    <select id="countArticleByUser" parameterType="Integer" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        `article`
+        WHERE
+        article_user_id=#{id}
+    </select>
+
+
+</mapper>
