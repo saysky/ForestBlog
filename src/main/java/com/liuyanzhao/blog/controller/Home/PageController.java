@@ -38,7 +38,7 @@ public class PageController {
 	}
 
 	//页面显示
-	@RequestMapping(value = "/{key}")
+// 	@RequestMapping(value = "/{key}")
 	public ModelAndView ArticleDetailView(@PathVariable("key") String key) throws Exception{
 		ModelAndView modelAndView = new ModelAndView();
 		PageCustom pageCustom = pageService.getPageByKey(1,key);
