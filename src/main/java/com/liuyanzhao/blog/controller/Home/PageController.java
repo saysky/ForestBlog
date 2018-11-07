@@ -52,6 +52,19 @@ public class PageController {
 
 	}
 
+	//关于本站
+	@RequestMapping(value="/aboutSite")
+	public ModelAndView aboutSite() throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		PageCustom pageCustom = pageService.getPageByKey(1,"aboutSite");
+		if(pageCustom!=null) {
+			modelAndView.addObject("pageCustom",pageCustom);
+			modelAndView.setViewName("Home/Page/page");
+		} else {
+			modelAndView.setViewName("Home/Error/404");
+		}
+		return modelAndView;
+	}
 
 	//文章归档页面显示
 	@RequestMapping(value = "/articleFile")
