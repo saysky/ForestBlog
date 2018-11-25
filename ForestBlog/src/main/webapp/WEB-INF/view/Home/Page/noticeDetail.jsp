@@ -36,12 +36,12 @@
             <article class="post" style="min-height: 500px;">
                 <header class="entry-header">
                     <h1 class="entry-title">
-                           ${noticeCustom.noticeTitle}
+                           ${notice.noticeTitle}
                     </h1>
                 </header><!-- .entry-header -->
                 <div class="entry-content">
                     <div class="single-content">
-                            ${noticeCustom.noticeContent}
+                            ${notice.noticeContent}
                     </div>
 
                     <br><br>
@@ -59,7 +59,7 @@
                             <li>A+</li>
                         </ul>
                         <div class="single-cat-tag">
-                            <div class="single-cat">日期：<fmt:formatDate value="${noticeCustom.noticeCreateTime}" pattern="yyyy年MM月dd日"/>
+                            <div class="single-cat">日期：<fmt:formatDate value="${notice.noticeCreateTime}" pattern="yyyy年MM月dd日"/>
                             </div>
                         </div>
                     </footer><!-- .entry-footer -->
@@ -78,5 +78,10 @@
 </rapid:override>
 
 
+<%--侧边栏 start--%>
+<rapid:override name="right">
+    <%@include file="../Public/part/sidebar-3.jsp" %>
+</rapid:override>
+<%--侧边栏 end--%>
 
 <%@ include file="../Public/framework.jsp" %>

@@ -1,143 +1,139 @@
 package com.liuyanzhao.blog.service.impl;
 
+import com.liuyanzhao.blog.mapper.ArticleCategoryRefMapper;
 import com.liuyanzhao.blog.mapper.CategoryMapper;
-import com.liuyanzhao.blog.mapper.custom.ArticleMapperCustom;
-import com.liuyanzhao.blog.mapper.custom.CategoryMapperCustom;
 import com.liuyanzhao.blog.entity.Category;
-import com.liuyanzhao.blog.entity.custom.ArticleCustom;
-import com.liuyanzhao.blog.entity.custom.ArticleListVo;
-import com.liuyanzhao.blog.entity.custom.CategoryCustom;
+
 import com.liuyanzhao.blog.service.CategoryService;
-import com.liuyanzhao.blog.util.others.Page;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * 用户管理
- * Created by 言曌 on 2017/8/24.
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Service
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
-	@Autowired
-	private CategoryMapperCustom categoryMapperCustom;
-	
-	@Autowired
-	private CategoryMapper categoryMapper;
 
-	@Autowired
-	private ArticleMapperCustom articleMapperCustom;
+    @Autowired(required = false)
+    private CategoryMapper categoryMapper;
 
-	@Override
-	public Integer countCategory(Integer status) throws Exception {
-		Integer categoryCount = categoryMapperCustom.countCategory(status);
-		return categoryCount;
-	}
-	
-	@Override
-	public List<CategoryCustom> listCategory(Integer status) throws Exception {
-		List<CategoryCustom> categoryCustomList = categoryMapperCustom.listCategory(status);
-		for(int i=0;i<categoryCustomList.size();i++) {
-			Integer cateId = categoryCustomList.get(i).getCategoryId();
-			Integer count = articleMapperCustom.countArticleByCategory(status,cateId);
-			categoryCustomList.get(i).setArticleCount(count);
-		}
+    @Autowired(required = false)
+    private ArticleCategoryRefMapper articleCategoryRefMapper;
 
-		return categoryCustomList;
-	}
-	
-	@Override
-	public List<ArticleListVo> listArticleWithCategoryByPage(Integer status,Integer pageNow, Integer pageSize,Integer cateId) throws Exception {
-		List<ArticleListVo> articleListVoList = new ArrayList<ArticleListVo>();
-		List<ArticleCustom> articleCustomList = new ArrayList<ArticleCustom>();
-		
-		//获得分类的信息
-		Category category = categoryMapper.selectByPrimaryKey(cateId);
-		//如果没有这个分类，返回null
-		if(category==null) {
-			return null;
-		}
-
-		//分页显示
-		Page page = null;
-		int totalCount = articleMapperCustom.countArticleByCategory(status,cateId);
-
-		if (pageNow != null) {
-			page = new Page(totalCount, pageNow,pageSize);
-			articleCustomList = categoryMapperCustom.listArticleWithCategoryByPage(status,cateId,page.getStartPos(), page.getPageSize());
-		} else {
-			page = new Page(totalCount, 1,pageSize);
-			articleCustomList = categoryMapperCustom.listArticleWithCategoryByPage(status,cateId,page.getStartPos(), page.getPageSize());
-			
-		}
-		for(int i=0;i<articleCustomList.size();i++) {
-			ArticleListVo articleListVo = new ArticleListVo();
-			
-			//1、将文章信息装入 articleListVo
-			ArticleCustom articleCustom = articleCustomList.get(i);
-			articleListVo.setArticleCustom(articleCustom);
-
-
-			//2、将分类信息装到 articleListVoList 中
-			List<CategoryCustom> categoryCustomList = new ArrayList<CategoryCustom>();
-			Integer parentCategoryId =articleCustomList.get(i).getArticleParentCategoryId();
-			Integer childCategoryId =articleCustomList.get(i).getArticleChildCategoryId();
-			CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(status, parentCategoryId);
-			CategoryCustom categoryCustom2 = categoryMapperCustom.getCategoryById(status,childCategoryId);
-			if(categoryCustom!=null) {
-				categoryCustomList.add(categoryCustom);
-			}
-			if(categoryCustom2!=null) {
-				categoryCustomList.add(categoryCustom2);
-			}
-			articleListVo.setCategoryCustomList(categoryCustomList);
-
-			articleListVoList.add(articleListVo);
-		}
-        //如果该分类还没有文章
-        if(totalCount!=0) {
-            //2、将Page信息存储在第一个元素中
-            articleListVoList.get(0).setPage(page);
+    @Override
+    public Integer countCategory() {
+        Integer count = 0;
+        try {
+            count = categoryMapper.countCategory();
+        } catch (Exception e) {            e.printStackTrace();
+            log.error("统计分类失败, cause:{}", e);
         }
-		return articleListVoList;
-	}
-
-	@Override
-	public CategoryCustom getCategory(Integer status,Integer id) throws Exception {
-		CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(status,id);
-		return categoryCustom;
-	}
-
-    @Override
-    public void deleteCategory(Integer id) throws Exception {
-        categoryMapperCustom.deleteCategory(id);
+        return count;
     }
 
     @Override
-    public CategoryCustom getCategoryById(Integer status,Integer id) throws Exception {
-		CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(status,id);
-        return categoryCustom;
+    public List<Category> listCategoryByArticleId(Integer articleId) {
+        List<Category> categoryList = null;
+        try {
+            categoryList = articleCategoryRefMapper.listCategoryByArticleId(articleId);
+        } catch (Exception e) {            e.printStackTrace();
+            log.error("根据文章ID获得分类列表失败, articleId:{}, cause:{}", articleId, e);
+        }
+        return categoryList;
     }
 
-	@Override
-	public void insertCategory(Category category) throws Exception {
-		categoryMapper.insertSelective(category);
-	}
+    @Override
+    public List<Category> listCategory() {
+        List<Category> categoryList = null;
+        try {
+            categoryList = categoryMapper.listCategory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据文章获得分类列表失败, cause:{}", e);
+        }
+        return categoryList;
+    }
 
-	@Override
-	public void updateCategory(Category category) throws Exception {
-		categoryMapper.updateByPrimaryKeySelective(category);
-	}
+    @Override
+    public List<Category> listCategoryWithCount() {
+        List<Category> categoryList = null;
+        try {
+            categoryList = categoryMapper.listCategory();
+            for (int i = 0; i < categoryList.size(); i++) {
+                Integer count = articleCategoryRefMapper.countArticleByCategoryId(categoryList.get(i).getCategoryId());
+                categoryList.get(i).setArticleCount(count);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据文章获得分类列表失败, cause:{}", e);
+        }
+        return categoryList;
+    }
 
-	@Override
-	public Category getCategoryByName(String name) throws Exception {
-		Category category = categoryMapperCustom.getCategoryByName(name);
-		return category;
-	}
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCategory(Integer id) {
+        try {
+            categoryMapper.deleteCategory(id);
+            articleCategoryRefMapper.deleteByCategoryId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("删除分类失败, id:{}, cause:{}", id, e);
+        }
+    }
+
+    @Override
+    public Category getCategoryById(Integer id) {
+        Category category = null;
+        try {
+            category = categoryMapper.getCategoryById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据分类ID获得分类, id:{}, cause:{}", id, e);
+        }
+        return category;
+    }
+
+    @Override
+    public void insertCategory(Category category) {
+        try {
+            categoryMapper.insert(category);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("创建分类失败, category:{}, cause:{}", category, e);
+        }
+    }
+
+    @Override
+    public void updateCategory(Category category) {
+        try {
+            categoryMapper.update(category);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("更新分类失败, category:{}, cause:{}", category, e);
+        }
+    }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        Category category = null;
+        try {
+            category = categoryMapper.getCategoryByName(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("更新分类失败, category:{}, cause:{}", category, e);
+        }
+        return category;
+    }
 
 
 }

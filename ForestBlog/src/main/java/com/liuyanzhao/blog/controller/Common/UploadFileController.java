@@ -1,7 +1,9 @@
-package com.liuyanzhao.blog.controller.Common;
+package com.liuyanzhao.blog.controller.common;
 
-import com.liuyanzhao.blog.entity.custom.ResultVO;
-import com.liuyanzhao.blog.entity.custom.UploadFileVO;
+import com.alibaba.fastjson.JSON;
+import com.liuyanzhao.blog.dto.ResultVO;
+import com.liuyanzhao.blog.dto.UploadFileVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,17 +17,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
+@Slf4j
 public class UploadFileController {
-    //上传文件
-    //上传文件
+
+
+
+    /**
+     * 上传文件
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/uploadFile",method = RequestMethod.POST)
     @ResponseBody
-    public ResultVO uploadFile(@Param("file")MultipartFile file) throws IOException {
+    public String uploadFile(@Param("file")MultipartFile file) {
 
         //本地使用,上传位置
-        //String rootPath ="/Users/liuyanzhao/Documents/uploads/";
-        String rootPath ="/www/uploads/";
+//        String rootPath ="/www/uploads/";
+        String rootPath ="/Users/liuyanzhao/Documents/uploads/";
 
         //文件的完整名称,如spring.jpeg
         String filename = file.getOriginalFilename();
@@ -57,7 +71,12 @@ public class UploadFileController {
         }
 
         //将内存中的数据写入磁盘
-        file.transferTo(descFile);
+        try {
+            file.transferTo(descFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("上传失败，cause:{}",e);
+        }
         //完整的url
         String fileUrl =  "/uploads/"+dateDirs+ "/"+newFilename;
 
@@ -69,6 +88,6 @@ public class UploadFileController {
         uploadFileVO.setTitle(filename);
         uploadFileVO.setSrc(fileUrl);
         resultVO.setData(uploadFileVO);
-        return resultVO;
+        return JSON.toJSONString(resultVO);
     }
 }

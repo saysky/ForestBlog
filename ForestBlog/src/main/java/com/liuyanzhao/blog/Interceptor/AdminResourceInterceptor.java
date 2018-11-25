@@ -1,4 +1,4 @@
-package com.liuyanzhao.blog.Interceptor;
+package com.liuyanzhao.blog.interceptor;
 
 import com.liuyanzhao.blog.entity.User;
 import com.liuyanzhao.blog.service.*;
@@ -20,7 +20,7 @@ public class AdminResourceInterceptor implements WebRequestInterceptor {
      * 在请求处理之前执行，该方法主要是用于准备资源数据的，然后可以把它们当做请求属性放到WebRequest中
      */
     @Override
-    public void preHandle(WebRequest request) throws Exception {
+    public void preHandle(WebRequest request)  {
         User user = (User) httpSession.getAttribute("user");
         User user2 = userService.getUserById(user.getUserId());
         request.setAttribute("loginUser",user2,WebRequest.SCOPE_SESSION);
@@ -30,7 +30,7 @@ public class AdminResourceInterceptor implements WebRequestInterceptor {
      * 这个方法中修改ModelMap的属性，从而达到改变返回的模型的效果。
      */
     @Override
-    public void postHandle(WebRequest request, ModelMap map) throws Exception {
+    public void postHandle(WebRequest request, ModelMap map)  {
         //System.out.println("postHandle.......");
     }
 
@@ -39,7 +39,7 @@ public class AdminResourceInterceptor implements WebRequestInterceptor {
      */
     @Override
     public void afterCompletion(WebRequest request, Exception exception)
-            throws Exception {
+             {
         //System.out.println("afterCompletion");
     }
 }

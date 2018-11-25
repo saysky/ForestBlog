@@ -1,17 +1,51 @@
 package com.liuyanzhao.blog.mapper;
 
 import com.liuyanzhao.blog.entity.Menu;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+/**
+ * @author liuyanzhao
+ */
 public interface MenuMapper {
-    int deleteByPrimaryKey(Integer menuId);
 
-    int insert(Menu record);
+    /**
+     * 删除
+     *
+     * @param menuId 菜单ID
+     * @return 影响行数
+     */
+    int deleteById(Integer menuId);
 
-    int insertSelective(Menu record);
+    /**
+     * 添加
+     * @param menu 菜单
+     * @return 影响行数
+     */
+    int insert(Menu menu);
 
+    /**
+     * 根据ID查询
+     *
+     * @param menuId 菜单ID
+     * @return 菜单
+     */
     Menu selectByPrimaryKey(Integer menuId);
 
-    int updateByPrimaryKeySelective(Menu record);
+    /**
+     * 更新
+     * 
+     * @param menu 菜单
+     * @return 影响行数
+     */
+    int update(Menu menu);
 
-    int updateByPrimaryKey(Menu record);
+    /**
+     * 获得菜单列表
+     * 
+     * @return 列表
+     */
+    List<Menu> listMenu() ;
 }

@@ -1,19 +1,32 @@
 package com.liuyanzhao.blog.service;
 
 import com.liuyanzhao.blog.entity.Options;
-import com.liuyanzhao.blog.entity.custom.OptionsCustom;
 
 
 /**
- * Created by 言曌 on 2017/9/7.
+ *
+ * @author 言曌
+ * @date 2017/9/7
  */
 public interface OptionsService {
-	//获得基本信息
-	public OptionsCustom getOptions() throws Exception;
+    /**
+     * 获得基本信息
+     *
+     * @return 系统设置
+     */
+    Options getOptions();
 
-	//新建基本信息
-	public void insertOptions(Options options) throws Exception;
+    /**
+     * 新建基本信息
+     * 
+     * @param options 系统设置
+     */
+    void insertOptions(Options options);
 
-	//更新基本信息
-	public void updateOptions(Options options) throws Exception;
+    /**
+     * 更新基本信息
+     * 
+     * @param options 系统设置
+     */
+    void updateOptions(Options options);
 }

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Article">
+        <id column="article_id" property="articleId" jdbcType="INTEGER"/>
+        <result column="article_user_id" property="articleUserId" jdbcType="INTEGER"/>
+        <result column="article_title" property="articleTitle" jdbcType="VARCHAR"/>
+        <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR"/>
+        <result column="article_view_count" property="articleViewCount" jdbcType="INTEGER"/>
+        <result column="article_comment_count" property="articleCommentCount" jdbcType="INTEGER"/>
+        <result column="article_like_count" property="articleLikeCount" jdbcType="INTEGER"/>
+        <result column="article_is_comment" property="articleIsComment" jdbcType="INTEGER"/>
+        <result column="article_order" property="articleOrder" jdbcType="INTEGER"/>
+        <result column="article_create_time" property="articleCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="article_update_time" property="articleUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="article_status" property="articleStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="tb">article</sql>
+
+    <sql id="Base_Column_List">
+    article_id, article_user_id, article_title, article_content, article_view_count, article_comment_count, article_like_count, article_create_time,
+    article_update_time, article_is_comment, article_status, article_order
+    </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </select>
+
+    <select id="listAllNotWithContent" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        article_id, article_user_id, article_title, article_create_time
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+        ORDER BY article_id DESC
+    </select>
+
+    <select id="findAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        article
+        <where>
+            <if test="status != null">
+                article.article_status = #{status} AND
+            </if>
+            <if test="keywords != null">
+                article.article_title LIKE concat(concat('%',#{keywords}),'%') AND
+            </if>
+            <if test="userId != null">
+                article.article_user_id = #{userId} AND
+            </if>
+            1 = 1
+        </where>
+        ORDER BY `article_order` DESC, `article_id` DESC
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="list">
+        DELETE FROM
+        <include refid="tb"/>
+        <if test="ids != null">
+            WHERE article_id IN
+            <foreach collection="ids" open="(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Article" useGeneratedKeys="true" keyProperty="articleId">
+        insert into
+        <include refid="tb"/>
+        (article_user_id, article_title,
+        article_view_count, article_comment_count,
+        article_like_count, article_create_time, article_update_time,
+        article_is_comment, article_status, article_order,
+        article_content)
+        values (#{articleUserId,jdbcType=INTEGER}, #{articleTitle,jdbcType=VARCHAR},
+        #{articleViewCount,jdbcType=INTEGER},
+        #{articleCommentCount,jdbcType=INTEGER},
+        #{articleLikeCount,jdbcType=INTEGER}, #{articleCreateTime,jdbcType=TIMESTAMP},
+        #{articleUpdateTime,jdbcType=TIMESTAMP},
+        #{articleIsComment,jdbcType=INTEGER}, #{articleStatus,jdbcType=INTEGER}, #{articleOrder,jdbcType=INTEGER},
+        #{articleContent,jdbcType=LONGVARCHAR})
+    </insert>
+
+
+    <update id="update" parameterType="com.liuyanzhao.blog.entity.Article">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="articleUserId != null">article_user_id = #{articleUserId,jdbcType=INTEGER},</if>
+            <if test="articleTitle != null">article_title = #{articleTitle,jdbcType=VARCHAR},</if>
+            <if test="articleViewCount != null">article_view_count = #{articleViewCount,jdbcType=INTEGER},</if>
+            <if test="articleCommentCount != null">article_comment_count = #{articleCommentCount,jdbcType=INTEGER},</if>
+            <if test="articleLikeCount != null">article_like_count = #{articleLikeCount,jdbcType=INTEGER},</if>
+            <if test="articleCreateTime != null">article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},</if>
+            <if test="articleUpdateTime != null">article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},</if>
+            <if test="articleIsComment != null">article_is_comment = #{articleIsComment,jdbcType=INTEGER},</if>
+            <if test="articleStatus != null">article_status = #{articleStatus,jdbcType=INTEGER},</if>
+            <if test="articleOrder != null">article_order = #{articleOrder,jdbcType=INTEGER},</if>
+            <if test="articleContent != null">article_content = #{articleContent,jdbcType=LONGVARCHAR},</if>
+        </set>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </update>
+
+    <!--获取文章总数-->
+    <select id="countArticle" resultType="Integer">
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+    </select>
+
+    <!--获得文章留言总数-->
+    <select id="countArticleComment" resultType="Integer">
+        SELECT SUM(article_comment_count)
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+    </select>
+
+
+    <!--统计文章总访问量-->
+    <select id="countArticleView" resultType="Integer">
+        SELECT SUM(article_view_count) FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+    </select>
+
+    <!--获得所有文章-->
+    <select id="listArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+        ORDER BY article_status ASC, article_order DESC, article_id DESC
+    </select>
+
+    <select id="getArticleByStatusAndId" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="status != null">
+                article_status = #{status} AND
+            </if>
+            article_id = #{id}
+        </where>
+    </select>
+
+    <!--通过分页查询文章-->
+    <select id="pageArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="status!=null">
+                article_status=#{status}
+            </if>
+        </where>
+        ORDER BY article_status ASC, article_order DESC, article_id DESC
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <!--获得访问量较多的文章-->
+    <select id="listArticleByViewCount" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+        ORDER BY article_view_count DESC,article_order DESC, article_id DESC
+        limit #{limit}
+
+    </select>
+
+
+    <!--获得下一篇的文章-->
+    <select id="getAfterArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            article_id > #{id} AND article_status = 1
+        </where>
+        ORDER BY article_id
+        limit 1
+    </select>
+    <!--获得上一篇的文章-->
+    <select id="getPreArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            article_id &lt; #{id} AND article_status = 1
+        </where>
+        ORDER BY article_id
+        limit 1
+    </select>
+
+    <!--获得随机文章-->
+    <select id="listRandomArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+        ORDER BY
+        RAND()
+        limit #{limit}
+    </select>
+
+    <!--获得评论数较多的文章列表-->
+    <select id="listArticleByCommentCount" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE article_status = 1
+        ORDER BY
+        article_comment_count DESC,article_order DESC, article_id DESC
+        limit #{limit}
+    </select>
+
+    <update id="updateCommentCount" parameterType="Integer">
+        UPDATE
+        <include refid="tb"/>
+        SET article_comment_count=
+        (
+        SELECT count(*) FROM `comment`
+        WHERE article.article_id=comment.comment_article_id AND comment_status=1
+        )
+        WHERE article_id=#{articleId}
+    </update>
+
+    <!--获得最后更新的记录-->
+    <select id="getLastUpdateArticle" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE
+        article_status = 1 AND article_update_time=
+        (
+        SELECT max(article_update_time) FROM article
+        )
+    </select>
+
+    <select id="countArticleByUser" parameterType="Integer" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+        <include refid="tb"/>
+        WHERE article_user_id=#{id} AND article_status = 1
+    </select>
+
+    <select id="findArticleByCategoryId" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        article.article_id, article.article_user_id, article.article_title,
+        article.article_view_count, article.article_comment_count,
+        article.article_like_count, article.article_create_time, article.article_update_time,
+        article.article_is_comment, article.article_status, article.article_order,
+        article.article_content
+        FROM article, article_category_ref
+        WHERE
+        article.article_status = 1 AND
+        article.article_id = article_category_ref.article_id AND
+        article_category_ref.category_id = #{catgeoyrId}
+        LIMIT #{limit}
+    </select>
+
+    <select id="findArticleByCategoryIds" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        article.article_id, article.article_user_id, article.article_title,
+        article.article_view_count, article.article_comment_count,
+        article.article_like_count, article.article_create_time, article.article_update_time,
+        article.article_is_comment, article.article_status, article.article_order,
+        article.article_content
+        FROM article, article_category_ref
+        <where>
+            article.article_status = 1 AND
+            article.article_id = article_category_ref.article_id AND
+            article_category_ref.category_id
+            <if test="categoryIds != null">
+                IN
+                <foreach collection="categoryIds" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        LIMIT #{limit}
+    </select>
+
+
+    <select id="listArticleByLimit" resultType="com.liuyanzhao.blog.entity.Article">
+        SELECT
+        article_id, article_user_id, article_title, article_view_count, article_comment_count, article_like_count,
+        article_create_time,
+        article_update_time, article_is_comment, article_status, article_order
+        FROM
+        <include refid="tb"/>
+        ORDER BY article_id DESC
+        LIMIT #{value}
+    </select>
+</mapper>

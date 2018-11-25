@@ -84,7 +84,7 @@
                 </ul>
             </blockquote>
         </div>
-        <div class="layui-col-md8" style="border: 1px solid #FF5722;">
+        <div class="layui-col-md8">
 
             <div class="layui-tab layui-tab-card">
                 <ul class="layui-tab-title">
@@ -99,7 +99,6 @@
                                 <col width="100">
                                 <col width="200">
                                 <col width="50">
-                                <col width="50">
                                 <col width="100">
                                 <col width="50">
                             </colgroup>
@@ -108,14 +107,13 @@
                                 <th>名称</th>
                                 <th>URL</th>
                                 <th>Order</th>
-                                <td>状态</td>
                                 <th>操作</th>
                                 <th>ID</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${menuCustomList}" var="m">
-                                <c:if test="${m.menuLevel==1}">
+                            <c:forEach items="${menuList}" var="m">
+                                <c:if test="${m.menuLevel == 1}">
                                 <tr>
                                     <td>
                                         <i class="${m.menuIcon}"></i>
@@ -125,16 +123,6 @@
                                         <a href="${m.menuUrl}" target="_blank">${m.menuUrl}</a>
                                     </td>
                                     <td>${m.menuOrder}</td>
-                                    <td>
-                                    <c:choose>
-                                        <c:when test="${m.menuStatus==0}">
-                                            <span style="color:#FF5722;">隐藏</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            显示
-                                        </c:otherwise>
-                                    </c:choose>
-                                    </td>
                                     <td>
                                         <a href="/admin/menu/edit/${m.menuId}" class="layui-btn layui-btn-mini" title="点击编辑">编辑</a>
                                         <a href="/admin/menu/delete/${m.menuId}" class="layui-btn layui-btn-danger layui-btn-mini" title="点击删除" onclick="return confirmDelete()">删除</a>
@@ -158,7 +146,6 @@
                                 <col width="100">
                                 <col width="200">
                                 <col width="50">
-                                <col width="50">
                                 <col width="100">
                                 <col width="50">
                             </colgroup>
@@ -167,15 +154,14 @@
                                 <th>名称</th>
                                 <th>URL</th>
                                 <th>Order</th>
-                                <th>状态</th>
                                 <th>操作</th>
                                 <th>ID</th>
 
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${menuCustomList}" var="m">
-                                <c:if test="${m.menuLevel==2}">
+                            <c:forEach items="${menuList}" var="m">
+                                <c:if test="${m.menuLevel == 2}">
                                     <tr>
                                         <td>
                                             <i class="${m.menuIcon}"></i>
@@ -185,16 +171,6 @@
                                             <a href="${m.menuUrl}" target="_blank">${m.menuUrl}</a>
                                         </td>
                                         <td>${m.menuOrder}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${m.menuStatus==0}">
-                                                    <span style="color:#FF5722;">隐藏</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    显示
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
                                         <td>
                                             <a href="/admin/menu/edit/${m.menuId}" class="layui-btn layui-btn-mini">编辑</a>
                                             <a href="/admin/menu/delete/${m.menuId}" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>

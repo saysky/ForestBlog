@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.LinkMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Link" >
+    <id column="link_id" property="linkId" jdbcType="INTEGER" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="link_name" property="linkName" jdbcType="VARCHAR" />
+    <result column="link_image" property="linkImage" jdbcType="VARCHAR" />
+    <result column="link_description" property="linkDescription" jdbcType="VARCHAR" />
+    <result column="link_owner_nickname" property="linkOwnerNickname" jdbcType="VARCHAR" />
+    <result column="link_owner_contact" property="linkOwnerContact" jdbcType="VARCHAR" />
+    <result column="link_update_time" property="linkUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="link_create_time" property="linkCreateTime" jdbcType="TIMESTAMP" />
+    <result column="link_order" property="linkOrder" jdbcType="INTEGER" />
+    <result column="link_status" property="linkStatus" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    link_id, link_url, link_name, link_image, link_description, link_owner_nickname, 
+    link_owner_contact, link_update_time, link_create_time, link_order, link_status
+  </sql>
+  
+  <sql id="tb">link</sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from link
+    where link_id = #{linkId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from link
+    where link_id = #{linkId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Link" >
+    insert into link (link_id, link_url, link_name, 
+      link_image, link_description, link_owner_nickname, 
+      link_owner_contact, link_update_time, link_create_time, 
+      link_order, link_status)
+    values (#{linkId,jdbcType=INTEGER}, #{linkUrl,jdbcType=VARCHAR}, #{linkName,jdbcType=VARCHAR}, 
+      #{linkImage,jdbcType=VARCHAR}, #{linkDescription,jdbcType=VARCHAR}, #{linkOwnerNickname,jdbcType=VARCHAR}, 
+      #{linkOwnerContact,jdbcType=VARCHAR}, #{linkUpdateTime,jdbcType=TIMESTAMP}, #{linkCreateTime,jdbcType=TIMESTAMP}, 
+      #{linkOrder,jdbcType=INTEGER}, #{linkStatus,jdbcType=INTEGER})
+  </insert>
+  
+  <update id="update" parameterType="com.liuyanzhao.blog.entity.Link" >
+    update link
+    <set >
+      <if test="linkUrl != null" > link_url = #{linkUrl,jdbcType=VARCHAR},</if>
+      <if test="linkName != null" >link_name = #{linkName,jdbcType=VARCHAR},</if>
+      <if test="linkImage != null" >link_image = #{linkImage,jdbcType=VARCHAR},</if>
+      <if test="linkDescription != null" >link_description = #{linkDescription,jdbcType=VARCHAR},</if>
+      <if test="linkOwnerNickname != null" >link_owner_nickname = #{linkOwnerNickname,jdbcType=VARCHAR},</if>
+      <if test="linkOwnerContact != null" >link_owner_contact = #{linkOwnerContact,jdbcType=VARCHAR},</if>
+      <if test="linkUpdateTime != null" >link_update_time = #{linkUpdateTime,jdbcType=TIMESTAMP},</if>
+      <if test="linkCreateTime != null" >link_create_time = #{linkCreateTime,jdbcType=TIMESTAMP},</if>
+      <if test="linkOrder != null" >link_order = #{linkOrder,jdbcType=INTEGER}, </if>
+      <if test="linkStatus != null" >link_status = #{linkStatus,jdbcType=INTEGER},</if>
+    </set>
+    where link_id = #{linkId,jdbcType=INTEGER}
+  </update>
+
+  <select id="countLink" resultType="Integer">
+    SELECT COUNT(*) FROM <include refid="tb"/>
+    <where>
+      <if test="status!=null">
+        link_status=#{status}
+      </if>
+    </where>
+  </select>
+
+  <!--获取链接列表-->
+  <select id="listLink" resultType="com.liuyanzhao.blog.entity.Link">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM  <include refid="tb"/>
+    <where>
+      <if test="status!=null">
+        link_status=#{status}
+      </if>
+    </where>
+    ORDER BY link_status ASC,link_order DESC,link_id ASC
+  </select>
+  
+</mapper>

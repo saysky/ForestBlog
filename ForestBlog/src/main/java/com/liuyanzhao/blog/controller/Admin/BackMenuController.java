@@ -1,10 +1,12 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
 import com.liuyanzhao.blog.entity.Menu;
-import com.liuyanzhao.blog.entity.custom.MenuCustom;
+import com.liuyanzhao.blog.entity.Menu;
+import com.liuyanzhao.blog.enums.MenuLevel;
 import com.liuyanzhao.blog.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/menu")
 public class BackMenuController {
@@ -19,72 +24,78 @@ public class BackMenuController {
     @Autowired
     private MenuService menuService;
 
-    //后台菜单列表显示
+    /**
+     * 后台菜单列表显示
+     *
+     * @return
+     */
     @RequestMapping(value = "")
-    public ModelAndView menuList() throws Exception {
-        ModelAndView modelandview = new ModelAndView();
-        List<MenuCustom> menuCustomList = menuService.listMenu(null);
-        modelandview.addObject("menuCustomList",menuCustomList);
-        modelandview.setViewName("Admin/Menu/index");
-        return modelandview;
+    public String menuList(Model model)  {
+        List<Menu> menuList = menuService.listMenu();
+        model.addAttribute("menuList",menuList);
+        return "Admin/Menu/index";
     }
 
-    //添加菜单内容提交
+    /**
+     * 添加菜单内容提交
+     *
+     * @param menu
+     * @return
+     */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertMenuSubmit(Menu menu) throws Exception {
-        menu.setMenuStatus(1);
-        menu.setMenuOrder(1);
+    public String insertMenuSubmit(Menu menu)  {
+        if(menu.getMenuOrder() == null) {
+            menu.setMenuOrder(MenuLevel.TOP_MENU.getValue());
+        }
         menuService.insertMenu(menu);
         return "redirect:/admin/menu";
     }
 
-    //删除菜单内容
+    /**
+     * 删除菜单内容
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delete/{id}")
-    public String deleteMenu(@PathVariable("id") Integer id) throws Exception {
-
+    public String deleteMenu(@PathVariable("id") Integer id)  {
         menuService.deleteMenu(id);
         return "redirect:/admin/menu";
     }
 
-    //编辑菜单内容显示
+    /**
+     * 编辑菜单内容显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editMenuView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView editMenuView(@PathVariable("id") Integer id)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        MenuCustom menuCustom =  menuService.getMenuById(id);
-        modelAndView.addObject("menuCustom",menuCustom);
+        Menu menu =  menuService.getMenuById(id);
+        modelAndView.addObject("menu",menu);
 
-        List<MenuCustom> menuCustomList = menuService.listMenu(null);
-        modelAndView.addObject("menuCustomList",menuCustomList);
+        List<Menu> menuList = menuService.listMenu();
+        modelAndView.addObject("menuList",menuList);
 
         modelAndView.setViewName("Admin/Menu/edit");
         return modelAndView;
     }
 
 
-    //编辑菜单内容提交
+    /**
+     * 编辑菜单内容提交
+     *
+     * @param menu
+     * @return
+     */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editMenuSubmit(Menu menu) throws Exception {
+    public String editMenuSubmit(Menu menu)  {
         menuService.updateMenu(menu);
         return "redirect:/admin/menu";
     }
 
-    //显示菜单内容
-    @RequestMapping(value = "/show/{id}",method = RequestMethod.POST)
-    public void showMenu(@PathVariable("id") Integer id) throws Exception {
-        Menu menu = new Menu();
-        menu.setMenuId(id);
-        menu.setMenuStatus(1);
-        menuService.updateMenu(menu);
-    }
 
-    //隐藏菜单内容
-    @RequestMapping(value = "/hide/{id}",method = RequestMethod.POST)
-    public void hideMenu(@PathVariable("id") Integer id) throws Exception {
-        Menu menu = new Menu();
-        menu.setMenuId(id);
-        menu.setMenuStatus(0);
-        menuService.updateMenu(menu);
-    }
 
 }

@@ -1,455 +1,266 @@
 package com.liuyanzhao.blog.service.impl;
 
-import com.liuyanzhao.blog.mapper.ArticleMapper;
-import com.liuyanzhao.blog.mapper.CategoryMapper;
-import com.liuyanzhao.blog.mapper.TagMapper;
-import com.liuyanzhao.blog.mapper.UserMapper;
-import com.liuyanzhao.blog.mapper.custom.*;
-import com.liuyanzhao.blog.entity.Article;
-import com.liuyanzhao.blog.entity.Tag;
-import com.liuyanzhao.blog.entity.User;
-import com.liuyanzhao.blog.entity.custom.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.liuyanzhao.blog.entity.*;
+import com.liuyanzhao.blog.enums.ArticleCommentStatus;
+import com.liuyanzhao.blog.enums.ArticleStatus;
+import com.liuyanzhao.blog.mapper.*;
 import com.liuyanzhao.blog.service.ArticleService;
-import com.liuyanzhao.blog.util.Functions;
-import com.liuyanzhao.blog.util.others.Page;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * 用户管理
- * Created by 言曌 on 2017/8/24.
+ * 文章Servie实现
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Service
+@Slf4j
 public class ArticleServiceImpl implements ArticleService {
-	@Autowired
-	private ArticleMapperCustom articleMapperCustom;
-	
-	@Autowired
-	private ArticleMapper articleMapper;
-	
-	@Autowired
-	private CategoryMapperCustom categoryMapperCustom;
 
-	@Autowired
-	private CategoryMapper categoryMapper;
+    @Autowired(required = false)
+    private ArticleMapper articleMapper;
 
-	@Autowired
-	private TagMapper tagMapper;
-	
-	@Autowired
-	private UserMapper userMapper;
-	
-	@Autowired
-	private CommentMapperCustom commentMapperCustom;
+    @Autowired(required = false)
+    private ArticleCategoryRefMapper articleCategoryRefMapper;
 
+    @Autowired(required = false)
+    private ArticleTagRefMapper articleTagRefMapper;
 
-	@Override
-	public Integer countArticle(Integer status) throws Exception {
-		Integer articleCount = articleMapperCustom.countArticle(status);
-		return articleCount ;
-	}
-	
-	@Override
-	public Integer countArticleComment(Integer status) throws Exception {
-		Integer commentCount = articleMapperCustom.countArticleComment(status);
-		return commentCount;
-	}
-	
-	
-	@Override
-	public Integer countArticleView(Integer status) throws Exception {
-		Integer viewCount = articleMapperCustom.countArticleView(status);
-		return viewCount;
-	}
-
-	@Override
-	public List<ArticleListVo> listArticle(Integer status) throws Exception {
-		List<ArticleListVo> articleListVoList = new ArrayList<ArticleListVo>();
-
-		//获得文章列表信息和分页信息
-		List<ArticleCustom> articleCustomList = articleMapperCustom.listArticle(status);
-
-		//获得分类信息
-		for (int i = 0; i < articleCustomList.size(); i++) {
-			ArticleListVo articleListVo = new ArticleListVo();
-
-			//1、将文章信息装到 articleListVoList 中
-			ArticleCustom articleCustom = articleCustomList.get(i);
-			articleListVo.setArticleCustom(articleCustom);
-
-			//2、将分类信息装到 articleListVoList 中
-			List<CategoryCustom> categoryCustomList = new ArrayList<CategoryCustom>();
-			Integer parentCategoryId = articleCustomList.get(i).getArticleParentCategoryId();
-			Integer childCategoryId = articleCustomList.get(i).getArticleChildCategoryId();
-			CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(1,parentCategoryId);
-			CategoryCustom categoryCustom2 = categoryMapperCustom.getCategoryById(1,childCategoryId);
-			if (categoryCustom != null) {
-				categoryCustomList.add(categoryCustom);
-			}
-			if (categoryCustom2 != null) {
-				categoryCustomList.add(categoryCustom2);
-			}
-			articleListVo.setCategoryCustomList(categoryCustomList);
-
-			//3、获得标签信息
-			List<TagCustom> tagCustomList = new ArrayList<TagCustom>();
-			String tagIds = articleCustomList.get(i).getArticleTagIds();
-			//防止该文章没有分类，空指针
-			if (tagIds != null && tagIds != "") {
-				String[] tagId = tagIds.split(",");
-				for (int j = 0; j < tagId.length; j++) {
-					Tag tag = tagMapper.selectByPrimaryKey(Integer.valueOf(tagId[j]));
-					//防止标签不存在，被删除
-					if (tag != null) {
-						TagCustom tagCustom = new TagCustom();
-						BeanUtils.copyProperties(tag, tagCustom);
-						tagCustomList.add(tagCustom);
-					}
-				}
-			}
-			articleListVo.setTagCustomList(tagCustomList);
-
-			//4、获得作者信息
-			User user = userMapper.selectByPrimaryKey(articleCustom.getArticleUserId());
-			UserCustom userCustom = new UserCustom();
-			BeanUtils.copyProperties(user, userCustom);
-			articleListVo.setUserCustom(userCustom);
-
-
-			articleListVoList.add(articleListVo);
-
-		}
-		return articleListVoList;
-	}
-
-
-	@Override
-	public ArticleCustom getArticleById(Integer status,Integer id) throws Exception {
-		return articleMapperCustom.getArticleById(status,id);
-	}
-	
-	@Override
-	public void updateArticle(Integer id,Article article) throws Exception {
-		//添加业务校验，通常在service接口对关键
-		article.setArticleId(id);
-		articleMapper.updateByPrimaryKeySelective(article);
-	}
-	
-	@Override
-	public void deleteArticleBatch(Integer[] ids) throws Exception {
-		for (int i=0;i<ids.length;i++) {
-			articleMapper.deleteByPrimaryKey(ids[i]);
-		}
-	}
-
-	@Override
-	public void deleteArticle(Integer id) throws Exception {
-		articleMapper.deleteByPrimaryKey(id);
-	}
-
-	
-	//分页显示文章列表
-	@Override
-	public List<ArticleListVo> listArticleByPage(Integer status,Integer pageNow,Integer pageSize) throws Exception {
-		List<ArticleListVo> articleListVoList = new ArrayList<ArticleListVo>();
-		
-		//获得文章列表信息和分页信息
-		List<ArticleCustom> articleCustomList = new ArrayList<ArticleCustom>();
-		Page page = null;
-		int totalCount = articleMapperCustom.countArticle(status);
-		if (pageNow != null) {
-			page = new Page(totalCount, pageNow,pageSize);
-			articleCustomList = articleMapperCustom.listArticleByPage(status,page.getStartPos(),pageSize);
-		} else {
-			page = new Page(totalCount, 1,pageSize);
-			articleCustomList = articleMapperCustom.listArticleByPage(status,page.getStartPos(), pageSize);
-		}
-		
-		//获得分类信息
-		for(int i=0;i<articleCustomList.size();i++) {
-			ArticleListVo articleListVo = new ArticleListVo();
-			
-			//1、将文章信息装到 articleListVoList 中
-			ArticleCustom articleCustom = articleCustomList.get(i);
-			articleListVo.setArticleCustom(articleCustom);
-			
-			//2、将分类信息装到 articleListVoList 中
-			List<CategoryCustom> categoryCustomList = new ArrayList<CategoryCustom>();
-			Integer parentCategoryId =articleCustomList.get(i).getArticleParentCategoryId();
-            Integer childCategoryId =articleCustomList.get(i).getArticleChildCategoryId();
-            CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(status,parentCategoryId);
-			CategoryCustom categoryCustom2 = categoryMapperCustom.getCategoryById(status,childCategoryId);
-			if(categoryCustom!=null) {
-                categoryCustomList.add(categoryCustom);
-            }
-            if(categoryCustom2!=null) {
-                categoryCustomList.add(categoryCustom2);
-            }
-            articleListVo.setCategoryCustomList(categoryCustomList);
-
-			//3、获得标签信息
-			List<TagCustom> tagCustomList = new ArrayList<TagCustom>();
-			String tagIds = articleCustomList.get(i).getArticleTagIds();
-			//防止该文章没有分类，空指针
-			if(tagIds!=null && tagIds!="") {
-				String[] tagId = tagIds.split(",");
-				for (int j = 0; j < tagId.length; j++) {
-					Tag tag = tagMapper.selectByPrimaryKey(Integer.valueOf(tagId[j]));
-					//防止标签不存在，被删除
-					if (tag != null) {
-						TagCustom tagCustom = new TagCustom();
-						BeanUtils.copyProperties(tag, tagCustom);
-						tagCustomList.add(tagCustom);
-					}
-				}
-			}
-			articleListVo.setTagCustomList(tagCustomList);
-
-			//4、获得作者信息
-			User user = userMapper.selectByPrimaryKey(articleCustom.getArticleUserId());
-			UserCustom  userCustom = new UserCustom();
-			BeanUtils.copyProperties(user,userCustom);
-			articleListVo.setUserCustom(userCustom);
-
-
-			articleListVoList.add(articleListVo);
-		}
-
-		if(articleListVoList.size()>0) {
-			//4、将Page信息存储在第一个元素中
-			articleListVoList.get(0).setPage(page);
-		}
-		return articleListVoList;
-	}
-	
-	//文章详情页面显示
-	@Override
-	public ArticleDetailVo getArticleDetailById(Integer id) throws Exception {
-		ArticleDetailVo articleDetailVo = new ArticleDetailVo();
-		
-		//1、获得文章信息
-		ArticleCustom articleCustom = articleMapperCustom.getArticleById(1,id);
-		if(articleCustom ==null) {
-			return null;
-		}
-		articleDetailVo.setArticleCustom(articleCustom);
-		
-
-		//2、将分类信息装到 articleListVoList 中
-		List<CategoryCustom> categoryCustomList = new ArrayList<CategoryCustom>();
-		Integer cate =articleCustom.getArticleParentCategoryId();
-		Integer cate2 =articleCustom.getArticleChildCategoryId();
-		CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(1,cate);
-		CategoryCustom categoryCustom2 = categoryMapperCustom.getCategoryById(1,cate2);
-		if(categoryCustom!=null) {
-            categoryCustomList.add(categoryCustom);
-        }
-        if(categoryCustom2!=null) {
-            categoryCustomList.add(categoryCustom2);
-        }
-		articleDetailVo.setCategoryCustomList(categoryCustomList);
-		
-		//3、获得文章的标签
-		String tag_ids = articleCustom.getArticleTagIds();
-		List<TagCustom> tagCustomList = new ArrayList<TagCustom>();
-		if (tag_ids != null && tag_ids != "") {
-			String[] tags = tag_ids.split(",");
-			int tagLength = tags.length;
-			
-			for (int i = 0; i < tagLength; i++) {
-				Tag tag= tagMapper.selectByPrimaryKey(Integer.valueOf(tags[i]));
-				if(tag!=null) {
-					TagCustom tagCustom = new TagCustom();
-					BeanUtils.copyProperties(tag,tagCustom);
-					tagCustomList.add(tagCustom);
-				}
-			}
-		}
-		articleDetailVo.setTagCustomList(tagCustomList);
-		
-		//4、获得文章的作者
-		Integer userId = articleCustom.getArticleUserId();
-		User user = userMapper.selectByPrimaryKey(userId);
-		UserCustom userCustom = new UserCustom();
-		BeanUtils.copyProperties(user,userCustom);
-		articleDetailVo.setUserCustom(userCustom);
-		
-		//5、获取评论信息列表
-		List<CommentCustom> commentCustomList = commentMapperCustom.listCommentByArticleId(1,id);
-		//给每个评论用户添加头像
-		for(int i=0;i<commentCustomList.size();i++) {
-			String avatar = Functions.getGravatar(commentCustomList.get(i).getCommentAuthorEmail());
-			commentCustomList.get(i).setCommentAuthorAvatar(avatar);
-		}
-		articleDetailVo.setCommentCustomList(commentCustomList);
-
-
-		return articleDetailVo;
-	}
-	
-
-	//文章查询结果分页
-	@Override
-	public List<ArticleSearchVo> listSearchResultByPage(Integer status,HttpServletRequest request, Model model,Integer pageNow,Integer pageSize,String query) throws Exception {
-		Page page = null;
-		List<ArticleCustom> articleCustomList = new ArrayList<ArticleCustom>();
-		int totalCount = articleMapperCustom.getSearchResultCount(status,query);
-
-
-        if (pageNow != null) {
-            page = new Page(totalCount, pageNow, pageSize);
-            articleCustomList = this.articleMapperCustom.listSearchResultByPage(status,query, page.getStartPos(), page.getPageSize());
-        } else {
-            page = new Page(totalCount, 1, pageSize);
-            articleCustomList = this.articleMapperCustom.listSearchResultByPage(status,query, page.getStartPos(), page.getPageSize());
-        }
-
-        List<ArticleSearchVo> articleSearchVoList = new ArrayList<ArticleSearchVo>();
-
-        //查询结果条数为0，下面的不执行，防止空指针
-		if(totalCount!=0) {
-            for (int i = 0; i < articleCustomList.size(); i++) {
-                ArticleSearchVo articleSearchVo = new ArticleSearchVo();
-
-                //1、将文章信息装到 articleListVoList 中
-                ArticleCustom articleCustom = articleCustomList.get(i);
-                articleSearchVo.setArticleCustom(articleCustom);
-
-				//2、将分类信息装到 articleListVoList 中
-				List<CategoryCustom> categoryCustomList = new ArrayList<CategoryCustom>();
-				Integer cate =articleCustomList.get(i).getArticleParentCategoryId();
-				Integer cate2 =articleCustomList.get(i).getArticleChildCategoryId();
-				CategoryCustom categoryCustom = categoryMapperCustom.getCategoryById(status,cate);
-				CategoryCustom categoryCustom2 = categoryMapperCustom.getCategoryById(status,cate2);
-                if(categoryCustom!=null) {
-                    categoryCustomList.add(categoryCustom);
-                }
-                if(categoryCustom2!=null) {
-                    categoryCustomList.add(categoryCustom2);
-                }
-                articleSearchVo.setCategoryCustomList(categoryCustomList);
-
-                //3、获得标签信息
-                List<TagCustom> tagCustomList = new ArrayList<TagCustom>();
-                String tagIds = articleCustomList.get(i).getArticleTagIds();
-                if(tagIds!=null &&tagIds!="") {
-                    String[] tagId = tagIds.split(",");
-                    for (int j = 0; j < tagId.length; j++) {
-                        Tag tag = tagMapper.selectByPrimaryKey(Integer.valueOf(tagId[j]));
-                        if (tag != null) {
-                            TagCustom tagCustom = new TagCustom();
-                            BeanUtils.copyProperties(tag, tagCustom);
-                            tagCustomList.add(tagCustom);
-                        }
-                    }
-                }
-                articleSearchVo.setTagCustomList(tagCustomList);
-
-                //4、获得作者信息
-                User user = userMapper.selectByPrimaryKey(articleCustom.getArticleUserId());
-                UserCustom userCustom = new UserCustom();
-                BeanUtils.copyProperties(user, userCustom);
-                articleSearchVo.setUserCustom(userCustom);
-
-
-                articleSearchVoList.add(articleSearchVo);
-            }
-        } else {
-		    //不执行的话，也要创建一个元素，存储分页信息和查询关键字
-            ArticleSearchVo articleSearchVo = new ArticleSearchVo();
-            articleSearchVoList.add(articleSearchVo);
-        }
-		//5、page信息存储在第一个元素中
-		articleSearchVoList.get(0).setPage(page);
-
-		//6、将查询的关键词存储到第一个元素
-		articleSearchVoList.get(0).setQuery(query);
-
-
-		return articleSearchVoList;
-
-	}
-	
-	//相似文章获取
-	@Override
-	public List<ArticleCustom> listArticleWithSameCategory(Integer status,Integer parentCategoryId,Integer childCategoryId, Integer limit) throws Exception {
-		List<ArticleCustom> similarArticleList = articleMapperCustom.listArticleWithSameCategory(status,parentCategoryId,childCategoryId,limit);
-		return similarArticleList;
-	}
-	
-	
-	//访问量从多到少的文章获取
-	@Override
-	public List<ArticleCustom> listArticleByViewCount(Integer status,Integer limit) throws Exception {
-		List<ArticleCustom> mostViewArticleList = articleMapperCustom.listArticleByViewCount(status,limit);
-		return mostViewArticleList;
-	}
-	
-	//获取下一篇文章
-	@Override
-	public ArticleCustom getAfterArticle(Integer status,Integer id) throws Exception {
-		ArticleCustom articleCustom = articleMapperCustom.getAfterArticle(status,id);
-		return articleCustom;
-	}
-	
-	//获取上一篇文章
-	@Override
-	public ArticleCustom getPreArticle(Integer status,Integer id) throws Exception {
-		ArticleCustom articleCustom = articleMapperCustom.getPreArticle(status,id);
-		return articleCustom;
-	}
-	
-	//获得随机文章
-	@Override
-	public List<ArticleCustom> listRandomArticle(Integer status,Integer limit) throws Exception {
-		List<ArticleCustom> articleCustomsList = articleMapperCustom.listRandomArticle(status,limit);
-		return articleCustomsList;
-	}
-	
-	//获得热评文章列表
-	@Override
-	public List<ArticleCustom> listArticleByCommentCount(Integer status,Integer limit) throws Exception {
-		List<ArticleCustom> articleCustomsList = articleMapperCustom.listArticleByCommentCount(status,limit);
-		return articleCustomsList;
-	}
-
-
-    //添加文章
     @Override
-    public void insertArticle(Article article) throws Exception {
-        articleMapper.insertSelective(article);
+    public Integer countArticle(Integer status) {
+        Integer count = 0;
+        try {
+            count = articleMapper.countArticle(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据状态统计文章数, status:{}, cause:{}", status, e);
+        }
+        return count;
     }
 
-    //统计某个分类的文章数
-	@Override
-	public Integer countArticleWithCategory(Integer status,Integer id) throws Exception {
-		int count = articleMapperCustom.countArticleByCategory(status,id);
-		return count;
-	}
+    @Override
+    public Integer countArticleComment() {
+        Integer count = 0;
+        try {
+            count = articleMapper.countArticleComment();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("统计文章评论数失败, cause:{}", e);
+        }
+        return count;
+    }
 
-	//统计某个标签的文章数
-	@Override
-	public Integer countArticleWithTag(Integer status,Integer id) throws Exception {
-		int count = articleMapperCustom.countArticleByTag(status,id);
-		return count;
-	}
 
-	@Override
-	public void updateCommentCount(Integer articleId) throws Exception {
-		articleMapperCustom.updateCommentCount(articleId);
-	}
+    @Override
+    public Integer countArticleView() {
+        Integer count = 0;
+        try {
+            count = articleMapper.countArticleView();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("统计文章访问量失败, cause:{}", e);
+        }
+        return count;
+    }
 
-	@Override
-	public ArticleCustom getLastUpdateArticle() throws Exception {
-		ArticleCustom articleCustom = articleMapperCustom.getLastUpdateArticle();
-		return articleCustom;
-	}
+    @Override
+    public Integer countArticleByCategoryId(Integer categoryId) {
+        Integer count = 0;
+        try {
+            count = articleCategoryRefMapper.countArticleByCategoryId(categoryId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据分类统计文章数量失败, categoryId:{}, cause:{}", categoryId, e);
+        }
+        return count;
+    }
+
+    @Override
+    public Integer countArticleByTagId(Integer tagId) {
+        return articleTagRefMapper.countArticleByTagId(tagId);
+
+    }
+
+    @Override
+    public List<Article> listArticle(HashMap<String, Object> criteria) {
+        return articleMapper.findAll(criteria);
+    }
+
+    @Override
+    public List<Article> listRecentArticle(Integer limit) {
+        return articleMapper.listArticleByLimit(limit);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateArticleDetail(Article article) {
+        article.setArticleUpdateTime(new Date());
+        articleMapper.update(article);
+
+        if (article.getTagList() != null) {
+            //删除标签和文章关联
+            articleTagRefMapper.deleteByArticleId(article.getArticleId());
+            //添加标签和文章关联
+            for (int i = 0; i < article.getTagList().size(); i++) {
+                ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), article.getTagList().get(i).getTagId());
+                articleTagRefMapper.insert(articleTagRef);
+            }
+        }
+
+        if (article.getCategoryList() != null) {
+            //添加分类和文章关联
+            articleCategoryRefMapper.deleteByArticleId(article.getArticleId());
+            //删除分类和文章关联
+            for (int i = 0; i < article.getCategoryList().size(); i++) {
+                ArticleCategoryRef articleCategoryRef = new ArticleCategoryRef(article.getArticleId(), article.getCategoryList().get(i).getCategoryId());
+                articleCategoryRefMapper.insert(articleCategoryRef);
+            }
+        }
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        articleMapper.update(article);
+    }
+
+    @Override
+    public void deleteArticleBatch(List<Integer> ids) {
+        articleMapper.deleteBatch(ids);
+    }
+
+    @Override
+    public void deleteArticle(Integer id) {
+        articleMapper.deleteById(id);
+    }
+
+
+    @Override
+    public PageInfo<Article> pageArticle(Integer pageIndex,
+                                         Integer pageSize,
+                                         HashMap<String, Object> criteria) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<Article> articleList = articleMapper.findAll(criteria);
+        for (int i = 0; i < articleList.size(); i++) {
+            //封装CategoryList
+            List<Category> categoryList = articleCategoryRefMapper.listCategoryByArticleId(articleList.get(i).getArticleId());
+            if (categoryList == null || categoryList.size() == 0) {
+                categoryList = new ArrayList<>();
+                categoryList.add(Category.Default());
+            }
+            articleList.get(i).setCategoryList(categoryList);
+//            //封装TagList
+//            List<Tag> tagList = articleTagRefMapper.listTagByArticleId(articleList.get(i).getArticleId());
+//            articleList.get(i).setTagList(tagList);
+        }
+        return new PageInfo<>(articleList);
+    }
+
+    @Override
+    public Article getArticleByStatusAndId(Integer status, Integer id) {
+        Article article = articleMapper.getArticleByStatusAndId(status, id);
+        if (article != null) {
+            List<Category> categoryList = articleCategoryRefMapper.listCategoryByArticleId(article.getArticleId());
+            List<Tag> tagList = articleTagRefMapper.listTagByArticleId(article.getArticleId());
+            article.setCategoryList(categoryList);
+            article.setTagList(tagList);
+        }
+        return article;
+    }
+
+
+    @Override
+    public List<Article> listArticleByViewCount(Integer limit) {
+        return articleMapper.listArticleByViewCount(limit);
+    }
+
+    @Override
+    public Article getAfterArticle(Integer id) {
+        return articleMapper.getAfterArticle(id);
+    }
+
+    @Override
+    public Article getPreArticle(Integer id) {
+        return articleMapper.getPreArticle(id);
+    }
+
+    @Override
+    public List<Article> listRandomArticle(Integer limit) {
+        return articleMapper.listRandomArticle(limit);
+    }
+
+    @Override
+    public List<Article> listArticleByCommentCount(Integer limit) {
+        return articleMapper.listArticleByCommentCount(limit);
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertArticle(Article article) {
+        //添加文章
+        article.setArticleCreateTime(new Date());
+        article.setArticleUpdateTime(new Date());
+        article.setArticleIsComment(ArticleCommentStatus.ALLOW.getValue());
+        article.setArticleViewCount(0);
+        article.setArticleLikeCount(0);
+        article.setArticleCommentCount(0);
+        article.setArticleOrder(1);
+        articleMapper.insert(article);
+        //添加分类和文章关联
+        for (int i = 0; i < article.getCategoryList().size(); i++) {
+            ArticleCategoryRef articleCategoryRef = new ArticleCategoryRef(article.getArticleId(), article.getCategoryList().get(i).getCategoryId());
+            articleCategoryRefMapper.insert(articleCategoryRef);
+        }
+        //添加标签和文章关联
+        for (int i = 0; i < article.getTagList().size(); i++) {
+            ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), article.getTagList().get(i).getTagId());
+            articleTagRefMapper.insert(articleTagRef);
+        }
+    }
+
+
+    @Override
+    public void updateCommentCount(Integer articleId) {
+        articleMapper.updateCommentCount(articleId);
+    }
+
+    @Override
+    public Article getLastUpdateArticle() {
+        return articleMapper.getLastUpdateArticle();
+    }
+
+    @Override
+    public List<Article> listArticleByCategoryId(Integer cateId, Integer limit) {
+        return articleMapper.findArticleByCategoryId(cateId, limit);
+    }
+
+    @Override
+    public List<Article> listArticleByCategoryIds(List<Integer> cateIds, Integer limit) {
+        if (cateIds == null || cateIds.size() == 0) {
+            return null;
+        }
+        return articleMapper.findArticleByCategoryIds(cateIds, limit);
+    }
+
+    @Override
+    public List<Integer> listCategoryIdByArticleId(Integer articleId) {
+        return articleCategoryRefMapper.selectCategoryIdByArticleId(articleId);
+    }
+
+    @Override
+    public List<Article> listAllNotWithContent() {
+        return articleMapper.listAllNotWithContent();
+    }
 
 
 }

@@ -1,30 +1,38 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
+import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
+import com.liuyanzhao.blog.dto.ArticleParam;
 import com.liuyanzhao.blog.entity.Article;
-import com.liuyanzhao.blog.entity.custom.*;
+import com.liuyanzhao.blog.entity.*;
 import com.liuyanzhao.blog.service.ArticleService;
 import com.liuyanzhao.blog.service.CategoryService;
 import com.liuyanzhao.blog.service.TagService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/article")
 public class BackArticleController {
     @Autowired
     private ArticleService articleService;
-
 
     @Autowired
     private TagService tagService;
@@ -32,155 +40,113 @@ public class BackArticleController {
     @Autowired
     private CategoryService categoryService;
 
-    //后台文章列表显示
+    /**
+     * 后台文章列表显示
+     *
+     * @return modelAndView
+     */
     @RequestMapping(value = "")
-    public ModelAndView index() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-
-        //分页显示已发布文章
-        Integer pageSize = 20;
-        List<ArticleListVo> publishedArticleListVoList = articleService.listArticleByPage(1,null,pageSize);
-        modelAndView.addObject("publishedArticleListVoList",publishedArticleListVoList);
-
-        //不分页显示 草稿文章
-        List<ArticleListVo> draftArticleList = articleService.listArticle(0);
-        modelAndView.addObject("draftArticleList",draftArticleList);
-        modelAndView.setViewName("Admin/Article/index");
-        return modelAndView;
+    public String index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+                        @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                        @RequestParam(required = false) String status, Model model) {
+        HashMap<String, Object> criteria = new HashMap<>(1);
+        if (status == null) {
+            model.addAttribute("pageUrlPrefix", "/admin/article?pageIndex");
+        } else {
+            criteria.put("status", status);
+            model.addAttribute("pageUrlPrefix", "/admin/article?status=" + status + "&pageIndex");
+        }
+        PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
+        model.addAttribute("pageInfo", articlePageInfo);
+        return "Admin/Article/index";
     }
 
-    //文章分页显示
-    @RequestMapping("/p/{pageNow}")
-    public @ResponseBody  ModelAndView ArticleListByPageView(@PathVariable("pageNow") Integer pageNow) throws Exception{
-        ModelAndView modelAndView = new ModelAndView();
-        //分页显示已发布文章
-        Integer pageSize = 20;
-        List<ArticleListVo> publishedArticleListVoList = articleService.listArticleByPage(1,pageNow,pageSize);
-        modelAndView.addObject("publishedArticleListVoList",publishedArticleListVoList);
 
-        //不分页显示 草稿文章
-        List<ArticleListVo> draftArticleList = articleService.listArticle(0);
-        modelAndView.addObject("draftArticleList",draftArticleList);
-        modelAndView.setViewName("Admin/Article/index");
-        return modelAndView;
-    }
-
-    //后台添加文章页面显示
+    /**
+     * 后台添加文章页面显示
+     *
+     * @return
+     */
     @RequestMapping(value = "/insert")
-    public ModelAndView insertArticleView() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-
-        List<CategoryCustom> categoryCustomList = categoryService.listCategory(1);
-        List<TagCustom> tagCustomList = tagService.listTag(1);
-
-        modelAndView.addObject("categoryCustomList",categoryCustomList);
-        modelAndView.addObject("tagCustomList",tagCustomList);
-
-        modelAndView.setViewName("Admin/Article/insert");
-        return modelAndView;
+    public String insertArticleView(Model model) {
+        List<Category> categoryList = categoryService.listCategory();
+        List<Tag> tagList = tagService.listTag();
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("tagList", tagList);
+        return "Admin/Article/insert";
     }
 
-    //后台添加文章提交操作
-    @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertArticleSubmit(Article article) throws Exception {
-
-        article.setArticlePostTime(new Date());
-        article.setArticleUpdateTime(new Date());
-        article.setArticleIsComment(1);
-        article.setArticleViewCount(0);
-        article.setArticleLikeCount(0);
-        article.setArticleCommentCount(0);
-        article.setArticleStatus(1);
-        article.setArticleOrder(1);
+    /**
+     * 后台添加文章提交操作
+     *
+     * @param articleParam
+     * @return
+     */
+    @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    public String insertArticleSubmit(HttpSession session, ArticleParam articleParam) {
+        Article article = new Article();
+        //用户ID
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            article.setArticleUserId(user.getUserId());
+        }
+        article.setArticleTitle(articleParam.getArticleTitle());
+        article.setArticleContent(articleParam.getArticleContent());
+        article.setArticleStatus(articleParam.getArticleStatus());
+        //填充分类
+        List<Category> categoryList = new ArrayList<>();
+        if (articleParam.getArticleChildCategoryId() != null) {
+            categoryList.add(new Category(articleParam.getArticleParentCategoryId()));
+        }
+        if (articleParam.getArticleChildCategoryId() != null) {
+            categoryList.add(new Category(articleParam.getArticleChildCategoryId()));
+        }
+        article.setCategoryList(categoryList);
+        //填充标签
+        List<Tag> tagList = new ArrayList<>();
+        if (articleParam.getArticleTagIds() != null) {
+            for (int i = 0; i < articleParam.getArticleTagIds().size(); i++) {
+                Tag tag = new Tag(articleParam.getArticleTagIds().get(i));
+                tagList.add(tag);
+            }
+        }
+        article.setTagList(tagList);
 
         articleService.insertArticle(article);
-
         return "redirect:/admin/article";
     }
 
-    //后台添加文章提交操作
-    @RequestMapping(value = "/insertDraftSubmit",method = RequestMethod.POST)
-    public String insertArticleDraftSubmit(Article article) throws Exception {
 
-        article.setArticlePostTime(new Date());
-        article.setArticleUpdateTime(new Date());
-        article.setArticleIsComment(1);
-        article.setArticleViewCount(0);
-        article.setArticleLikeCount(0);
-        article.setArticleCommentCount(0);
-        article.setArticleStatus(0);
-        article.setArticleOrder(1);
-
-        articleService.insertArticle(article);
-
-        return "redirect:/admin/article";
-    }
-
-
-    //搜索实现
-    @RequestMapping("/search")
-    @ResponseBody
-    public ModelAndView SearchPageView(HttpServletRequest request,Model model) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        //设置每页显示的数量
-        int pageSize = 20;
-        String query = request.getParameter("query");
-        List<ArticleSearchVo> articleSearchVoList = articleService.listSearchResultByPage(1,request,model,null,pageSize,query);
-        modelAndView.addObject("articleSearchVoList", articleSearchVoList);
-        modelAndView.setViewName("Admin/Article/search");
-        return modelAndView;
-    }
-
-    //搜索分页实现
-    @RequestMapping("/p/{pageNow}/search")
-    @ResponseBody
-    public  ModelAndView SearchPageByPageView(HttpServletRequest request, Model model,@PathVariable("pageNow") Integer pageNow) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        //设置每页显示的数量
-        int pageSize = 20;
-        String query = request.getParameter("query");
-        List<ArticleSearchVo> articleSearchVoList = articleService.listSearchResultByPage(1,request,model,pageNow,pageSize,query);
-        modelAndView.addObject("articleSearchVoList", articleSearchVoList);
-        modelAndView.setViewName("/Admin/Article/search");
-        return modelAndView;
-    }
-
-
-
-    //删除文章
+    /**
+     * 删除文章
+     *
+     * @param id 文章ID
+     */
     @RequestMapping(value = "/delete/{id}")
-    public void deleteArticle(@PathVariable("id") Integer id) throws Exception {
-        //调用service批量删除
+    public void deleteArticle(@PathVariable("id") Integer id) {
         articleService.deleteArticle(id);
     }
 
-    //批量删除文章
-    @RequestMapping(value = "/deleteBatch")
-    public void deleteArticles(HttpServletRequest request) throws Exception {
-        String str = request.getParameter("ids");
-        String[] arr = str.split(",");
-        Integer[] ids = new Integer[arr.length];
-        for(int i=0;i<arr.length;i++) {
-            ids[i] = Integer.valueOf(arr[i]);
-        }
-        //调用service批量删除
-        articleService.deleteArticleBatch(ids);
 
-    }
-
-    //编辑文章页面显示
+    /**
+     * 编辑文章页面显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editArticleView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView editArticleView(@PathVariable("id") Integer id) {
         ModelAndView modelAndView = new ModelAndView();
 
-        ArticleCustom articleCustom =  articleService.getArticleById(null,id);
-        modelAndView.addObject("articleCustom",articleCustom);
+        Article article = articleService.getArticleByStatusAndId(null, id);
+        modelAndView.addObject("article", article);
 
-        List<CategoryCustom> categoryCustomList = categoryService.listCategory(1);
-        modelAndView.addObject("categoryCustomList",categoryCustomList);
 
-        List<TagCustom> tagCustomList = tagService.listTag(1);
-        modelAndView.addObject("tagCustomList",tagCustomList);
+        List<Category> categoryList = categoryService.listCategory();
+        modelAndView.addObject("categoryList", categoryList);
+
+        List<Tag> tagList = tagService.listTag();
+        modelAndView.addObject("tagList", tagList);
 
 
         modelAndView.setViewName("Admin/Article/edit");
@@ -188,15 +154,40 @@ public class BackArticleController {
     }
 
 
-    //编辑文章提交
-    @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editArticleSubmit(ArticleCustom articleCustom) throws Exception {
-        Integer id = articleCustom.getArticleId();
-        articleCustom.setArticleUpdateTime(new Date());
-        articleService.updateArticle(id,articleCustom);
+    /**
+     * 编辑文章提交
+     *
+     * @param articleParam
+     * @return
+     */
+    @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    public String editArticleSubmit(ArticleParam articleParam) {
+        Article article = new Article();
+        article.setArticleId(articleParam.getArticleId());
+        article.setArticleTitle(articleParam.getArticleTitle());
+        article.setArticleContent(articleParam.getArticleContent());
+        article.setArticleStatus(articleParam.getArticleStatus());
+        //填充分类
+        List<Category> categoryList = new ArrayList<>();
+        if (articleParam.getArticleChildCategoryId() != null) {
+            categoryList.add(new Category(articleParam.getArticleParentCategoryId()));
+        }
+        if (articleParam.getArticleChildCategoryId() != null) {
+            categoryList.add(new Category(articleParam.getArticleChildCategoryId()));
+        }
+        article.setCategoryList(categoryList);
+        //填充标签
+        List<Tag> tagList = new ArrayList<>();
+        if (articleParam.getArticleTagIds() != null) {
+            for (int i = 0; i < articleParam.getArticleTagIds().size(); i++) {
+                Tag tag = new Tag(articleParam.getArticleTagIds().get(i));
+                tagList.add(tag);
+            }
+        }
+        article.setTagList(tagList);
+        articleService.updateArticleDetail(article);
         return "redirect:/admin/article";
     }
-
 
 
 }

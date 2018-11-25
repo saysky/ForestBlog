@@ -67,12 +67,11 @@
                 </ul>
             </blockquote>
         </div>
-        <div class="layui-col-md8" style="border: 1px solid #FF5722;">
+        <div class="layui-col-md8" >
 
             <table class="layui-table" >
                 <colgroup>
-                    <col width="200">
-                    <col width="100">
+                    <col width="300">
                     <col width="50">
                     <col width="100">
                     <col width="50">
@@ -81,13 +80,12 @@
                 <tr>
                     <th>名称</th>
                     <th>文章数</th>
-                    <th>状态</th>
                     <th>操作</th>
                     <th>ID</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${tagCustomList}" var="c">
+                <c:forEach items="${tagList}" var="c">
 
                     <tr>
                         <td>
@@ -95,16 +93,6 @@
                         </td>
                         <td >
                             <a href="/tag/${c.tagId}" target="_blank"  lay-data="{sort:true}">${c.articleCount}</a>
-                        </td>
-                        <td>
-                             <c:choose>
-                                 <c:when test="${c.tagStatus==1}">
-                                     显示
-                                 </c:when>
-                                 <c:otherwise>
-                                     隐藏
-                                 </c:otherwise>
-                             </c:choose>
                         </td>
                         <td>
                             <a href="/admin/tag/edit/${c.tagId}" class="layui-btn layui-btn-mini">编辑</a>

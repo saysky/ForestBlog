@@ -1,12 +1,9 @@
 package com.liuyanzhao.blog.service.impl;
 
-import com.liuyanzhao.blog.entity.custom.ArticleCustom;
+import com.liuyanzhao.blog.mapper.ArticleMapper;
 import com.liuyanzhao.blog.mapper.UserMapper;
-import com.liuyanzhao.blog.mapper.custom.UserMapperCustom;
 import com.liuyanzhao.blog.entity.User;
-import com.liuyanzhao.blog.entity.custom.UserCustom;
 import com.liuyanzhao.blog.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,68 +12,64 @@ import java.util.List;
 
 /**
  * 用户管理
- * Created by 言曌 on 2017/8/24.
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Service
 public class UserServiceImpl implements UserService {
-	@Autowired
-	private UserMapperCustom userMapperCustom;
-	
-	@Autowired
-	private UserMapper userMapper;
-	
-	@Override
-	public List<UserCustom> listUser() throws Exception {
-		List<UserCustom> userCustomList = userMapperCustom.listUser();
-		for(int i=0;i<userCustomList.size();i++) {
-			Integer articleCount = userMapperCustom.countArticleByUser(userCustomList.get(i).getUserId());
-			userCustomList.get(i).setArticleCount(articleCount);
-		}
-		return userCustomList;
-	}
-	
-	@Override
-	public UserCustom getUserById(Integer id) throws Exception {
-		
-		User user = userMapper.selectByPrimaryKey(id);
-		UserCustom userCustom = new UserCustom();
-		BeanUtils.copyProperties(user,userCustom);
-		return userCustom;
-	}
-	
-	@Override
-	public void updateUser(User user) throws Exception {
-		userMapper.updateByPrimaryKeySelective(user);
-	}
-	
-	@Override
-	public void deleteUser(Integer id) throws Exception {
-		userMapper.deleteByPrimaryKey(id);
-	}
-	
-	@Override
-	public void insertUser(User user) throws Exception {
-		user.setUserRegisterTime(new Date());
-		userMapper.insertSelective(user);
-	}
 
-	@Override
-	public User getUserByNameOrEmail(String str) throws Exception {
-		User user = userMapperCustom.getUserByNameOrEmail(str);
-		return user;
-	}
+    @Autowired
+    private UserMapper userMapper;
 
-	@Override
-	public User getUserByName(String name) throws Exception {
-		User user = userMapperCustom.getUserByName(name);
-		return user;
-	}
+    @Autowired
+    private ArticleMapper articleMapper;
 
-	@Override
-	public User getUserByEmail(String email) throws Exception {
-		User user = userMapperCustom.getUserByEmail(email);
-		return user;
-	}
+    @Override
+    public List<User> listUser() {
+        List<User> userList = userMapper.listUser();
+        for (int i = 0; i < userList.size(); i++) {
+            Integer articleCount = articleMapper.countArticleByUser(userList.get(i).getUserId());
+            userList.get(i).setArticleCount(articleCount);
+        }
+        return userList;
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userMapper.update(user);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        userMapper.deleteById(id);
+    }
+
+    @Override
+    public void insertUser(User user) {
+        user.setUserRegisterTime(new Date());
+        userMapper.insert(user);
+    }
+
+    @Override
+    public User getUserByNameOrEmail(String str) {
+        return userMapper.getUserByNameOrEmail(str);
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        return userMapper.getUserByName(name);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userMapper.getUserByEmail(email);
+    }
 
 
 }

@@ -43,7 +43,7 @@
             <div class="layui-input-inline">
                 <select name="articleParentCategoryId" id="articleParentCategoryId" lay-filter="articleParentCategoryId" required>
                     <option value="" selected="">一级分类</option>
-                    <c:forEach items="${categoryCustomList}" var="c">
+                    <c:forEach items="${categoryList}" var="c">
                         <c:if test="${c.categoryPid==0}">
                             <option value="${c.categoryId}">${c.categoryName}</option>
                         </c:if>
@@ -60,8 +60,8 @@
         <div class="layui-form-item" pane="">
             <label class="layui-form-label">标签</label>
             <div class="layui-input-block">
-                <c:forEach items="${tagCustomList}" var="t">
-                    <input type="checkbox" name="articleTagIds" lay-skin="primary" title="${t.tagName}" value="${t.tagId}" onchange="chk()">
+                <c:forEach items="${tagList}" var="t">
+                    <input type="checkbox" name="articleTagIds" lay-skin="primary" title="${t.tagName}" value="${t.tagId}">
                 </c:forEach>
             </div>
         </div>
@@ -134,9 +134,7 @@
                     ,'italic' //斜体
                     ,'underline' //下划线
                     ,'del' //删除线
-
                     ,'|' //分割线
-
                     ,'left' //左对齐
                     ,'center' //居中对齐
                     ,'right' //右对齐
@@ -156,7 +154,7 @@
             form.on("select(articleParentCategoryId)",function () {
                 var optionstring = "";
                 var articleParentCategoryId = $("#articleParentCategoryId").val();
-                <c:forEach items="${categoryCustomList}" var="c">
+                <c:forEach items="${categoryList}" var="c">
                 if(articleParentCategoryId==${c.categoryPid}) {
                     optionstring += "<option name='childCategory' value='${c.categoryId}'>${c.categoryName}</option>";
                 }
@@ -165,7 +163,6 @@
                 form.render('select'); //这个很重要
             })
 
-//end
      });
 //        window.onbeforeunload = function() {
 //            return "确认离开当前页面吗？未保存的数据将会丢失";

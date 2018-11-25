@@ -19,9 +19,9 @@
 
 
     <!-- 扫描所有的Controller -->
-    <context:component-scan base-package="com.liuyanzhao.blog.controller.Home"></context:component-scan>
-    <context:component-scan base-package="com.liuyanzhao.blog.controller.Admin"></context:component-scan>
-    <context:component-scan base-package="com.liuyanzhao.blog.controller.Common"></context:component-scan>
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.home"></context:component-scan>
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.admin"></context:component-scan>
+    <context:component-scan base-package="com.liuyanzhao.blog.controller.common"></context:component-scan>
 
     <!-- 一个配置节解决映射器和适配器的配置注解配置 -->
     <mvc:annotation-driven></mvc:annotation-driven>
@@ -56,23 +56,23 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.liuyanzhao.blog.Interceptor.HomeResourceInterceptor"/>
+            <bean class="com.liuyanzhao.blog.interceptor.HomeResourceInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin"/>
-            <bean class="com.liuyanzhao.blog.Interceptor.SecurityInterceptor"/>
+            <bean class="com.liuyanzhao.blog.interceptor.SecurityInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
-            <bean class="com.liuyanzhao.blog.Interceptor.SecurityInterceptor"/>
+            <bean class="com.liuyanzhao.blog.interceptor.SecurityInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin"/>
-            <bean class="com.liuyanzhao.blog.Interceptor.AdminResourceInterceptor"/>
+            <bean class="com.liuyanzhao.blog.interceptor.AdminResourceInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
-            <bean class="com.liuyanzhao.blog.Interceptor.AdminResourceInterceptor"/>
+            <bean class="com.liuyanzhao.blog.interceptor.AdminResourceInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>

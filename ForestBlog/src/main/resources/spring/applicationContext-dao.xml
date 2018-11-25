@@ -2,16 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd
-	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <!--加载db.properties-->
@@ -57,6 +51,10 @@
         <property name="dataSource" ref="dataSource"/>
         <!--加载mybatis全局配置文件-->
         <property name="configLocation" value="classpath:mybatis/Configuration.xml"/>
+        <!--mapper.xml所在位置-->
+        <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml" />
+        <!--指定需要使用别名的PO类所在的包-->
+        <property name="typeAliasesPackage" value="com.liuyanzhao.blog.entity" />
     </bean>
 
     <!--mapper扫描器-->

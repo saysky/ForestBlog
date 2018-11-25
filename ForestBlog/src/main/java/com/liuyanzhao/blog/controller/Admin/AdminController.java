@@ -1,16 +1,15 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
+import com.liuyanzhao.blog.entity.Article;
+import com.liuyanzhao.blog.entity.Comment;
 import com.liuyanzhao.blog.entity.User;
-import com.liuyanzhao.blog.entity.custom.*;
 import com.liuyanzhao.blog.service.ArticleService;
 import com.liuyanzhao.blog.service.CommentService;
-import com.liuyanzhao.blog.service.LinkService;
 import com.liuyanzhao.blog.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +26,9 @@ import java.util.Map;
 
 import static com.liuyanzhao.blog.util.Functions.getIpAddr;
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 public class AdminController {
     @Autowired
@@ -38,48 +40,42 @@ public class AdminController {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private LinkService linkService;
-
-    @ModelAttribute
-    public void init(Model model) throws Exception {
-
-    }
-
-    //后台首页
+    /**
+     * 后台首页
+     *
+     * @return
+     */
     @RequestMapping("/admin")
-    public ModelAndView index() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
+    public String index(Model model)  {
         //文章列表
-        List<ArticleListVo> articleCustomList = articleService.listArticle(null);
-        modelAndView.addObject("articleCustomList",articleCustomList);
+        List<Article> articleList = articleService.listRecentArticle(5);
+        model.addAttribute("articleList",articleList);
         //评论列表
-        List<CommentListVo> commentListVoList = commentService.listCommentVo(null);
-        modelAndView.addObject("commentListVoList",commentListVoList);
-        //评论数
-        Integer allCommentCount = commentService.countComment(null);
-        Integer approvedCommentCount = commentService.countComment(1);
-        Integer hiddenCommentCount = commentService.countComment(0);
-        modelAndView.addObject("allCommentCount",allCommentCount);
-        modelAndView.addObject("approvedCommentCount",approvedCommentCount);
-        modelAndView.addObject("hiddenCommentCount",hiddenCommentCount);
-
-        modelAndView.setViewName("/Admin/index");
-        return modelAndView;
+        List<Comment> commentList = commentService.listRecentComment(5);
+        model.addAttribute("commentList",commentList);
+        return "Admin/index";
     }
 
-    //登录页面显示
+    /**
+     * 登录页面显示
+     *
+     * @return
+     */
     @RequestMapping("/login")
-    public ModelAndView loginView() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/Admin/login");
-        return modelAndView;
+    public String loginPage() {
+        return "Admin/login";
     }
 
-    //登录验证
+    /**
+     * 登录验证
+     *
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/loginVerify",method = RequestMethod.POST)
     @ResponseBody
-    public String loginVerify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String loginVerify(HttpServletRequest request, HttpServletResponse response)  {
         Map<String, Object> map = new HashMap<String, Object>();
 
         String username = request.getParameter("username");
@@ -118,9 +114,14 @@ public class AdminController {
         return result;
     }
 
-    //退出登录
+    /**
+     * 退出登录
+     *
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/admin/logout")
-    public String logout(HttpSession session) throws Exception {
+    public String logout(HttpSession session)  {
         session.removeAttribute("user");
         session.invalidate();
         return "redirect:/login";

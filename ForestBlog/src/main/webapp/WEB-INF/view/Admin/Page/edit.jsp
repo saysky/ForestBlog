@@ -22,11 +22,11 @@
 
     <form class="layui-form" method="post" id="myForm"
           action="/admin/page/editSubmit">
-        <input type="hidden" name="pageId" value="${pageCustom.pageId}">
+        <input type="hidden" name="pageId" value="${page.pageId}">
         <div class="layui-form-item">
             <label class="layui-form-label">别名<span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-inline">
-                <input type="text" name="pageKey" lay-verify="key" id="key" value="${pageCustom.pageKey}"
+                <input type="text" name="pageKey" lay-verify="key" id="key" value="${page.pageKey}"
                        class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">请填写2到20位，仅允许字母、下划线和减号组成（<span style="color: #FF5722;">请确保别名没重复</span>）</div>
@@ -34,7 +34,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">标题 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-inline">
-                <input type="text" name="pageTitle" lay-verify="title" id="title" value="${pageCustom.pageTitle}"
+                <input type="text" name="pageTitle" lay-verify="title" id="title" value="${page.pageTitle}"
                        class="layui-input">
             </div>
         </div>
@@ -43,7 +43,7 @@
             <label class="layui-form-label">内容 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
                 <textarea class="layui-textarea layui-hide" name="pageContent"
-                          id="content">${pageCustom.pageContent}</textarea>
+                          id="content">${page.pageContent}</textarea>
             </div>
         </div>
 
@@ -52,9 +52,9 @@
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
                 <input type="radio" name="pageStatus" value="1" title="显示"
-                       <c:if test="${pageCustom.pageStatus==1}">checked</c:if>>
+                       <c:if test="${page.pageStatus==1}">checked</c:if>>
                 <input type="radio" name="pageStatus" value="0" title="隐藏"
-                       <c:if test="${pageCustom.pageStatus==0}">checked</c:if>>
+                       <c:if test="${page.pageStatus==0}">checked</c:if>>
             </div>
         </div>
         <div class="layui-form-item">

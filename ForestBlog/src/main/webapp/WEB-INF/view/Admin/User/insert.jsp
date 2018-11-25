@@ -111,6 +111,7 @@
                 elem: '#test1',
                 url: '/uploadFile',
                 before: function (obj) {
+                    console.log(obj);
                     obj.preview(function (index, file, result) {
                         $('#demo1').attr('src', result);
                     });

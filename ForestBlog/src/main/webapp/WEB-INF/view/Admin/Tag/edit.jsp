@@ -39,27 +39,21 @@
         </span>
     </blockquote>
     <div class="layui-row">
-        <div class="layui-col-md4" style="border: 1px solid #FF5722;">
+        <div class="layui-col-md4" >
             <form class="layui-form" method="post" id="myForm" action="/admin/tag/editSubmit">
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <strong>编辑标签</strong>
                     </div>
-                    <input type="hidden" name="tagId" value="${tagCustom.tagId}">
+                    <input type="hidden" name="tagId" value="${tag.tagId}">
                     <div class="layui-input-block">
                         名称 <span style="color: #FF5722; ">*</span>
-                        <input type="text" name="tagName" value="${tagCustom.tagName}" autocomplete="off" class="layui-input" required>
+                        <input type="text" name="tagName" value="${tag.tagName}" autocomplete="off" class="layui-input" required>
                     </div>
                     <br>
                     <div class="layui-input-block">
                         标签描述
-                        <input type="text" name="tagDescription" value="${tagCustom.tagDescription}" autocomplete="off" class="layui-input" >
-                    </div>
-                    <br>
-                    <div class="layui-input-block">
-                        状态 <br>
-                        <input type="radio" name="tagStatus" value="1" title="显示" <c:if test="${tagCustom.tagStatus==1}">checked</c:if>>
-                        <input type="radio" name="tagStatus" value="0" title="隐藏" <c:if test="${tagCustom.tagStatus==0}">checked</c:if>>
+                        <input type="text" name="tagDescription" value="${tag.tagDescription}" autocomplete="off" class="layui-input" >
                     </div>
                     <br>
                     <div class="layui-input-block">
@@ -71,26 +65,23 @@
         <div class="layui-col-md8">
             <table class="layui-table" >
                 <colgroup>
-                    <col width="50">
                     <col width="300">
-                    <col width="100">
                     <col width="50">
                     <col width="100">
+                    <col width="50">
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>id</th>
                     <th>名称</th>
                     <th>文章数</th>
-                    <th>状态</th>
                     <th>操作</th>
+                    <th>id</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${tagCustomList}" var="c">
+                <c:forEach items="${tagList}" var="c">
 
                     <tr>
-                        <td>${c.tagId}</td>
                         <td>
                             <a href="/tag/${c.tagId}" target="_blank">${c.tagName}</a>
                         </td>
@@ -98,15 +89,12 @@
                             <a href="/tag/${c.tagId}" target="_blank">${c.articleCount}</a>
                         </td>
                         <td>
-                                ${c.tagStatus}
-                        </td>
-                        <td>
                             <a href="/admin/tag/edit/${c.tagId}" class="layui-btn layui-btn-mini">编辑</a>
                             <c:if test="${c.articleCount==0}">
                                 <a href="/admin/tag/delete/${c.tagId}" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
                             </c:if>
-
                         </td>
+                        <td>${c.tagId}</td>
                     </tr>
 
                 </c:forEach>

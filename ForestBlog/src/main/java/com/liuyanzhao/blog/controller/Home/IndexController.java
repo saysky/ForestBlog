@@ -1,68 +1,114 @@
-package com.liuyanzhao.blog.controller.Home;
+package com.liuyanzhao.blog.controller.home;
 
-import com.liuyanzhao.blog.entity.custom.*;
+import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
+import com.liuyanzhao.blog.entity.Link;
+import com.liuyanzhao.blog.entity.*;
+import com.liuyanzhao.blog.enums.ArticleStatus;
+import com.liuyanzhao.blog.enums.CategoryStatus;
+import com.liuyanzhao.blog.enums.LinkStatus;
+import com.liuyanzhao.blog.enums.NoticeStatus;
 import com.liuyanzhao.blog.service.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * 用户的controller
- * Created by 言曌 on 2017/8/24.
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Controller
 public class IndexController {
-	
-	@Autowired
-	private ArticleService articleService;
 
-	@Autowired
-	private LinkService linkService;
+    @Autowired
+    private ArticleService articleService;
 
-	@Autowired
-	private NoticeService noticeService;
-	
-	@ModelAttribute
-	public void init(Model model)  throws Exception {
-		//友情链接
-		List<LinkCustom> linkCustomList = linkService.listLink(1);
-		model.addAttribute("linkCustomList",linkCustomList);
+    @Autowired
+    private LinkService linkService;
 
-		//公告
-		List<NoticeCustom> noticeCustomList = noticeService.listNotice(1);
-		model.addAttribute("noticeCustomList",noticeCustomList);
-	}
-	
-	//首页显示
-	@RequestMapping("/")
-	public ModelAndView IndexView() throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		//文章列表
-		int pageSize = 10;
-		List<ArticleListVo> articleListVoList = articleService.listArticleByPage(1,null,pageSize);
-		modelAndView.addObject("articleListVoList",articleListVoList);
+    @Autowired
+    private NoticeService noticeService;
 
-		modelAndView.setViewName("/Home/index");
-		return modelAndView;
-	}
-	
-	//文章分页显示
-	@RequestMapping("p/{pageNow}")
-	//适合RESTful
-	public @ResponseBody  ModelAndView ArticleListByPageView(@PathVariable("pageNow") Integer pageNow) throws Exception{
-		ModelAndView modelAndView = new ModelAndView();
-		//设置每页显示的数量
-		int pageSize = 10;
-		List<ArticleListVo> articleListVoList = articleService.listArticleByPage(1,pageNow,pageSize);
-		modelAndView.addObject("articleListVoList",articleListVoList);
-		modelAndView.setViewName("Home/index");
-		return modelAndView;//不会被解析为跳转路径，而是直接写入HTTP response body中
-	}
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value = {"/", "/article"})
+    public String index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+                        @RequestParam(required = false, defaultValue = "10") Integer pageSize, Model model) {
+        HashMap<String, Object> criteria = new HashMap<>(1);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
+        //文章列表
+        PageInfo<Article> articleList = articleService.pageArticle(pageIndex, pageSize, criteria);
+        model.addAttribute("pageInfo", articleList);
+
+        //公告
+        List<Notice> noticeList = noticeService.listNotice(NoticeStatus.NORMAL.getValue());
+        model.addAttribute("noticeList", noticeList);
+        //友情链接
+        List<Link> linkList = linkService.listLink(LinkStatus.NORMAL.getValue());
+        model.addAttribute("linkList", linkList);
+
+        //侧边栏显示
+        //标签列表显示
+        List<Tag> allTagList = tagService.listTag();
+        model.addAttribute("allTagList", allTagList);
+        //最新评论
+        List<Comment> recentCommentList = commentService.listRecentComment(10);
+        model.addAttribute("recentCommentList", recentCommentList);
+        model.addAttribute("pageUrlPrefix", "/article?pageIndex");
+        return "Home/index";
+    }
+
+    @RequestMapping(value = "/search")
+    public String search(
+            @RequestParam("keywords") String keywords,
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize, Model model) {
+        //文章列表
+        HashMap<String, Object> criteria = new HashMap<>(2);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
+        criteria.put("keywords", keywords);
+        PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
+        model.addAttribute("pageInfo", articlePageInfo);
+
+        //侧边栏显示
+        //标签列表显示
+        List<Tag> allTagList = tagService.listTag();
+        model.addAttribute("allTagList", allTagList);
+        //获得随机文章
+        List<Article> randomArticleList = articleService.listRandomArticle(8);
+        model.addAttribute("randomArticleList", randomArticleList);
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        //最新评论
+        List<Comment> recentCommentList = commentService.listRecentComment(10);
+        model.addAttribute("recentCommentList", recentCommentList);
+        model.addAttribute("pageUrlPrefix", "/search?pageIndex");
+        return "Home/Page/search";
+    }
+
+    @RequestMapping("/404")
+    public String NotFound(@RequestParam(required = false) String message, Model model) {
+        model.addAttribute("message", message);
+        return "Home/Error/404";
+    }
+
+    @RequestMapping("/500")
+    public String ServerError(@RequestParam(required = false) String message, Model model) {
+        model.addAttribute("message", message);
+        return "Home/Error/500";
+    }
 
 }
 

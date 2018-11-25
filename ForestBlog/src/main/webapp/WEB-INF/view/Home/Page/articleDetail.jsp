@@ -13,7 +13,7 @@
 <%--</rapid:override>--%>
 
 <rapid:override name="title">
-    <title>${articleDetailVo.articleCustom.articleTitle}</title>
+    <title>${article.articleTitle}</title>
 </rapid:override>
 
 <rapid:override name="header-style">
@@ -34,8 +34,8 @@
             <i class="fa fa-home"></i>首页
         </a>
         <c:choose>
-            <c:when test="${a.categoryCustomList.size()!=0}">
-                <c:forEach items="${articleDetailVo.categoryCustomList}" var="c">
+            <c:when test="${categoryList != null && categoryList.size() > 0}">
+                <c:forEach items="${categoryList}" var="c">
                     <i class="fa fa-angle-right"></i>
                     <a href="/category/${c.categoryId}">
                             ${c.categoryName}
@@ -43,6 +43,7 @@
                 </c:forEach>
             </c:when>
             <c:otherwise>
+                <i class="fa fa-angle-right"></i>
                 <a>未分类</a>
             </c:otherwise>
         </c:choose>
@@ -57,15 +58,15 @@
     <%--博客主体-左侧文章正文 start--%>
     <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">
-            <article class="post">
+            <article class="post" id="articleDetail" data-id="${article.articleId}">
                 <header class="entry-header">
                     <h1 class="entry-title">
-                            ${articleDetailVo.articleCustom.articleTitle}
+                            ${article.articleTitle}
                     </h1>
                 </header><!-- .entry-header -->
                 <div class="entry-content">
                     <div class="single-content">
-                            ${articleDetailVo.articleCustom.articleContent}
+                            ${article.articleContent}
                     </div>
                     <div class="s-weixin">
                         <ul class="weimg1">
@@ -83,21 +84,19 @@
                     <div class="clear"></div>
                     <div id="social">
                         <div class="social-main">
-                                    <span class="like">
-                                        <a href="javascript:;" data-action="ding" data-id="1" title="点赞"
-                                           class="favorite" onclick="increaseLikeCount()">
-                                            <i class="fa fa-thumbs-up"></i>赞
-                                            <i class="count"
-                                               id="count-${articleDetailVo.articleCustom.articleId}">${articleDetailVo.articleCustom.articleLikeCount}</i>
-                                        </a>
-                                    </span>
+                            <span class="like">
+                                <a href="javascript:;" data-action="ding" data-id="1" title="点赞"
+                                   class="favorite" onclick="increaseLikeCount()">
+                                    <i class="fa fa-thumbs-up"></i>赞
+                                    <i class="count"
+                                       id="count-${article.articleId}">${article.articleLikeCount}</i>
+                                </a>
+                            </span>
                             <div class="shang-p">
-                                <div class="shang-empty">
-                                    <span></span>
-                                </div>
+                                <div class="shang-empty"><span></span></div>
                                 <span class="shang-s">
-                                              <a onclick="PaymentUtils.show();" style="cursor:pointer">赏</a>
-                                        </span>
+                                    <a onclick="PaymentUtils.show();" style="cursor:pointer">赏</a>
+                                </span>
                             </div>
                             <div class="share-sd">
                                         <span class="share-s" style="margin-top: 25px!important;">
@@ -129,21 +128,21 @@
                     <footer class="single-footer">
                         <ul class="single-meta">
                             <c:if test="${sessionScope.user!=null}">
-                            <li class="edit-link">
-                                <a target="_blank" class="post-edit-link"
-                                   href="/admin/article/edit/${articleDetailVo.articleCustom.articleId}">编辑</a>
-                            </li>
+                                <li class="edit-link">
+                                    <a target="_blank" class="post-edit-link"
+                                       href="/admin/article/edit/${article.articleId}">编辑</a>
+                                </li>
                             </c:if>
                             <li class="comment">
-                                <a href="/article/${articleDetailVo.articleCustom.articleId}#comments"
+                                <a href="/article/${article.articleId}#comments"
                                    rel="external nofollow">
                                     <i class="fa fa-comment-o"></i>
-                                    <i class="comment-count">${articleDetailVo.commentCustomList.size()}</i>
+                                    <i class="comment-count">${commentList.size()}</i>
                                 </a>
                             </li>
                             <li class="views">
                                 <i class="fa fa-eye"></i> <span
-                                    class="articleViewCount">${articleDetailVo.articleCustom.articleViewCount}</span>
+                                    class="articleViewCount">${article.articleViewCount}</span>
                                 views
                             </li>
                             <li class="r-hide">
@@ -158,7 +157,7 @@
                         </ul>
                         <div class="single-cat-tag">
                             <div class="single-cat">所属分类：
-                                <c:forEach items="${articleDetailVo.categoryCustomList}" var="c">
+                                <c:forEach items="${categoryList}" var="c">
                                     <a href="/category/${c.categoryId}">
                                             ${c.categoryName}
                                     </a>
@@ -175,7 +174,7 @@
                 <%--所属标签 start--%>
             <div class="single-tag">
                 <ul class="" data-wow-delay="0.3s">
-                    <c:forEach items="${articleDetailVo.tagCustomList}" var="t">
+                    <c:forEach items="${tagList}" var="t">
                         <li>
                             <a href="/tag/${t.tagId}" rel="tag"
                                style="background:#666666">
@@ -189,30 +188,29 @@
 
 
                 <%--版权声明 start--%>
-            <div class="authorbio wow fadeInUp" >
-                <img alt="${articleDetailVo.userCustom.userNickname}" src="${articleDetailVo.userCustom.userAvatar}"
+            <div class="authorbio wow fadeInUp">
+                <img alt="${user.userNickname}" src="${user.userAvatar}"
                      class="avatar avatar-64 photo" height="64" width="64">
                 <ul class="postinfo">
                     <li></li>
                     <li><strong>版权声明：</strong>本站原创文章，于<fmt:formatDate
-                            value="${articleDetailVo.articleCustom.articlePostTime}"
+                            value="${article.articleCreateTime}"
                             pattern="yyyy-MM-dd"/>，由
-                            <strong>
-                                    ${articleDetailVo.userCustom.userNickname}
-                            </strong>
+                        <strong>
+                                ${user.userNickname}
+                        </strong>
                         发表。
                     </li>
                     <li class="reprinted"><strong>转载请注明：</strong>
-                        <a href="/article/${articleDetailVo.articleCustom.articleId}"
+                        <a href="/article/${article.articleId}"
                            rel="bookmark"
-                           title="本文固定链接 /article/${articleDetailVo.articleCustom.articleId}">
-                                ${articleDetailVo.articleCustom.articleTitle} | ${options.optionSiteTitle}</a>
+                           title="本文固定链接 /article/${article.articleId}">
+                                ${article.articleTitle} | ${options.optionSiteTitle}</a>
                     </li>
                 </ul>
                 <div class="clear"></div>
             </div>
                 <%--版权声明 end--%>
-
 
                 <%--相关文章 start--%>
             <div id="single-widget">
@@ -244,7 +242,6 @@
                                         </a>
                                     </li>
                                 </c:forEach>
-
                             </ul>
                         </div>
                         <div class="clear"></div>
@@ -306,7 +303,7 @@
                 <div id="respond" class="comment-respond">
                     <h3 id="reply-title" class="comment-reply-title"><span id="reply-title-word">发表评论</span>
                         <a rel="nofollow" id="cancel-comment-reply-link"
-                           href="/article/${articleDetailVo.articleCustom.articleId}#respond"
+                           href="/article/${article.articleId}#respond"
                            style="">取消回复</a>
                     </h3>
                     <form id="comment_form" method="post">
@@ -331,7 +328,7 @@
                         <div id="comment-author-info">
                             <input type="hidden" name="commentPid" value="0">
                             <input type="hidden" name="commentPname" value="">
-                            <c:if test="${sessionScope.user==null}">
+                            <c:if test="${sessionScope.user == null}">
                                 <input type="hidden" name="commentRole" value="0">
                                 <p class="comment-form-author">
                                     <label for="author_name">
@@ -358,7 +355,7 @@
                         <p class="form-submit">
                             <input id="submit" name="submit" type="submit" tabindex="5" value="提交评论">
                             <input type="hidden" name="commentArticleId"
-                                   value="${articleDetailVo.articleCustom.articleId}" id="article_id">
+                                   value="${article.articleId}" id="article_id">
                             <input type="hidden" name="commentPid" id="comment_pid" value="0">
                         </p>
                     </form>
@@ -366,9 +363,9 @@
 
                 <ol class="comment-list">
                     <c:set var="floor" value="0"/>
-                    <c:forEach items="${articleDetailVo.commentCustomList}" var="c">
-                        <c:if test="${c.commentPid==0}">
-                            <c:set var="floor" value="${floor+1}"/>
+                    <c:forEach items="${commentList}" var="c">
+                        <c:if test="${c.commentPid == 0}">
+                            <c:set var="floor" value="${floor + 1}"/>
                             <li class="comments-anchor">
                                 <ul id="anchor-comment-${c.commentId}"></ul>
                             </li>
@@ -378,7 +375,7 @@
                                         <img class="avatar" src="${c.commentAuthorAvatar}" alt="avatar"
                                              style="display: block;">
                                         <strong>${c.commentAuthorName} </strong>
-                                        <c:if test="${c.commentRole==1}">
+                                        <c:if test="${c.commentRole == 1}">
                                             <i class="fa fa-black-tie" style="color: #c40000;"></i>
                                             <span class=""
                                                   style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
@@ -394,7 +391,7 @@
                                                     </span>
                                                     <fmt:formatDate value="${c.commentCreateTime}"
                                                                     pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                    <c:if test="${sessionScope.user!=null}">
+                                                    <c:if test="${sessionScope.user != null}">
                                                         <a href="javascript:void(0)"
                                                            onclick="deleteComment(${c.commentId})">删除</a>
                                                         <a class="comment-edit-link"
@@ -415,8 +412,8 @@
                                 </div>
                                 <ul class="children">
                                     <c:set var="floor2" value="0"/>
-                                    <c:forEach items="${articleDetailVo.commentCustomList}" var="c2">
-                                        <c:if test="${c.commentId==c2.commentPid}">
+                                    <c:forEach items="${commentList}" var="c2">
+                                        <c:if test="${c.commentId == c2.commentPid}">
                                             <c:set var="floor2" value="${floor2+1}"/>
                                             <li class="comments-anchor">
                                                 <ul id="anchor-comment-${c2.commentId}"></ul>
@@ -443,7 +440,7 @@
                                                         </span>
                                                         <fmt:formatDate value="${c2.commentCreateTime}"
                                                                         pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                        <c:if test="${sessionScope.user!=null}">
+                                                        <c:if test="${sessionScope.user != null}">
                                                             <a href="javascript:void(0)"
                                                                onclick="deleteComment(${c2.commentId})">删除</a>
                                                             <a class="comment-edit-link"
@@ -482,14 +479,21 @@
 </rapid:override>
 
 
+<%--侧边栏 start--%>
+<rapid:override name="right">
+    <%@include file="../Public/part/sidebar-1.jsp" %>
+</rapid:override>
+<%--侧边栏 end--%>
+
 <rapid:override name="footer-script">
     <script src="/js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
-        increaseViewCount();
+        var articleId = $("#articleDetail").attr("data-id");
+        increaseViewCount(articleId);
         layui.code({
             elem: 'pre',//默认值为.layui-code
-           // skin: 'notepad', //如果要默认风格，不用设定该key。
+            // skin: 'notepad', //如果要默认风格，不用设定该key。
             about: false
         });
     </script>

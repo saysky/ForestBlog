@@ -230,11 +230,11 @@
                     <div id="activity-widget">
                         <div id="published-posts" class="activity-block"><h3>最近发布</h3> <br>
                             <ul>
-                                <c:forEach items="${articleCustomList}" begin="0" end="4" step="1" var="a">
-                                    <li><span><fmt:formatDate value="${a.articleCustom.articlePostTime}"
+                                <c:forEach items="${articleList}" begin="0" end="4" step="1" var="a">
+                                    <li><span><fmt:formatDate value="${a.articleCreateTime}"
                                                               pattern="HH:mm MM月dd日"/> </span>
-                                        <a href="/article/${a.articleCustom.articleId}"
-                                           target="_blank">${a.articleCustom.articleTitle}</a>
+                                        <a href="/article/${a.articleId}"
+                                           target="_blank">${a.articleTitle}</a>
                                     </li>
                                 </c:forEach>
 
@@ -243,71 +243,40 @@
                         <br>
                         <div id="latest-comments" class="activity-block"><h3>近期评论</h3>
                             <ul id="the-comment-list" data-wp-lists="list:comment">
-                                <c:forEach items="${commentListVoList}" begin="0" end="4" step="1" var="c">
+                                <c:forEach items="${commentList}" begin="0" end="4" step="1" var="c">
                                     <li class="comment   thread-even comment-item approved">
 
-                                        <img alt="" src="${c.commentCustom.commentAuthorAvatar}"
+                                        <img alt="" src="${c.commentAuthorAvatar}"
                                              class="avatar avatar-50 photo" height="50" width="50">
                                         <div class="dashboard-comment-wrap has-row-actions">
                                             <p class="comment-meta">
                                                 由<cite class="comment-author">
-                                                <a target="_blank" href="${c.commentCustom.commentAuthorUrl}"
+                                                <a target="_blank" href="${c.commentAuthorUrl}"
                                                    rel="external nofollow"
-                                                   class="url">${c.commentCustom.commentAuthorName}</a>
-                                            </cite>发表在《<a
-                                                    href="/article/${c.commentCustom.commentArticleId}">${c.articleCustom.articleTitle}</a>》
-                                                <c:if test="${c.commentCustom.commentStatus==0}">
-                                                    <span class="approve">[待审]</span>
-                                                </c:if>
+                                                   class="url">${c.commentAuthorName}</a>
+                                            </cite>发表在
+                                                《<a href="/article/${c.commentArticleId}">${c.article.articleTitle}</a>》
                                             </p>
 
-                                            <blockquote><p>${c.commentCustom.commentContent}</p></blockquote>
-                                            <p class="row-actions">
-                                            <span class="">
-                                            <c:choose>
-                                                <c:when test="${c.commentCustom.commentStatus==1}">
-                                                    <a href="javascript:void(0)" style="color: #FF5722;"
-                                                       onclick="hideComment(${c.commentCustom.commentId})">屏蔽</a>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <a href="" style="color: #009688;"
-                                                       onclick="approveComment(${c.commentCustom.commentId})">批准</a>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            </span> |
+                                            <blockquote><p>${c.commentContent}</p></blockquote>
+                                            <p class="row-actions">|
                                                 <span class="">
                                             <a data-comment-id="1268"
-                                               href="/admin/comment/reply/${c.commentCustom.commentId}">
+                                               href="/admin/comment/reply/${c.commentId}">
                                                 回复
                                             </a>
                                             </span>
                                                 <span class=""> |
-                                                <a href="/admin/comment/edit/${c.commentCustom.commentId}">编辑</a>
+                                                <a href="/admin/comment/edit/${c.commentId}">编辑</a>
                                             </span>
                                                 <span class=""> |
                                                 <a href="javascript:void(0)"
-                                                   onclick="deleteComment(${c.commentCustom.commentId})">删除</a>
+                                                   onclick="deleteComment(${c.commentId})">删除</a>
                                             </span>
                                             </p>
                                         </div>
                                     </li>
                                 </c:forEach>
-                            </ul>
-                            <ul class="subsubsub">
-                                <li class="all"><a
-                                        href="">全部<span
-                                        class="count">（<span class="all-count">${allCommentCount}</span>）</span></a> |
-                                </li>
-                                <li class="moderated"><a
-                                        href="">待审<span
-                                        class="count">（<span class="pending-count">${hiddenCommentCount}</span>）</span></a>
-                                    |
-                                </li>
-                                <li class="approved"><a
-                                        href="">已批准<span
-                                        class="count">（<span
-                                        class="approved-count">${approvedCommentCount}</span>）</span></a> |
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -344,12 +313,12 @@
                             aria-label="查看所有草稿">查看所有</a></p>
                         <h2 class="hide-if-no-js">草稿</h2>
                         <ul>
-                            <c:forEach items="${articleCustomList}" var="a">
-                                <c:if test="${a.articleCustom.articleStatus==0}">
+                            <c:forEach items="${articleList}" var="a">
+                                <c:if test="${a.articleStatus==0}">
                                     <li>
                                         <div class="draft-title"><a
-                                                href="/admin/article/edit/${a.articleCustom.articleId}">${a.articleCustom.articleTitle}</a>
-                                            <time ><fmt:formatDate value="${a.articleCustom.articlePostTime}" pattern="yyyy年MM月dd日"/></time>
+                                                href="/admin/article/edit/${a.articleId}">${a.articleTitle}</a>
+                                            <time ><fmt:formatDate value="${a.articleCreateTime}" pattern="yyyy年MM月dd日"/></time>
                                         </div>
                                     </li>
                                 </c:if>

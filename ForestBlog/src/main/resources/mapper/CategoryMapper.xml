@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Category">
+        <id column="category_id" property="categoryId" jdbcType="INTEGER"/>
+        <result column="category_pid" property="categoryPid" jdbcType="INTEGER"/>
+        <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="category_description" property="categoryDescription" jdbcType="VARCHAR"/>
+        <result column="category_order" property="categoryOrder" jdbcType="INTEGER"/>
+        <result column="category_icon" property="categoryIcon" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="tb">category</sql>
+
+    <sql id="Base_Column_List">
+    category_id, category_pid, category_name, category_description, category_order, category_icon
+  </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where category_id = #{categoryId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where category_id = #{categoryId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Category">
+        insert into
+        <include refid="tb"/>
+        (category_id, category_pid, category_name,
+        category_description, category_order, category_icon)
+        values (#{categoryId,jdbcType=INTEGER}, #{categoryPid,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR},
+        #{categoryDescription,jdbcType=VARCHAR}, #{categoryOrder,jdbcType=INTEGER}, #{categoryIcon,jdbcType=VARCHAR})
+    </insert>
+
+
+    <update id="update" parameterType="com.liuyanzhao.blog.entity.Category">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="categoryPid != null">category_pid = #{categoryPid,jdbcType=INTEGER},</if>
+            <if test="categoryName != null">category_name = #{categoryName,jdbcType=VARCHAR},</if>
+            <if test="categoryDescription != null">category_description = #{categoryDescription,jdbcType=VARCHAR},</if>
+            <if test="categoryOrder != null">category_order = #{categoryOrder,jdbcType=INTEGER},</if>
+            <if test="categoryIcon != null">category_icon = #{categoryIcon,jdbcType=VARCHAR},</if>
+        </set>
+        where category_id = #{categoryId,jdbcType=INTEGER}
+    </update>
+
+
+    <!--获得分类总数-->
+    <select id="countCategory" resultType="Integer">
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
+    </select>
+
+
+    <select id="listCategory" resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        order by category_order desc,category_id asc
+    </select>
+
+    <select id="getCategoryById" parameterType="Integer" resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE
+        category.category_id=#{id}
+    </select>
+
+
+    <!--删除分类-->
+    <delete id="deleteCategory" parameterType="Integer">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE category_id=#{value}
+    </delete>
+
+    <!--根据父分类找子分类-->
+    <select id="findChildCategory" parameterType="Integer"
+            resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        `category`
+        WHERE
+        category_pid=#{id}
+    </select>
+
+    <!--根据分类名查找分类-->
+    <select id="getCategoryByName" parameterType="String" resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        WHERE category_name=#{value}
+        limit 1
+    </select>
+</mapper>

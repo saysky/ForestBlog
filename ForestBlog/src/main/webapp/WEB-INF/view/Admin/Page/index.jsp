@@ -43,7 +43,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${pageCustomList}" var="p">
+            <c:forEach items="${pageList}" var="p">
                 <c:if test="${p.pageStatus!=2}">
                     <tr>
                         <td>${p.pageId}</td>
@@ -101,7 +101,7 @@
             </tr>
             </thead>
             <tbody>
-                <c:forEach items="${pageCustomList}" var="p">
+                <c:forEach items="${pageList}" var="p">
                     <c:if test="${p.pageStatus==2}">
                         <tr>
                             <td>${p.pageKey}</td>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.blog.mapper.ArticleTagRefMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.ArticleTagRef">
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="tag_id" jdbcType="INTEGER" property="tagId" />
+  </resultMap>
+
+  <sql id="tb">article_tag_ref</sql>
+
+  <insert id="insert" parameterType="java.lang.Integer" >
+    insert into <include refid="tb"/>
+    (article_id, tag_id)
+    values (#{articleId}, #{tagId})
+  </insert>
+
+  <delete id="deleteByTagId" parameterType="java.lang.Integer" >
+    delete from <include refid="tb"/> where tag_id = #{value}
+  </delete>
+
+  <delete id="deleteByArticleId" parameterType="java.lang.Integer" >
+    delete from <include refid="tb"/> where article_id = #{value}
+  </delete>
+
+  <select id="countArticleByTagId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from <include refid="tb"/>
+    where tag_id = #{value}
+  </select>
+
+  <select id="listTagByArticleId" parameterType="java.lang.Integer" resultType="com.liuyanzhao.blog.entity.Tag">
+    SELECT tag.* FROM tag, article_tag_ref
+    WHERE article_tag_ref.article_id = #{value} AND
+    article_tag_ref.tag_id = tag.tag_id
+  </select>
+
+
+</mapper>

@@ -27,24 +27,24 @@
         </span>
     </blockquote>
     <div class="layui-row">
-        <div class="layui-col-md4" style="border: 1px solid #FF5722;">
+        <div class="layui-col-md4" >
             <form class="layui-form"  method="post" id="myForm" action="/admin/category/editSubmit">
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <strong>修改分类</strong>
                     </div>
-                    <input type="hidden" name="categoryId" value="${categoryCustom.categoryId}">
+                    <input type="hidden" name="categoryId" value="${category.categoryId}">
                     <div class="layui-input-block">
                         名称 <span style="color: #FF5722; ">*</span>
-                        <input type="text" name="categoryName" value="${categoryCustom.categoryName}" placeholder="" autocomplete="off" class="layui-input" required>
+                        <input type="text" name="categoryName" value="${category.categoryName}" placeholder="" autocomplete="off" class="layui-input" required>
                     </div>
                     <br>
                     <div class="layui-input-block">
                         父节点 <span style="color: #FF5722; ">*</span>
                         <select name="categoryPid" class="layui-input" required>
-                            <c:forEach items="${categoryCustomList}" var="c">
+                            <c:forEach items="${categoryList}" var="c">
                                 <c:choose>
-                                    <c:when test="${c.categoryId==categoryCustom.categoryPid}">
+                                    <c:when test="${c.categoryId==category.categoryPid}">
                                         <option value="${c.categoryId}" selected>${c.categoryName}</option>
                                     </c:when>
                                     <c:otherwise>
@@ -54,25 +54,20 @@
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
-                            <option value="0" <c:if test="${categoryCustom.categoryPid==0}">selected</c:if> >无</option>
+                            <option value="0" <c:if test="${category.categoryPid==0}">selected</c:if> >无</option>
                         </select>
                     </div>
                     <br>
                     <div class="layui-input-block">
                         分类描述
-                        <input type="text" name="categoryDescription" value="${categoryCustom.categoryDescription}"  class="layui-input" >
+                        <input type="text" name="categoryDescription" value="${category.categoryDescription}"  class="layui-input" >
                     </div>
                     <br>
                     <div class="layui-input-block">
                         图标样式
-                        <input type="text" name="categoryIcon" value="${categoryCustom.categoryIcon}"class="layui-input" >
+                        <input type="text" name="categoryIcon" value="${category.categoryIcon}"class="layui-input" >
                     </div>
                     <br>
-                    <div class="layui-input-block">
-                        状态 <br>
-                        <input type="radio" name="categoryStatus" value="1" title="显示" <c:if test="${categoryCustom.categoryStatus==1}">checked</c:if>>
-                        <input type="radio" name="categoryStatus" value="0" title="隐藏" <c:if test="${categoryCustom.categoryStatus==0}">checked</c:if>>
-                    </div>
                     <br>
                     <div class="layui-input-block">
                         <button class="layui-btn" lay-filter="formDemo" type="submit">保存</button>
@@ -80,40 +75,30 @@
                 </div>
             </form>
             <br><br>
-            <blockquote class="layui-elem-quote layui-quote-nm">
-                温馨提示：
-                <ul>
-                    <li>如果该分类为一级分类，父节点将不可修改</li>
-                    <li>如果该分类为二级分类，父节点可选择其对应的一级目录</li>
-                </ul>
-            </blockquote>
         </div>
-        <div class="layui-col-md8">
+        <div class="layui-col-md8" >
             <table class="layui-table" >
                 <colgroup>
-                    <col width="50">
-                    <col width="50">
                     <col width="300">
                     <col width="100">
-                    <col width="50">
                     <col width="100">
+                    <col width="100">
+                    <col width="50">
+                    <col width="50">
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>id</th>
-                    <th>pid</th>
                     <th>名称</th>
                     <th>文章数</th>
-                    <th>状态</th>
                     <th>操作</th>
+                    <th>ID</th>
+                    <th>pid</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${categoryCustomList}" var="c">
+                <c:forEach items="${categoryList}" var="c">
                     <c:if test="${c.categoryPid==0}">
                         <tr>
-                            <td class="layui-bg-cyan">${c.categoryId}</td>
-                            <td>${c.categoryPid}</td>
                             <td>
                                 <a href="/category/${c.categoryId}" target="_blank">${c.categoryName}</a>
                             </td>
@@ -121,28 +106,22 @@
                                 <a href="/category/${c.categoryId}" target="_blank">${c.articleCount}</a>
                             </td>
                             <td>
-                                    ${c.categoryStatus}
-                            </td>
-                            <td>
                                 <a href="/admin/category/edit/${c.categoryId}" class="layui-btn layui-btn-mini">编辑</a>
                                 <c:if test="${c.articleCount==0}">
                                     <a href="/admin/category/delete/${c.categoryId}" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
                                 </c:if>
                             </td>
+                            <td>${c.categoryId}</td>
+                            <td>${c.categoryPid}</td>
                         </tr>
-                        <c:forEach items="${categoryCustomList}" var="c2">
+                        <c:forEach items="${categoryList}" var="c2">
                             <c:if test="${c2.categoryPid==c.categoryId}">
                                 <tr>
-                                    <td class="cate-parent">${c2.categoryId}</td>
-                                    <td>${c2.categoryPid}</td>
                                     <td>
-                                        <a href="/category/${c2.categoryId}" target="_blank">${c2.categoryName}</a>
+                                        <a href="/category/${c2.categoryId}" target="_blank">——${c2.categoryName}</a>
                                     </td>
                                     <td>
                                         <a href="/category/${c2.categoryId}" target="_blank">${c2.articleCount}</a>
-                                    </td>
-                                    <td>
-                                            ${c2.categoryStatus}
                                     </td>
                                     <td>
                                         <a href="/admin/category/edit/${c2.categoryId}" class="layui-btn layui-btn-mini">编辑</a>
@@ -150,6 +129,8 @@
                                             <a href="/admin/category/delete/${c2.categoryId}" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
                                         </c:if>
                                     </td>
+                                    <td class="cate-parent">${c2.categoryId}</td>
+                                    <td>${c2.categoryPid}</td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -167,6 +148,7 @@
                 </ul>
             </blockquote>
         </div>
+
     </div>
 
 

@@ -37,7 +37,7 @@
 
 <rapid:override name="left">
     <%--博客主体-左侧正文 start--%>
-    <section id="primary" class="content-area">
+    <section id="primary" class="content-area" style="background: #fff;">
         <main id="main" class="site-main" role="main">
             <div class="layui-collapse">
                 <div class="layui-colla-item">
@@ -46,7 +46,7 @@
                         <ul>
                             <c:forEach items="${articleList}" var="a">
                                 <li style="padding: 5px">
-                                    <a href="/article/${a.articleCustom.articleId}" title="ajax实现form表单提交" target="_blank">${a.articleCustom.articleTitle}</a>
+                                    <a href="/article/${a.articleId}" title="ajax实现form表单提交" target="_blank">${a.articleTitle}</a>
                                 </li>
                             </c:forEach>
 
@@ -79,7 +79,7 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title">标签库</h2>
                     <div class="layui-colla-content layui-show">
-                        <c:forEach items="${tagCustomList}" var="t">
+                        <c:forEach items="${tagList}" var="t">
                             <a href="/tag/${t.tagId}" style="font-size: ${t.articleCount/4+14}px" title="${t.articleCount}个话题" target="_blank">${t.tagName}</a>
                         </c:forEach>
                     </div>
@@ -88,6 +88,13 @@
         </main>
     </section>
 </rapid:override>
+
+
+<%--侧边栏 start--%>
+<rapid:override name="right">
+    <%@include file="../Public/part/sidebar-3.jsp" %>
+</rapid:override>
+<%--侧边栏 end--%>
 
 <rapid:override name="footer-script">
     <script>

@@ -34,17 +34,15 @@
 
             <table class="layui-table" >
                 <colgroup>
-                    <col width="200">
-                    <col width="300">
+                    <col width="400">
                     <col width="50">
-                    <col width="50">
+                    <col width="100">
                     <col width="100">
                     <col width="50">
                 </colgroup>
                 <thead>
                 <tr>
                     <th>标题</th>
-                    <th>内容</th>
                     <th>Order</th>
                     <th>状态</th>
                     <th>操作</th>
@@ -52,28 +50,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${noticeCustomList}" var="c">
+                <c:forEach items="${noticeList}" var="c">
 
                     <tr>
                         <td>
                             <a href="/notice/${c.noticeId}" target="_blank">${c.noticeTitle}</a>
                         </td>
                         <td>
-                            ${fn:substring(c.noticeContent,0 ,30 )}......
-                        </td>
-                        <td>
                                 ${c.noticeOrder}
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${c.noticeStatus==1}">
+                                <c:when test="${c.noticeStatus == 1}">
                                     显示
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color:#FF5722;">隐藏</span>
                                 </c:otherwise>
                             </c:choose>
-
                         </td>
                         <td>
                             <a href="/admin/notice/edit/${c.noticeId}" class="layui-btn layui-btn-mini">编辑</a>

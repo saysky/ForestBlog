@@ -1,8 +1,7 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
 
 import com.liuyanzhao.blog.entity.Category;
-import com.liuyanzhao.blog.entity.custom.CategoryCustom;
 
 import com.liuyanzhao.blog.service.ArticleService;
 import com.liuyanzhao.blog.service.CategoryService;
@@ -18,9 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/category")
 public class BackCategoryController {
+
     @Autowired
     private ArticleService articleService;
 
@@ -28,58 +31,79 @@ public class BackCategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    //后台分类列表显示
+    /**
+     * 后台分类列表显示
+     *
+     * @return
+     */
     @RequestMapping(value = "")
-    public ModelAndView categoryList() throws Exception {
+    public ModelAndView categoryList()  {
         ModelAndView modelandview = new ModelAndView();
-
-        List<CategoryCustom> categoryCustomList = categoryService.listCategory(null);
-        modelandview.addObject("categoryCustomList",categoryCustomList);
-
+        List<Category> categoryList = categoryService.listCategoryWithCount();
+        modelandview.addObject("categoryList",categoryList);
         modelandview.setViewName("Admin/Category/index");
         return modelandview;
 
     }
 
 
-    //后台添加分类提交
+    /**
+     * 后台添加分类提交
+     *
+     * @param category
+     * @return
+     */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertCategorySubmit(Category category) throws Exception {
+    public String insertCategorySubmit(Category category)  {
         categoryService.insertCategory(category);
         return "redirect:/admin/category";
     }
 
-    //删除分类
+    /**
+     * 删除分类
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delete/{id}")
-    public String deleteCategory(@PathVariable("id") Integer id) throws Exception {
-
+    public String deleteCategory(@PathVariable("id") Integer id)  {
         //禁止删除有文章的分类
-        int count = articleService.countArticleWithCategory(null,id);
+        int count = articleService.countArticleByCategoryId(id);
+
         if (count == 0) {
             categoryService.deleteCategory(id);
         }
-
         return "redirect:/admin/category";
     }
 
-    //编辑分类页面显示
+    /**
+     * 编辑分类页面显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editCategoryView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView editCategoryView(@PathVariable("id") Integer id)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        CategoryCustom categoryCustom =  categoryService.getCategoryById(null,id);
-        modelAndView.addObject("categoryCustom",categoryCustom);
+        Category category =  categoryService.getCategoryById(id);
+        modelAndView.addObject("category",category);
 
-        List<CategoryCustom> categoryCustomList = categoryService.listCategory(null);
-        modelAndView.addObject("categoryCustomList",categoryCustomList);
+        List<Category> categoryList = categoryService.listCategoryWithCount();
+        modelAndView.addObject("categoryList",categoryList);
 
         modelAndView.setViewName("Admin/Category/edit");
         return modelAndView;
     }
 
-    //编辑分类提交
+    /**
+     * 编辑分类提交
+     *
+     * @param category 分类
+     * @return 重定向
+     */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editCategorySubmit(Category category) throws Exception {
+    public String editCategorySubmit(Category category)  {
         categoryService.updateCategory(category);
         return "redirect:/admin/category";
     }

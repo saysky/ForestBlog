@@ -1,69 +1,62 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/myTag.tld" prefix="lyz" %>
-<%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-
-    <title>抱歉，无法找到该页面！</title>
-    <link rel="stylesheet" href="/css/style.css">
-
-    <link rel="stylesheet" type="text/css" href="/plugin/404/main.css">
-    <style>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>404 错误页面不存在</title>
+    <style type="text/css">
+        body,div,h3,h4,li,ol{margin:0;padding:0}
+        body{font:14px/1.5 'Microsoft YaHei','微软雅黑',Helvetica,Sans-serif;min-width:1200px;background:#f0f1f3;}
+        :focus{outline:0}
+        h3,h4,strong{font-weight:700}
+        a{color:#428bca;text-decoration:none}
+        a:hover{text-decoration:underline}
+        .error-page{background:#f0f1f3;padding:80px 0 180px}
+        .error-page-container{position:relative;z-index:1}
+        .error-page-main{position:relative;background:#f9f9f9;margin:0 auto;width:617px;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:50px 50px 70px}
+        .error-page-main:before{content:'';display:block;height:7px;position:absolute;top:-7px;width:100%;left:0}
+        .error-page-main h3{font-size:24px;font-weight:400;border-bottom:1px solid #d0d0d0}
+        .error-page-main h3 strong{font-size:54px;font-weight:400;margin-right:20px}
+        .error-page-main h4{font-size:20px;font-weight:400;color:#333}
+        .error-page-actions{font-size:0;z-index:100}
+        .error-page-actions div{font-size:14px;display:inline-block;padding:30px 0 0 10px;width:50%;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;color:#838383}
+        .error-page-actions ol{list-style:decimal;padding-left:20px}
+        .error-page-actions li{line-height:2.5em}
+        .error-page-actions:before{content:'';display:block;position:absolute;z-index:-1;bottom:17px;left:50px;width:200px;height:10px;-moz-box-shadow:4px 5px 31px 11px #999;-webkit-box-shadow:4px 5px 31px 11px #999;box-shadow:4px 5px 31px 11px #999;-moz-transform:rotate(-4deg);-webkit-transform:rotate(-4deg);-ms-transform:rotate(-4deg);-o-transform:rotate(-4deg);transform:rotate(-4deg)}
+        .error-page-actions:after{content:'';display:block;position:absolute;z-index:-1;bottom:17px;right:50px;width:200px;height:10px;-moz-box-shadow:4px 5px 31px 11px #999;-webkit-box-shadow:4px 5px 31px 11px #999;box-shadow:4px 5px 31px 11px #999;-moz-transform:rotate(4deg);-webkit-transform:rotate(4deg);-ms-transform:rotate(4deg);-o-transform:rotate(4deg);transform:rotate(4deg)}
     </style>
 </head>
 <body>
-<div id="page" class="site" style="transform: none;" >
-
-
-    <div id="content" class="site-content" style="transform: none;" >
-
-        <%--博客主体-左侧正文 start--%>
-        <div id="primary" class="content-area">
-            <main id="main" class="site-main" role="main">
-
-                <header id="header_404">
-                    <h1><span class="icon">!</span>404<span class="sub">page not found</span></h1>
-                </header>
-                <div id="content_404">
-                    <h2>您打开的这个的页面不存在！</h2>
-                    <p>当您看到这个页面,表示您的访问出错,这个错误是您打开的页面不存在,请确认您输入的地址是正确的,如果是在本站点击后出现这个页面,请联系站长进行处理,或者请通过下边的搜索重新查找资源。</p>
-                    <div class="utilities">
-                        <center>
-                        <form name="formsearch" action="/search" id="formkeyword">
-                            <div class="input-container">
-                                <input type="text" class="left" name="query" size="24" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" id="inputString" onkeyup="lookup(this.value);" onblur="fill();" placeholder="搜索..." />
-                                <button id="search"></button>
-                            </div>
-                        </form>
-                        <div id="btn">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a class="button" href="/">返回首页</a>
-                            <a class="button" href="http://wpa.qq.com/msgrd?v=3&uin=847064370&site=qq&menu=yes">联系站长</a>
-                            <div class="clear"></div>
-                        </div>
-                        </center>
-                    </div>
+<div class="error-page">
+    <div class="error-page-container">
+        <div class="error-page-main">
+            <h3>
+                <strong>404</strong>很抱歉，您要访问的页面不存在！
+            </h3>
+            <div class="error-page-actions">
+                <div>
+                    <h4>可能原因：</h4>
+                    <ol>
+                        <li>网络信号差不稳定</li>
+                        <li>找不到请求的页面</li>
+                        <li>输入的网址不正确</li>
+                    </ol>
                 </div>
-            </main><!-- .site-main -->
-
+                <div>
+                    <h4>可以尝试：</h4>
+                    <ol>
+                        <li><a href="/">返回首页</a></li>
+                        <li><a href="https://liuyanzhao.com/message.html">留言反馈</a></li>
+                        <li>
+                            <a target="_blank" rel="external nofollow" href="http://wpa.qq.com/msgrd?v=3&amp;uin=847064370&amp;site=qq&amp;menu=yes"><i class="fa fa-qq"></i>联系站长</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </div>
-      <%--  博客主体-左侧正文 end--%>
-
-
-        <div class="clear"></div>
-    </div st><!-- .site-content -->
-
+    </div>
 </div>
 </body>
 </html>

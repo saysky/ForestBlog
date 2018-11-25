@@ -53,36 +53,6 @@ function deleteComment(id) {
     }
 }
 
-
-//批准评论
-function approveComment(id) {
-    $.ajax({
-        async: false,
-        type: "POST",
-        url:'/admin/comment/approve/'+id,
-        contentType : "application/x-www-form-urlencoded; charset=utf-8",
-        dataType: "text",
-        complete:function () {
-            window.location.reload();
-        }
-    })
-}
-
-
-//屏蔽评论
-function hideComment(id) {
-    $.ajax({
-        async: false,
-        type: "POST",
-        url:'/admin/comment/hide/'+id,
-        contentType : "application/x-www-form-urlencoded; charset=utf-8",
-        dataType: "text",
-        complete:function () {
-            window.location.reload();
-        }
-    })
-}
-
 //添加草稿
 function insertDraft() {
     if($("#articleContent").val!=""&&$("#articleTitle").val()!="") {

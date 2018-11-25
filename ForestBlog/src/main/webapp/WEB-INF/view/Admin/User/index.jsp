@@ -52,7 +52,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${userCustomList}" var="u">
+    <c:forEach items="${userList}" var="u">
         <tr>
             <td>
                  <img src="${u.userAvatar}" width="48" height="48">

@@ -110,7 +110,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${linkCustomList}" var="l">
+                <c:forEach items="${linkList}" var="l">
 
                     <tr>
                         <td>${l.linkId}</td>

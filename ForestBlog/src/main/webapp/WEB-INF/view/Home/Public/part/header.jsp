@@ -22,7 +22,7 @@
             </div>
             <div class="menu-topmenu-container">
                 <ul id="menu-topmenu" class="top-menu">
-                    <c:forEach items="${menuCustomList}" var="m">
+                    <c:forEach items="${menuList}" var="m">
                         <li class="menu-item">
                         <c:if test="${m.menuLevel==1}">
                                 <a href="${m.menuUrl}" >
@@ -67,7 +67,7 @@
                                 </a>
                             </li>
 
-                            <c:forEach items="${categoryList}" var="category">
+                            <c:forEach items="${allCategoryList}" var="category">
                                 <c:if test="${category.categoryPid==0}">
                                     <li>
                                         <a href="/category/${category.categoryId}">
@@ -75,7 +75,7 @@
                                             <span class="font-text">${category.categoryName}&nbsp;</span>
                                         </a>
                                         <ul class="sub-menu">
-                                            <c:forEach items="${categoryList}" var="cate">
+                                            <c:forEach items="${allCategoryList}" var="cate">
                                                 <c:if test="${cate.categoryPid==category.categoryId}">
                                                     <li>
                                                         <a href="/category/${cate.categoryId}" target="_blank">${cate.categoryName}</a>
@@ -87,8 +87,8 @@
                                 </c:if>
                             </c:forEach>
                             <%--主要菜单其余部分--%>
-                            <c:forEach items="${menuCustomList}" var="m">
-                                <c:if test="${m.menuLevel==2}">
+                            <c:forEach items="${menuList}" var="m">
+                                <c:if test="${m.menuLevel == 2}">
                                     <li>
                                         <a href="${m.menuUrl}">
                                             <i class="${m.menuIcon}"></i>
@@ -112,11 +112,11 @@
 <%--搜索框 start--%>
 <div id="search-main">
     <div class="searchbar">
-        <form method="get" id="searchform" action="/search">
-                <span>
-                    <input type="text" value="" name="query" id="s" placeholder="输入搜索内容"required="">
-                    <button type="submit" id="searchsubmit">搜索</button>
-                </span>
+        <form method="get" id="searchform" action="/search" accept-charset="UTF-8">
+            <span>
+                <input type="text" value="" name="keywords" id="s" placeholder="输入搜索内容"required="">
+                <button type="submit" id="searchsubmit">搜索</button>
+            </span>
         </form>
     </div>
     <div class="clear"></div>

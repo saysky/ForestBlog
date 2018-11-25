@@ -1,71 +1,75 @@
-package com.liuyanzhao.blog.controller.Home;
+package com.liuyanzhao.blog.controller.home;
 
 
-import com.liuyanzhao.blog.entity.custom.*;
+import com.github.pagehelper.PageInfo;
+import com.liuyanzhao.blog.entity.*;
 import com.liuyanzhao.blog.service.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 
 /**
  * 文章分类目录的controller
- * Created by 言曌 on 2017/8/24.
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Controller
 public class CategoryController {
-	
-	@Autowired
-	private CategoryService categoryService;
 
-	@ModelAttribute
-	public void init(Model model) throws Exception {
+    @Autowired
+    private CategoryService categoryService;
 
-		
-	}
-	
-	//根据分类查询文章
-	@RequestMapping("/category/{cateId}")
-	@ResponseBody
-	public ModelAndView ArticleListByCategoryView(@PathVariable("cateId") Integer cateId) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		//设置每页显示条数
-		int pageSize = 10;
-		List<ArticleListVo> articleListVoList = categoryService.listArticleWithCategoryByPage(1,null,pageSize,cateId);
+    @Autowired
+    private ArticleService articleService;
 
-		//如果articleListVoList=null表示该分类不存在，如果=0表示该分类暂时没有文章
-        modelAndView.addObject("articleListVoList",articleListVoList);
+    @Autowired
+    private TagService tagService;
 
-		//该分类信息
-		CategoryCustom categoryCustom = categoryService.getCategoryById(1,cateId);
-		modelAndView.addObject("categoryCustom",categoryCustom);
-
-		modelAndView.setViewName("Home/Page/articleListByCategory");
-		return modelAndView;
-	}
-	
-	//根据分类查询文章分页
-	@RequestMapping("/category/{cateId}/p/{pageNow}")
-	@ResponseBody
-	public  ModelAndView ArticleListByCategoryAndPageView(@PathVariable("pageNow") Integer pageNow,@PathVariable("cateId") Integer cateId) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		//设置每页显示条数
-		int pageSize = 10;
-		List<ArticleListVo> articleListVoList = categoryService.listArticleWithCategoryByPage(1,pageNow,pageSize,cateId);
-		modelAndView.addObject("articleListVoList",articleListVoList);
-		modelAndView.setViewName("Home/Page/articleListByCategory");
+    /**
+     * 根据分类查询文章
+     *
+     * @param cateId 分类ID
+     * @return 模板
+     */
+    @RequestMapping("/category/{cateId}")
+    public String getArticleListByCategory(@PathVariable("cateId") Integer cateId,
+                                           @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+                                           @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                           Model model) {
 
         //该分类信息
-        CategoryCustom categoryCustom = categoryService.getCategoryById(1,cateId);
-        modelAndView.addObject("categoryCustom",categoryCustom);
-		return modelAndView;
-	}
+        Category category = categoryService.getCategoryById(cateId);
+        if (category == null) {
+            return "redirect:/404";
+        }
+        model.addAttribute("category", category);
+
+        //文章列表
+        HashMap<String, Object> criteria = new HashMap<>(1);
+        criteria.put("categoryId", cateId);
+        PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
+        model.addAttribute("pageInfo", articlePageInfo);
+
+        //侧边栏
+        //标签列表显示
+        List<Tag> allTagList = tagService.listTag();
+        model.addAttribute("allTagList", allTagList);
+        //获得随机文章
+        List<Article> randomArticleList = articleService.listRandomArticle(8);
+        model.addAttribute("randomArticleList", randomArticleList);
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        model.addAttribute("pageUrlPrefix", "/category?pageIndex");
+        return "Home/Page/articleListByCategory";
+    }
+
 
 }

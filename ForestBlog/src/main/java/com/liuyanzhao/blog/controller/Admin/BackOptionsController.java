@@ -1,7 +1,6 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
 import com.liuyanzhao.blog.entity.Options;
-import com.liuyanzhao.blog.entity.custom.OptionsCustom;
 import com.liuyanzhao.blog.service.OptionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/options")
 public class BackOptionsController {
@@ -18,33 +20,46 @@ public class BackOptionsController {
     private OptionsService optionsService;
 
 
-    //基本信息显示
+    /**
+     * 基本信息显示
+     *
+     * @return
+     */
     @RequestMapping(value = "")
-    public ModelAndView index() throws Exception {
+    public ModelAndView index()  {
         ModelAndView modelAndView = new ModelAndView();
-        OptionsCustom optionCustom = optionsService.getOptions();
-        modelAndView.addObject("optionCustom",optionCustom);
+        Options option = optionsService.getOptions();
+        modelAndView.addObject("option",option);
 
         modelAndView.setViewName("Admin/Options/index");
         return modelAndView;
     }
 
-    //编辑基本信息显示
+    /**
+     * 编辑基本信息显示
+     *
+     * @return
+     */
     @RequestMapping(value = "/edit")
-    public ModelAndView editOptionView() throws Exception {
+    public ModelAndView editOptionView()  {
         ModelAndView modelAndView = new ModelAndView();
-        OptionsCustom optionCustom = optionsService.getOptions();
-        modelAndView.addObject("optionCustom",optionCustom);
+        Options option = optionsService.getOptions();
+        modelAndView.addObject("option",option);
 
         modelAndView.setViewName("Admin/Options/edit");
         return modelAndView;
     }
 
-    //编辑基本信息提交
+    /**
+     * 编辑基本信息提交
+     *
+     * @param options
+     * @return
+     */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editOptionSubmit(Options options) throws Exception {
+    public String editOptionSubmit(Options options)  {
         //如果记录不存在，那就新建
-        OptionsCustom optionsCustom = optionsService.getOptions();
+        Options optionsCustom = optionsService.getOptions();
         if(optionsCustom.getOptionId()==null) {
             optionsService.insertOptions(options);
         } else {

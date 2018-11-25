@@ -13,9 +13,9 @@
         <aside class="widget widget_search">
             <div class="searchbar">
                 <form method="get" id="searchform1" action="/search">
-                        <span> <input type="text" value="" name="query" id="s1" placeholder="输入搜索内容" required="">
-                            <button type="submit" id="searchsubmit1">搜索</button>
-                        </span>
+                    <span> <input type="text" value="" name="keywords" id="s1" placeholder="输入搜索内容" required="">
+                        <button type="submit" id="searchsubmit1">搜索</button>
+                    </span>
                 </form>
             </div>
             <div class="clear"></div>
@@ -48,9 +48,9 @@
                 <i class="fa fa-bars"></i>所有标签
             </h3>
             <div class="tagcloud">
-                <c:forEach items="${tagList}" var="t">
+                <c:forEach items="${allTagList}" var="t">
                     <a href="/tag/${t.tagId}"
-                       class="tag-link-129 tag-link-position-1" title="${t.articleCount}个话题"
+                       class="tag-link-129 tag-link-position-1"
                        style="font-size: 14px;">
                             ${t.tagName}
                     </a>

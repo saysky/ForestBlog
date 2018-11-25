@@ -32,36 +32,29 @@
     </blockquote>
 
     <form class="layui-form"  method="post" id="myForm" action="/admin/comment/editSubmit">
-        <input type="hidden" name="commentId" value="${commentCustom.commentId}">
+        <input type="hidden" name="commentId" value="${comment.commentId}">
         <div class="layui-form-item">
             <label class="layui-form-label">昵称 </label>
             <div class="layui-input-block">
-                <input type="text" name="commentAuthorName"  value="${commentCustom.commentAuthorName}" class="layui-input">
+                <input type="text" name="commentAuthorName"  value="${comment.commentAuthorName}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">邮箱 </label>
             <div class="layui-input-block">
-                <input type="text" name="commentAuthorEmail"  value="${commentCustom.commentAuthorEmail}" class="layui-input">
+                <input type="text" name="commentAuthorEmail"  value="${comment.commentAuthorEmail}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">网址 </label>
             <div class="layui-input-block">
-                <input type="text" name="commentAuthorUrl"  value="${commentCustom.commentAuthorUrl}" class="layui-input">
+                <input type="text" name="commentAuthorUrl"  value="${comment.commentAuthorUrl}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容</label>
             <div class="layui-input-block">
-                <textarea name="commentContent"  class="layui-textarea">${commentCustom.commentContent}</textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">单选框</label>
-            <div class="layui-input-block">
-                <input type="radio" name="commentStatus" value="1" title="正常" <c:if test="${commentCustom.commentStatus==1}">checked</c:if>>
-                <input type="radio" name="commentStatus" value="0" title="隐藏"<c:if test="${commentCustom.commentStatus==0}">checked</c:if>>
+                <textarea name="commentContent"  class="layui-textarea">${comment.commentContent}</textarea>
             </div>
         </div>
 

@@ -1,51 +1,46 @@
 package com.liuyanzhao.blog.service.impl;
 
 import com.liuyanzhao.blog.entity.Notice;
-import com.liuyanzhao.blog.entity.custom.NoticeCustom;
 import com.liuyanzhao.blog.mapper.NoticeMapper;
-import com.liuyanzhao.blog.mapper.custom.NoticeMapperCustom;
 import com.liuyanzhao.blog.service.NoticeService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author liuyanzhao
+ */
+@Service
 public class NoticeServiceImpl implements NoticeService {
-
-    @Autowired
-    private NoticeMapperCustom noticeMapperCustom;
 
     @Autowired
     private NoticeMapper noticeMapper;
 
 
     @Override
-    public List<NoticeCustom> listNotice(Integer status) throws Exception {
-        List<NoticeCustom> noticeList = noticeMapperCustom.listNotice(status);
-        return noticeList;
+    public List<Notice> listNotice(Integer status)  {
+        return noticeMapper.listNotice(status);
     }
 
     @Override
-    public void insertNotice(Notice notice) throws Exception {
-        noticeMapper.insertSelective(notice);
+    public void insertNotice(Notice notice)  {
+        noticeMapper.insert(notice);
     }
 
     @Override
-    public void deleteNotice(Integer id) throws Exception {
-        noticeMapper.deleteByPrimaryKey(id);
+    public void deleteNotice(Integer id)  {
+        noticeMapper.deleteById(id);
     }
 
     @Override
-    public void updateNotice(Notice notice) throws Exception {
-        noticeMapper.updateByPrimaryKeySelective(notice);
+    public void updateNotice(Notice notice)  {
+        noticeMapper.update(notice);
     }
 
     @Override
-    public NoticeCustom getNoticeById(Integer id) throws Exception {
-        Notice notice = noticeMapper.selectByPrimaryKey(id);
-        NoticeCustom noticeCustom = new NoticeCustom();
-        BeanUtils.copyProperties(notice,noticeCustom);
-        return noticeCustom;
+    public Notice getNoticeById(Integer id)  {
+        return noticeMapper.selectByPrimaryKey(id);
     }
 
 }

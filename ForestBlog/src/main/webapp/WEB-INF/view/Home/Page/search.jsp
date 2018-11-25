@@ -17,7 +17,7 @@
         <a class="crumbs" href="/">
             <i class="fa fa-home"></i>首页</a>
             <i class="fa fa-angle-right"></i>
-        搜索 ${articleSearchVoList.get(0).query} 找到 ${articleSearchVoList.get(0).page.totalCount} 个与之相关的文章
+        搜索 ${param.keywords} 找到 ${pageInfo.total} 个与之相关的文章
     </nav>
     <%--面包屑导航 end--%>
 </rapid:override>
@@ -27,115 +27,95 @@
     <section id="content" class="site-content shadow">
         <%--博客主体-左侧正文 start--%>
         <section id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <c:choose>
+                    <c:when test="${pageInfo.list.size() != 0}">
+                        <%--文章列表-start--%>
+                        <c:forEach items="${pageInfo.list}" var="a">
 
-            <main id="main" class="site-main" role="main">
-                <ul class="search-page">
-                    <c:choose>
-                        <c:when test="${articleSearchVoList.get(0).page.totalCount!=0}">
-                            <c:forEach items="${articleSearchVoList}" var="a">
-                                    <li class="search-inf">
-                                        <fmt:formatDate value="${a.articleCustom.articlePostTime}" pattern="yyyy年MM月dd日"/>
-                                    </li>
-                                    <li class="entry-title">
-                                        <a href="/article/${a.articleCustom.articleId}" rel="bookmark">
-                                                ${a.articleCustom.articleTitle}
-                                        </a>
-                                    </li>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <br>
-                            很遗憾，没有查询到带有 <font style="color: red;"> ${articleSearchVoList[0].query} </font> 的内容，换一个关键词再试试吧。
-                            <br> <br>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-            </main>
-            <c:if test="${articleSearchVoList[0].page.totalCount!=0}">
-                <%--分页 start--%>
-                <nav class="navigation pagination" role="navigation">
-                    <div class="nav-links">
-                        <c:choose>
-                            <c:when test="${articleSearchVoList[0].page.totalPageCount <= 3 }">
-                                <c:set var="begin" value="1"/>
-                                <c:set var="end" value="${articleSearchVoList[0].page.totalPageCount }"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="begin" value="${articleSearchVoList[0].page.pageNow-1 }"/>
-                                <c:set var="end" value="${articleSearchVoList[0].page.pageNow + 2}"/>
-                                <c:if test="${begin < 2 }">
-                                    <c:set var="begin" value="1"/>
-                                    <c:set var="end" value="3"/>
-                                </c:if>
-                                <c:if test="${end > articleSearchVoList[0].page.totalPageCount }">
-                                    <c:set var="begin" value="${articleSearchVoList[0].page.totalPageCount-2 }"/>
-                                    <c:set var="end" value="${articleSearchVoList[0].page.totalPageCount }"/>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
-                        <%--上一页 --%>
-                        <c:choose>
-                            <c:when test="${articleSearchVoList[0].page.pageNow eq 1 }">
-                                <%--当前页为第一页，隐藏上一页按钮--%>
-                            </c:when>
-                            <c:otherwise>
-                                <a class="page-numbers"
-                                   href="/p/${articleSearchVoList[0].page.pageNow-1}/search?query=${articleSearchVoList[0].query}">
-                                    <span class="fa fa-angle-left"></span>
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                        <%--显示第一页的页码--%>
-                        <c:if test="${begin >= 2 }">
-                            <a class="page-numbers"
-                               href="/p/1/search?query=${articleSearchVoList[0].query}">1</a>
-                        </c:if>
-                        <%--显示点点点--%>
-                        <c:if test="${begin  > 2 }">
-                            <span class="page-numbers dots">…</span>
-                        </c:if>
-                        <%--打印 页码--%>
-                        <c:forEach begin="${begin }" end="${end }" var="i">
-                            <c:choose>
-                                <c:when test="${i eq articleSearchVoList[0].page.pageNow }">
-                                    <a class="page-numbers current">${i}</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="page-numbers"
-                                       href="/p/${i}/search?query=${articleSearchVoList[0].query}">${i }</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                        <%-- 显示点点点 --%>
-                        <c:if test="${end < articleSearchVoList[0].page.totalPageCount-1 }">
-                            <span class="page-numbers dots">…</span>
-                        </c:if>
-                        <%-- 显示最后一页的数字 --%>
-                        <c:if test="${end < articleSearchVoList[0].page.totalPageCount }">
-                            <a href="/p/${articleSearchVoList[0].page.totalPageCount}/search?query=${articleSearchVoList[0].query}">
-                                    ${articleSearchVoList[0].page.totalPageCount}
-                            </a>
-                        </c:if>
-                        <%--下一页 --%>
-                        <c:choose>
-                            <c:when test="${articleSearchVoList[0].page.pageNow eq articleSearchVoList[0].page.totalPageCount }">
-                                <%--到了尾页隐藏，下一页按钮--%>
-                            </c:when>
-                            <c:otherwise>
-                                <%--如果没查询到结果，隐藏最后一个>--%>
-                                <c:if test="${articleSearchVoList[0].page.totalPageCount>0}">
-                                    <a class="page-numbers"
-                                       href="/p/${articleSearchVoList[0].page.pageNow+1}/search?query=${articleSearchVoList[0].query}">
-                                        <span class="fa fa-angle-right"></span>
+                            <article class="post">
+
+                                <figure class="thumbnail">
+                                    <a href="/article/${a.articleId}">
+                                        <img width="280" height="210"
+                                             src="/img/thumbnail/random/img_${a.articleId%15}.jpg"
+                                             class="attachment-content size-content wp-post-image"
+                                             alt="${a.articleTitle}">
                                     </a>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
+                                    <span class="cat">
+                                              <a href="/category/${a.categoryList[0].categoryId}">${a.categoryList[0].categoryName}</a>
+                                        </span>
+                                </figure>
 
-                    </div>
-                </nav>
-                <%--分页 end--%>
-            </c:if>
+                                <header class="entry-header">
+                                    <h2 class="entry-title">
+                                        <a href="/article/${a.articleId}" rel="bookmark">
+                                                ${a.articleTitle}
+                                        </a>
+                                    </h2>
+                                </header><!-- .entry-header -->
+
+                                <div class="entry-content">
+                                    <div class="archive-content">
+                                        <lyz:htmlFilter>${a.articleContent}</lyz:htmlFilter>......
+                                    </div>
+                                    <span class="title-l"></span>
+                                    <span class="new-icon">
+                                                    <c:choose>
+                                                        <c:when test="${a.articleStatus == 2}">
+                                                            <i class="fa fa-bookmark-o"></i>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <jsp:useBean id="nowDate"
+                                                                         class="java.util.Date"/> <%--当前时间--%>
+                                                            <c:set var="interval"
+                                                                   value="${nowDate.time - a.articleCreateTime.time}"/><%--时间差毫秒数--%>
+                                                            <fmt:formatNumber value="${interval/1000/60/60/24}"
+                                                                              pattern="#0"
+                                                                              var="days"/><%--取天数整数--%>
+                                                            <c:if test="${days <= 7}">NEW</c:if>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
+                                    <span class="entry-meta">
+                                                    <span class="date">
+                                                         <fmt:formatDate value="${a.articleCreateTime}"
+                                                                         pattern="yyyy年MM月dd日"/>
+                                                        &nbsp;&nbsp;
+                                                    </span>
+                                                    <span class="views">
+                                                        <i class="fa fa-eye"></i>
+                                                            ${a.articleViewCount} views
+                                                    </span>
+                                                    <span class="comment">&nbsp;&nbsp;
+                                                        <a href="/article/${a.articleId}#comments"
+                                                           rel="external nofollow">
+                                                          <i class="fa fa-comment-o"></i>
+                                                            <c:choose>
+                                                                <c:when test="${a.articleCommentCount==0}">
+                                                                    发表评论
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    ${a.articleCommentCount}
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                    <div class="clear"></div>
+                                </div><!-- .entry-content -->
+                                <span class="entry-more">
+                                            <a href="/article/${a.articleId}"
+                                               rel="bookmark">阅读全文
+                                            </a>
+                                        </span>
+                            </article>
+                        </c:forEach>
+                        <%--文章列表-end--%>
+                    </c:when>
+                </c:choose>
+            </main>
+            <%@ include file="../Public/part/paging.jsp" %>
 
         </section>
     </section>

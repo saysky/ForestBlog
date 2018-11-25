@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.TagMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Tag" >
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    <result column="tag_description" property="tagDescription" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tag_id, tag_name, tag_description
+  </sql>
+
+  <sql id="tb">tag</sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from <include refid="tb"/>
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from <include refid="tb"/>
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Tag" >
+    insert into <include refid="tb"/>
+    (tag_id, tag_name, tag_description)
+    values (#{tagId,jdbcType=INTEGER}, #{tagName,jdbcType=VARCHAR}, #{tagDescription,jdbcType=VARCHAR})
+  </insert>
+
+
+  <update id="update" parameterType="com.liuyanzhao.blog.entity.Tag" >
+    update <include refid="tb"/>
+    <set >
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDescription != null" >
+        tag_description = #{tagDescription,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </update>
+
+  <!--获得标签列表-->
+  <select id="listTag"  resultType="com.liuyanzhao.blog.entity.Tag">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM <include refid="tb"/>
+  </select>
+
+  <!--获得标签总数-->
+  <select id="countTag" resultType="Integer">
+    SELECT COUNT(*) FROM <include refid="tb"/>
+  </select>
+
+  <!--根据标签名获取标签-->
+  <select id="getTagByName" parameterType="String" resultType="com.liuyanzhao.blog.entity.Tag">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    <include refid="tb"/>
+    WHERE tag_name=#{value}
+    limit 1
+  </select>
+</mapper>

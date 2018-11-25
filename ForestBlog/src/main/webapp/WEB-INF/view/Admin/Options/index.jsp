@@ -30,8 +30,8 @@
         <div class="layui-tab-content">
             <br><br>
             <c:choose>
-                <c:when test="${optionCustom.optionId>0}">
-                    <input type="hidden" name="optionId" value="${optionCustom.optionId}">
+                <c:when test="${option.optionId>0}">
+                    <input type="hidden" name="optionId" value="${option.optionId}">
                 </c:when>
                 <c:otherwise>
                     <%--给一个默认值，这个地方很奇怪，本来不需要加的--%>
@@ -43,25 +43,25 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">站点名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="optionSiteTitle"  value="${optionCustom.optionSiteTitle}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionSiteTitle"  value="${option.optionSiteTitle}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">站点描述</label>
                     <div class="layui-input-block">
-                        <input type="text" name="optionSiteDescrption"   value="${optionCustom.optionSiteDescrption}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionSiteDescrption"   value="${option.optionSiteDescrption}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">首页描述</label>
                     <div class="layui-input-block">
-                        <input type="text" name="optionMetaDescrption"  value="${optionCustom.optionMetaDescrption}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionMetaDescrption"  value="${option.optionMetaDescrption}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">首页关键词</label>
                     <div class="layui-input-block">
-                        <input type="text" name="optionMetaKeyword"  value="${optionCustom.optionMetaKeyword}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionMetaKeyword"  value="${option.optionMetaKeyword}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -71,12 +71,12 @@
                     <div class="layui-input-inline">
                         <div class="layui-upload">
                             <div class="layui-upload-list" style="">
-                                <img class="layui-upload-img" src="${optionCustom.optionAboutsiteAvatar}" id="demo1" width="100"
+                                <img class="layui-upload-img" src="${option.optionAboutsiteAvatar}" id="demo1" width="100"
                                      height="100">
                                 <p id="demoText"></p>
                             </div>
                             <button type="button" class="layui-btn" id="test1">上传图片</button>
-                            <input type="hidden" id="optionAboutsiteAvatar" name="optionAboutsiteAvatar" value="${optionCustom.optionAboutsiteAvatar}">
+                            <input type="hidden" id="optionAboutsiteAvatar" name="optionAboutsiteAvatar" value="${option.optionAboutsiteAvatar}">
                         </div>
                     </div>
                     <div class="layui-form-mid layui-word-aux">建议 150px*150px</div>
@@ -85,13 +85,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">昵称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="optionAboutsiteTitle"   value="${optionCustom.optionAboutsiteTitle}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionAboutsiteTitle"   value="${option.optionAboutsiteTitle}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">说明</label>
                     <div class="layui-input-block">
-                        <input type="text" name="optionAboutsiteContent"   value="${optionCustom.optionAboutsiteContent}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionAboutsiteContent"   value="${option.optionAboutsiteContent}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -99,12 +99,12 @@
                     <div class="layui-input-inline">
                         <div class="layui-upload">
                             <div class="layui-upload-list" style="">
-                                <img class="layui-upload-img" src="${optionCustom.optionAboutsiteWechat}" id="demo2" width="100"
+                                <img class="layui-upload-img" src="${option.optionAboutsiteWechat}" id="demo2" width="100"
                                      height="100">
                                 <p id="demoText2"></p>
                             </div>
                             <button type="button" class="layui-btn" id="test2">上传图片</button>
-                            <input type="hidden" id="optionAboutsiteWechat" name="optionAboutsiteWechat" value="${optionCustom.optionAboutsiteWechat}">
+                            <input type="hidden" id="optionAboutsiteWechat" name="optionAboutsiteWechat" value="${option.optionAboutsiteWechat}">
                         </div>
                     </div>
                     <div class="layui-form-mid layui-word-aux">建议 430px*430px</div>
@@ -113,19 +113,19 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">QQ</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="optionAboutsiteQq"   value="${optionCustom.optionAboutsiteQq}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionAboutsiteQq"   value="${option.optionAboutsiteQq}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">微博</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="optionAboutsiteWeibo"  value="${optionCustom.optionAboutsiteWeibo}"    autocomplete="off" class="layui-input">
+                        <input type="text" name="optionAboutsiteWeibo"  value="${option.optionAboutsiteWeibo}"    autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">Github</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="optionAboutsiteGithub"  value="${optionCustom.optionAboutsiteGithub}"   autocomplete="off" class="layui-input">
+                        <input type="text" name="optionAboutsiteGithub"  value="${option.optionAboutsiteGithub}"   autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>

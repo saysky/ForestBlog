@@ -1,145 +1,138 @@
-package com.liuyanzhao.blog.controller.Home;
+package com.liuyanzhao.blog.controller.home;
 
 
-import com.liuyanzhao.blog.entity.custom.*;
-import com.liuyanzhao.blog.service.ArticleService;
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.liuyanzhao.blog.entity.*;
+import com.liuyanzhao.blog.enums.ArticleStatus;
+import com.liuyanzhao.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 
 /**
  * 文章的controller
- * Created by 言曌 on 2017/8/24.
+ *
+ * @author 言曌
+ * @date 2017/8/24
  */
 @Controller
 public class ArticleController {
 
-	@Autowired
-	private ArticleService articleService;
-	
-	@ModelAttribute
-	public void init(Model model) throws Exception {
-		
-	}
-	
-	//文章详情页显示
-	@RequestMapping(value = "/article/{articleId}")
-	@ResponseBody //适合RESTful
-	public ModelAndView ArticleDetailView(@PathVariable("articleId") Integer articleId) throws Exception{
-		ModelAndView modelAndView = new ModelAndView();
+    @Autowired
+    private ArticleService articleService;
 
-		//文章信息，分类，标签，作者，评论
-		ArticleDetailVo articleDetailVo  = articleService.getArticleDetailById(articleId);
-		if(articleDetailVo!=null) {
+    @Autowired
+    private CommentService commentService;
 
-			modelAndView.addObject("articleDetailVo", articleDetailVo);
-			//相关文章
-			Integer parentCategoryId = articleService.getArticleById(1, articleId).getArticleParentCategoryId();
-			Integer childCategoryId = articleService.getArticleById(1, articleId).getArticleChildCategoryId();
-			List<ArticleCustom> similarArticleList = articleService.listArticleWithSameCategory(1, parentCategoryId, childCategoryId, 5);
-			modelAndView.addObject("similarArticleList", similarArticleList);
+    @Autowired
+    private UserService userService;
 
-			//猜你喜欢
-			List<ArticleCustom> mostViewArticleList = articleService.listArticleByViewCount(1, 5);
-			modelAndView.addObject("mostViewArticleList", mostViewArticleList);
-			//获取下一篇文章
-			ArticleCustom afterArticle = articleService.getAfterArticle(1, articleId);
-			modelAndView.addObject("afterArticle", afterArticle);
-			//获取上一篇文章
-			ArticleCustom preArticle = articleService.getPreArticle(1, articleId);
-			modelAndView.addObject("preArticle", preArticle);
-			modelAndView.setViewName("Home/Page/articleDetail");
-		} else {
-			modelAndView.setViewName("Home/Error/404");
-		}
-		return modelAndView;//不会被解析为跳转路径，而是直接写入HTTP response body中
-		
-	}
-	
-	//文章点赞数增加
-	@RequestMapping(value = "/article/addLike/{id}",method = {RequestMethod.POST})
-	@ResponseBody
-	public Integer increaseLikeCount(@PathVariable("id") Integer id)
-		throws Exception {
-		ArticleCustom articleCustom = articleService.getArticleById(1,id);
-		int articleCount = articleCustom.getArticleLikeCount();
-		articleCustom.setArticleLikeCount(articleCount + 1);
-		articleService.updateArticle(id, articleCustom);
-		return articleCount+1;
-	}
-	
-	//文章访问量数增加
-	@RequestMapping(value = "/article/addView/{id}",method = {RequestMethod.POST})
-	@ResponseBody
-	public Integer increaseViewCount(@PathVariable("id") Integer id)
-		throws Exception {
-		ArticleCustom articleCustom = articleService.getArticleById(1,id);
-		int articleCount = articleCustom.getArticleViewCount();
-		articleCustom.setArticleViewCount(articleCount + 1);
-		articleService.updateArticle(id, articleCustom);
-		return articleCount+1;
-	}
+    @Autowired
+    private TagService tagService;
 
-	
+    @Autowired
+    private CategoryService categoryService;
 
+    /**
+     * 文章详情页显示
+     *
+     * @param articleId 文章ID
+     * @return modelAndView
+     */
+    @RequestMapping(value = "/article/{articleId}")
+    public String getArticleDetailPage(@PathVariable("articleId") Integer articleId, Model model) {
 
-	//文章信息修改提交
-	@RequestMapping(value = "/editArticleSubmit",method = RequestMethod.POST)
-	public String editArticleSubmit(Integer id ,
-								 ArticleCustom articleCustom
-	) throws Exception {
-		
-		
-		articleService.updateArticle(id,articleCustom);
-		
-		return "redirect:articleList.action";
-	}
+        //文章信息，分类，标签，作者，评论
+        Article article = articleService.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), articleId);
+        if (article == null) {
+            return "Home/Error/404";
+        }
 
-	//文章搜索实现
-	@RequestMapping("/search")
-	@ResponseBody
-	public ModelAndView SearchPageView(HttpServletRequest request,Model model) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		//设置每页显示的数量
-		int pageSize = 10;
-		String query = request.getParameter("query");
-		List<ArticleSearchVo> articleSearchVoList = articleService.listSearchResultByPage(1,request,model,null,pageSize,query);
-		if(articleSearchVoList!=null) {
-			modelAndView.addObject("articleSearchVoList", articleSearchVoList);
-		} else {
-			modelAndView.addObject("articleSearchVoList", null);
-		}
-		modelAndView.setViewName("Home/Page/search");
-		return modelAndView;
-	}
+        //文章信息
+        model.addAttribute("article", article);
 
-	//文章搜索分页实现
-	@RequestMapping("/p/{pageNow}/search")
-	@ResponseBody
-	public  ModelAndView SearchPageByPageView(HttpServletRequest request, Model model,@PathVariable("pageNow") Integer pageNow) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		//设置每页显示的数量
-		int pageSize = 10;
-		String query = request.getParameter("query");
-		List<ArticleSearchVo> articleSearchVoList = articleService.listSearchResultByPage(1,request,model,pageNow,pageSize,query);
-		modelAndView.addObject("articleSearchVoList", articleSearchVoList);
-		modelAndView.setViewName("Home/Page/search");
-		return modelAndView;
-	}
-	
+        //用户信息
+        User user = userService.getUserById(article.getArticleUserId());
+        model.addAttribute("user", user);
+
+        //分类
+        List<Category> categoryList = categoryService.listCategoryByArticleId(articleId);
+        model.addAttribute("categoryList", categoryList);
+
+        //标签
+        List<Tag> tagList = tagService.listTagByArticleId(articleId);
+        model.addAttribute("tagList", tagList);
+
+        //评论列表
+        List<Comment> commentList = commentService.listCommentByArticleId(articleId);
+        model.addAttribute("commentList", commentList);
+
+        //相关文章
+        List<Integer> categoryIds = articleService.listCategoryIdByArticleId(articleId);
+        List<Article> similarArticleList = articleService.listArticleByCategoryIds(categoryIds, 5);
+        model.addAttribute("similarArticleList", similarArticleList);
+
+        //猜你喜欢
+        List<Article> mostViewArticleList = articleService.listArticleByViewCount(5);
+        model.addAttribute("mostViewArticleList", mostViewArticleList);
+
+        //获取下一篇文章
+        Article afterArticle = articleService.getAfterArticle(articleId);
+        model.addAttribute("afterArticle", afterArticle);
+
+        //获取上一篇文章
+        Article preArticle = articleService.getPreArticle(articleId);
+        model.addAttribute("preArticle", preArticle);
+
+        //侧边栏
+        //标签列表显示
+        List<Tag> allTagList = tagService.listTag();
+        model.addAttribute("allTagList", allTagList);
+        //获得随机文章
+        List<Article> randomArticleList = articleService.listRandomArticle(8);
+        model.addAttribute("randomArticleList", randomArticleList);
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+
+        return "Home/Page/articleDetail";
+    }
+
+    /**
+     * 点赞增加
+     *
+     * @param id 文章ID
+     * @return 点赞量数量
+     */
+    @RequestMapping(value = "/article/like/{id}", method = {RequestMethod.POST})
+    @ResponseBody
+    public String increaseLikeCount(@PathVariable("id") Integer id) {
+        Article article = articleService.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), id);
+        Integer articleCount = article.getArticleLikeCount() + 1;
+        article.setArticleLikeCount(articleCount);
+        articleService.updateArticle(article);
+        return JSON.toJSONString(articleCount);
+    }
+
+    /**
+     * 文章访问量数增加
+     *
+     * @param id 文章ID
+     * @return 访问量数量
+     */
+    @RequestMapping(value = "/article/view/{id}", method = {RequestMethod.POST})
+    @ResponseBody
+    public String increaseViewCount(@PathVariable("id") Integer id) {
+        Article article = articleService.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), id);
+        Integer articleCount = article.getArticleViewCount() + 1;
+        article.setArticleViewCount(articleCount);
+        articleService.updateArticle(article);
+        return JSON.toJSONString(articleCount);
+    }
 
 
-
-
-
-
-	
-	
 }

@@ -1,7 +1,7 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
 import com.liuyanzhao.blog.entity.Page;
-import com.liuyanzhao.blog.entity.custom.*;
+import com.liuyanzhao.blog.enums.PageStatus;
 import com.liuyanzhao.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/page")
 public class BackPageController {
@@ -21,69 +25,96 @@ public class BackPageController {
     @Autowired
     private PageService pageService;
 
-    //后台页面列表显示
+    /**
+     * 后台页面列表显示
+     *
+     * @return
+     */
     @RequestMapping(value = "")
-    public ModelAndView index() throws Exception {
+    public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
-        List<PageCustom> pageCustomList = pageService.listPage(null);
-        modelAndView.addObject("pageCustomList",pageCustomList);
+        List<Page> pageList = pageService.listPage(null);
+        modelAndView.addObject("pageList", pageList);
         modelAndView.setViewName("Admin/Page/index");
         return modelAndView;
     }
 
-   
-    //后台添加页面页面显示
-    @RequestMapping(value = "/insert")
-    public ModelAndView insertPageView() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
 
+    /**
+     * 后台添加页面页面显示
+     *
+     * @return
+     */
+    @RequestMapping(value = "/insert")
+    public ModelAndView insertPageView() {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Admin/Page/insert");
         return modelAndView;
     }
 
-    //后台添加页面提交操作
-    @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertPageSubmit(Page page) throws Exception {
+    /**
+     * 后台添加页面提交操作
+     *
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    public String insertPageSubmit(Page page) {
 
         //判断别名是否存在
-        PageCustom checkPage = pageService.getPageByKey(null,page.getPageKey());
-        if(checkPage==null) {
+        Page checkPage = pageService.getPageByKey(null, page.getPageKey());
+        if (checkPage == null) {
             page.setPageCreateTime(new Date());
             page.setPageUpdateTime(new Date());
-            page.setPageStatus(1);
+            page.setPageStatus(PageStatus.NORMAL.getValue());
             pageService.insertPage(page);
         }
         return "redirect:/admin/page";
     }
 
-    //删除页面
+    /**
+     * 删除页面
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delete/{id}")
-    public String deletePage(@PathVariable("id") Integer id) throws Exception {
+    public String deletePage(@PathVariable("id") Integer id) {
         //调用service批量删除
         pageService.deletePage(id);
         return "redirect:/admin/page";
     }
 
-  
-    //编辑页面页面显示
+
+    /**
+     * 编辑页面页面显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editPageView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView editPageView(@PathVariable("id") Integer id) {
         ModelAndView modelAndView = new ModelAndView();
 
-        PageCustom pageCustom =  pageService.getPageById(id);
-        modelAndView.addObject("pageCustom",pageCustom);
+        Page page = pageService.getPageById(id);
+        modelAndView.addObject("page", page);
 
         modelAndView.setViewName("Admin/Page/edit");
         return modelAndView;
     }
 
 
-    //编辑页面提交
-    @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editPageSubmit(Page page) throws Exception {
-        PageCustom checkPage = pageService.getPageByKey(null,page.getPageKey());
+    /**
+     * 编辑页面提交
+     *
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    public String editPageSubmit(Page page) {
+        Page checkPage = pageService.getPageByKey(null, page.getPageKey());
         //判断别名是否存在且不是这篇文章
-        if(checkPage.getPageId()==page.getPageId()) {
+        if (Objects.equals(checkPage.getPageId(), page.getPageId())) {
             page.setPageUpdateTime(new Date());
             pageService.updatePage(page);
         }

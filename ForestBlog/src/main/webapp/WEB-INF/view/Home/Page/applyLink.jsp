@@ -105,6 +105,12 @@
     <%--博客主体-左侧文章正文end--%>
 </rapid:override>
 
+<%--侧边栏 start--%>
+<rapid:override name="right">
+    <%@include file="../Public/part/sidebar-3.jsp" %>
+</rapid:override>
+<%--侧边栏 end--%>
+
 <rapid:override name="footer-script">
     <script>
 

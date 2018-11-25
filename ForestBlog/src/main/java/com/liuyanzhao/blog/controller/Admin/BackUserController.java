@@ -1,8 +1,7 @@
-package com.liuyanzhao.blog.controller.Admin;
+package com.liuyanzhao.blog.controller.admin;
 
 
 import com.liuyanzhao.blog.entity.User;
-import com.liuyanzhao.blog.entity.custom.UserCustom;
 import com.liuyanzhao.blog.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * @author liuyanzhao
+ */
 @Controller
 @RequestMapping("/admin/user")
 public class BackUserController {
@@ -24,30 +26,44 @@ public class BackUserController {
     @Autowired
     private UserService userService;
 
-    //后台用户列表显示
+    /**
+     * 后台用户列表显示
+     *
+     * @return
+     */
     @RequestMapping(value = "")
-    public ModelAndView userList() throws Exception {
+    public ModelAndView userList()  {
         ModelAndView modelandview = new ModelAndView();
 
-        List<UserCustom> userCustomList = userService.listUser();
-        modelandview.addObject("userCustomList",userCustomList);
+        List<User> userList = userService.listUser();
+        modelandview.addObject("userList",userList);
 
         modelandview.setViewName("Admin/User/index");
         return modelandview;
 
     }
 
-    //后台添加用户页面显示
+    /**
+     * 后台添加用户页面显示
+     *
+     * @return
+     */
     @RequestMapping(value = "/insert")
-    public ModelAndView insertUserView() throws Exception {
+    public ModelAndView insertUserView()  {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Admin/User/insert");
         return modelAndView;
     }
 
+    /**
+     * 检查用户名是否存在
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/checkUserName",method = RequestMethod.POST)
     @ResponseBody
-    public String checkUserName(HttpServletRequest request) throws Exception {
+    public String checkUserName(HttpServletRequest request)  {
         Map<String, Object> map = new HashMap<String, Object>();
         String username = request.getParameter("username");
         User user = userService.getUserByName(username);
@@ -66,9 +82,15 @@ public class BackUserController {
         return result;
     }
 
+    /**
+     * 检查Email是否存在
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/checkUserEmail",method = RequestMethod.POST)
     @ResponseBody
-    public String checkUserEmail(HttpServletRequest request) throws Exception {
+    public String checkUserEmail(HttpServletRequest request)  {
         Map<String, Object> map = new HashMap<String, Object>();
         String email = request.getParameter("email");
         User user = userService.getUserByEmail(email);
@@ -88,9 +110,14 @@ public class BackUserController {
     }
 
 
-    //后台添加用户页面提交
+    /**
+     * 后台添加用户页面提交
+     *
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertUserSubmit(User user) throws Exception {
+    public String insertUserSubmit(User user)  {
         User user2 = userService.getUserByName(user.getUserName());
         User user3 = userService.getUserByEmail(user.getUserEmail());
         if(user2==null&&user3==null) {
@@ -101,40 +128,60 @@ public class BackUserController {
         return "redirect:/admin/user";
     }
 
-    //删除用户
+    /**
+     * 删除用户
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) throws Exception {
+    public String deleteUser(@PathVariable("id") Integer id)  {
         userService.deleteUser(id);
         return "redirect:/admin/user";
     }
 
-    //编辑用户页面显示
+    /**
+     * 编辑用户页面显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editUserView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView editUserView(@PathVariable("id") Integer id)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        UserCustom userCustom =  userService.getUserById(id);
-        modelAndView.addObject("userCustom",userCustom);
+        User user =  userService.getUserById(id);
+        modelAndView.addObject("user",user);
 
         modelAndView.setViewName("Admin/User/edit");
         return modelAndView;
     }
 
 
-    //编辑用户提交
+    /**
+     * 编辑用户提交
+     *
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editUserSubmit(User user) throws Exception {
+    public String editUserSubmit(User user)  {
         userService.updateUser(user);
         return "redirect:/admin/user";
     }
 
-    //基本信息页面显示
+    /**
+     * 基本信息页面显示
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/profile/{id}")
-    public ModelAndView userProfileView(@PathVariable("id") Integer id) throws Exception {
+    public ModelAndView userProfileView(@PathVariable("id") Integer id)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        UserCustom userCustom =  userService.getUserById(id);
-        modelAndView.addObject("userCustom",userCustom);
+        User user =  userService.getUserById(id);
+        modelAndView.addObject("user",user);
 
         modelAndView.setViewName("Admin/User/profile");
         return modelAndView;

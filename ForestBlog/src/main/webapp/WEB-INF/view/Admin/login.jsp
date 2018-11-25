@@ -22,12 +22,11 @@
     <style type="text/css">
         body{
             font-family: "Microsoft YaHei", Helvetica, Arial, Lucida Grande, Tahoma, sans-serif;
-            background: url(/img/loginBg.jpg);
+            background: url(http://blogcdn.liuyanzhao.com/img/loginBg.jpg);
             width:100%;
             height:100%;
         }
         .login h1 a {
-            background:url() no-repeat;
             background-size: 220px 50px;
             width: 220px;
             height: 50px;

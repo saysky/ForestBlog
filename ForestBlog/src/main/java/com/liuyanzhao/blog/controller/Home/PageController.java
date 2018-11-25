@@ -1,91 +1,115 @@
-package com.liuyanzhao.blog.controller.Home;
+package com.liuyanzhao.blog.controller.home;
 
-import com.liuyanzhao.blog.entity.custom.*;
+import com.liuyanzhao.blog.entity.*;
+import com.liuyanzhao.blog.enums.ArticleStatus;
+import com.liuyanzhao.blog.enums.CategoryStatus;
 import com.liuyanzhao.blog.service.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 /**
- * Created by 言曌 on 2017/9/7.
+ * @author 言曌
+ * @date 2017/9/7
  */
 @Controller
 public class PageController {
-	@Autowired
-	private PageService pageService;
 
-	@Autowired
-	private ArticleService articleService;
+    @Autowired
+    private PageService pageService;
 
-	@Autowired
-	private CategoryService categoryService;
+    @Autowired
+    private ArticleService articleService;
 
-
-	@Autowired
-	private TagService tagService;
+    @Autowired
+    private CategoryService categoryService;
 
 
-	@ModelAttribute
-	public void init(Model model) throws Exception {
+    @Autowired
+    private TagService tagService;
 
-	}
+    /**
+     * 页面详情页面
+     *
+     * @param key
+     * @return
+     */
+    @RequestMapping(value = "/{key}")
+    public String pageDetail(@PathVariable("key") String key, Model model) {
+        Page page = pageService.getPageByKey(1, key);
+        if (page == null) {
+            return "redirect:/404";
+        }
+        model.addAttribute("page", page);
 
-	//页面显示
-	@RequestMapping(value = "/{key}")
-	public ModelAndView ArticleDetailView(@PathVariable("key") String key) throws Exception{
-		ModelAndView modelAndView = new ModelAndView();
-		PageCustom pageCustom = pageService.getPageByKey(1,key);
-		if(pageCustom!=null) {
-			modelAndView.addObject("pageCustom",pageCustom);
-			modelAndView.setViewName("Home/Page/page");
-		} else {
-			modelAndView.setViewName("Home/Error/404");
-		}
-		return modelAndView;
+        //侧边栏显示
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        return "Home/Page/page";
 
-	}
+    }
 
 
-	//文章归档页面显示
-	@RequestMapping(value = "/articleFile")
-	public ModelAndView articleFile() throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("Home/Page/articleFile");
-		List<ArticleListVo> articleList = articleService.listArticle(1);
-		modelAndView.addObject("articleList",articleList);
-		return modelAndView;
-	}
+    /**
+     * 文章归档页面显示
+     *
+     * @return
+     */
+    @RequestMapping(value = "/articleFile")
+    public String articleFile(Model model) {
+        List<Article> articleList = articleService.listAllNotWithContent();
+        model.addAttribute("articleList", articleList);
+        //侧边栏显示
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(10);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        return "Home/Page/articleFile";
+    }
 
-	//站点地图显示
-	@RequestMapping(value = "/map")
-	public ModelAndView siteMap() throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("Home/Page/siteMap");
-		//文章显示
-		List<ArticleListVo> articleList = articleService.listArticle(1);
-		modelAndView.addObject("articleList",articleList);
+    /**
+     * 站点地图显示
+     *
+     * @return
+     */
+    @RequestMapping(value = "/map")
+    public String siteMap(Model model) {
+        //文章显示
+        List<Article> articleList = articleService.listAllNotWithContent();
+        model.addAttribute("articleList", articleList);
         //分类显示
-        List<CategoryCustom> categoryCustomList = categoryService.listCategory(1);
-        modelAndView.addObject("categoryCustomList",categoryCustomList);
+        List<Category> categoryList = categoryService.listCategory();
+        model.addAttribute("categoryList", categoryList);
         //标签显示
-        List<TagCustom> tagCustomList = tagService.listTag(1);
-        modelAndView.addObject("tagCustomList",tagCustomList);
+        List<Tag> tagList = tagService.listTag();
+        model.addAttribute("tagList", tagList);
 
-		return modelAndView;
-	}
+        //侧边栏显示
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(10);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        return "Home/Page/siteMap";
+    }
 
-	//留言板
-	@RequestMapping(value = "/message")
-	public ModelAndView message() throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("Home/Page/message");
-		return modelAndView;
-	}
+    /**
+     * 留言板
+     *
+     * @return
+     */
+    @RequestMapping(value = "/message")
+    public String message(Model model) {
+
+        //侧边栏显示
+        //获得热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        model.addAttribute("mostCommentArticleList", mostCommentArticleList);
+        return "Home/Page/message";
+    }
 }

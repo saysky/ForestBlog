@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuyanzhao.blog.mapper.PageMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Page" >
+    <id column="page_id" property="pageId" jdbcType="INTEGER" />
+    <result column="page_key" property="pageKey" jdbcType="VARCHAR" />
+    <result column="page_title" property="pageTitle" jdbcType="VARCHAR" />
+    <result column="page_content" property="pageContent" jdbcType="VARCHAR" />
+    <result column="page_create_time" property="pageCreateTime" jdbcType="TIMESTAMP" />
+    <result column="page_update_time" property="pageUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="page_view_count" property="pageViewCount" jdbcType="INTEGER" />
+    <result column="page_comment_count" property="pageCommentCount" jdbcType="INTEGER" />
+    <result column="page_status" property="pageStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    page_id, page_key, page_title, page_content, page_create_time, page_update_time, 
+    page_view_count, page_comment_count, page_status
+  </sql>
+
+  <sql id="tb">page</sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from <include refid="tb"/>
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from <include refid="tb"/>
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Page" >
+    insert into <include refid="tb"/>
+    (page_id, page_key, page_title,
+      page_content, page_create_time, page_update_time, 
+      page_view_count, page_comment_count, page_status
+      )
+    values (#{pageId,jdbcType=INTEGER}, #{pageKey,jdbcType=VARCHAR}, #{pageTitle,jdbcType=VARCHAR}, 
+      #{pageContent,jdbcType=VARCHAR}, #{pageCreateTime,jdbcType=TIMESTAMP}, #{pageUpdateTime,jdbcType=TIMESTAMP}, 
+      #{pageViewCount,jdbcType=INTEGER}, #{pageCommentCount,jdbcType=INTEGER}, #{pageStatus,jdbcType=INTEGER}
+      )
+  </insert>
+
+
+  <update id="update" parameterType="com.liuyanzhao.blog.entity.Page" >
+    update <include refid="tb"/>
+    <set >
+      <if test="pageKey != null" > page_key = #{pageKey,jdbcType=VARCHAR},</if>
+      <if test="pageTitle != null" >page_title = #{pageTitle,jdbcType=VARCHAR},</if>
+      <if test="pageContent != null" >page_content = #{pageContent,jdbcType=VARCHAR},</if>
+      <if test="pageCreateTime != null" >page_create_time = #{pageCreateTime,jdbcType=TIMESTAMP},</if>
+      <if test="pageUpdateTime != null" >page_update_time = #{pageUpdateTime,jdbcType=TIMESTAMP},</if>
+      <if test="pageViewCount != null" >page_view_count = #{pageViewCount,jdbcType=INTEGER},</if>
+      <if test="pageCommentCount != null" >page_comment_count = #{pageCommentCount,jdbcType=INTEGER},</if>
+      <if test="pageStatus != null" >page_status = #{pageStatus,jdbcType=INTEGER}</if>
+    </set>
+    where page_id = #{pageId,jdbcType=INTEGER}
+  </update>
+
+  <!--获得页面列表-->
+  <select id="listPage" resultType="com.liuyanzhao.blog.entity.Page">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM <include refid="tb"/>
+    <where>
+      <if test="status!=null">
+        page_status=#{status}
+      </if>
+    </where>
+  </select>
+
+  <!--根据key获得-->
+  <select id="getPageByKey" resultType="com.liuyanzhao.blog.entity.Page">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    <include refid="tb"/>
+    <where>
+      <if test="status!=null">
+        page_status=#{status} AND
+      </if>
+      page_key=#{key}
+    </where>
+  </select>
+</mapper>

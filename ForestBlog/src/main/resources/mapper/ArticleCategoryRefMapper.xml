@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.blog.mapper.ArticleCategoryRefMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.ArticleCategoryRef">
+        <result column="article_id" jdbcType="INTEGER" property="articleId"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    </resultMap>
+
+    <sql id="tb">article_category_ref</sql>
+
+    <insert id="insert" parameterType="java.lang.Integer">
+        insert into
+        <include refid="tb"/>
+        (article_id, category_id)
+        values (#{articleId}, #{categoryId})
+    </insert>
+
+    <delete id="deleteByCategoryId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where category_id = #{value}
+    </delete>
+
+    <delete id="deleteByArticleId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where article_id = #{value}
+    </delete>
+
+    <select id="countArticleByCategoryId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from
+        <include refid="tb"/>
+        where category_id = #{value}
+    </select>
+
+    <select id="selectCategoryIdByArticleId" resultType="java.lang.Integer">
+        SELECT category_id FROM
+        <include refid="tb"/>
+        WHERE article_id = #{value}
+    </select>
+
+
+    <select id="selectArticleIdByCategoryId" resultType="java.lang.Integer">
+        SELECT article_id FROM
+        <include refid="tb"/>
+        WHERE category_id = #{value}
+    </select>
+
+    <select id="listCategoryByArticleId" parameterType="java.lang.Integer"
+            resultType="com.liuyanzhao.blog.entity.Category">
+        SELECT
+        category.category_id, category.category_pid, category.category_name
+        FROM category, article_category_ref
+        WHERE article_category_ref.article_id = #{value} AND
+        article_category_ref.category_id = category.category_id
+        ORDER BY category.category_pid asc
+    </select>
+
+
+</mapper>
