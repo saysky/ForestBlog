@@ -52,20 +52,12 @@ public class ArticleController {
             return "Home/Error/404";
         }
 
-        //文章信息
-        model.addAttribute("article", article);
-
         //用户信息
         User user = userService.getUserById(article.getArticleUserId());
-        model.addAttribute("user", user);
+        article.setUser(user);
 
-        //分类
-        List<Category> categoryList = categoryService.listCategoryByArticleId(articleId);
-        model.addAttribute("categoryList", categoryList);
-
-        //标签
-        List<Tag> tagList = tagService.listTagByArticleId(articleId);
-        model.addAttribute("tagList", tagList);
+        //文章信息
+        model.addAttribute("article", article);
 
         //评论列表
         List<Comment> commentList = commentService.listCommentByArticleId(articleId);

@@ -31,7 +31,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      classpath:spring/applicationContext-*.xml,
+      classpath:spring/spring-*.xml,
     </param-value>
   </context-param>
 
@@ -41,6 +41,7 @@
        org.springframework.web.context.ContextLoaderListener
      </listener-class>
    </listener>
+
 
   <!-- 以下3项参数与log4j的配置相关 -->
   <context-param>
@@ -64,7 +65,7 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:spring/springmvc.xml</param-value>
+      <param-value>classpath:spring/spring-mvc.xml</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

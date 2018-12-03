@@ -34,8 +34,8 @@
             <i class="fa fa-home"></i>首页
         </a>
         <c:choose>
-            <c:when test="${categoryList != null && categoryList.size() > 0}">
-                <c:forEach items="${categoryList}" var="c">
+            <c:when test="${article.categoryList != null && article.categoryList.size() > 0}">
+                <c:forEach items="${article.categoryList}" var="c">
                     <i class="fa fa-angle-right"></i>
                     <a href="/category/${c.categoryId}">
                             ${c.categoryName}
@@ -157,7 +157,7 @@
                         </ul>
                         <div class="single-cat-tag">
                             <div class="single-cat">所属分类：
-                                <c:forEach items="${categoryList}" var="c">
+                                <c:forEach items="${article.categoryList}" var="c">
                                     <a href="/category/${c.categoryId}">
                                             ${c.categoryName}
                                     </a>
@@ -174,7 +174,7 @@
                 <%--所属标签 start--%>
             <div class="single-tag">
                 <ul class="" data-wow-delay="0.3s">
-                    <c:forEach items="${tagList}" var="t">
+                    <c:forEach items="${article.tagList}" var="t">
                         <li>
                             <a href="/tag/${t.tagId}" rel="tag"
                                style="background:#666666">
@@ -189,7 +189,7 @@
 
                 <%--版权声明 start--%>
             <div class="authorbio wow fadeInUp">
-                <img alt="${user.userNickname}" src="${user.userAvatar}"
+                <img alt="${article.user.userNickname}" src="${article.user.userAvatar}"
                      class="avatar avatar-64 photo" height="64" width="64">
                 <ul class="postinfo">
                     <li></li>
@@ -197,7 +197,7 @@
                             value="${article.articleCreateTime}"
                             pattern="yyyy-MM-dd"/>，由
                         <strong>
-                                ${user.userNickname}
+                                ${article.user.userNickname}
                         </strong>
                         发表。
                     </li>
