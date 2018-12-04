@@ -32,14 +32,6 @@ public interface ArticleMapper {
     Integer insert(Article article);
 
     /**
-     * 根据主键查询文章
-     *
-     * @param articleId 文章ID
-     * @return 文章
-     */
-    Article selectByPrimaryKey(Integer articleId);
-
-    /**
      * 更新文章
      *
      * @param article 文章

@@ -17,7 +17,7 @@
 
   <sql id="tb">notice</sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getNoticeById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from <include refid="tb"/>
@@ -29,7 +29,7 @@
     where notice_id = #{noticeId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Notice" >
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Notice" useGeneratedKeys="true" keyProperty="noticeId">
     insert into <include refid="tb"/>
     (notice_id, notice_title, notice_content,
       notice_create_time, notice_update_time, 

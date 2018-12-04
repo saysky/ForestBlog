@@ -33,7 +33,7 @@ public interface PageMapper {
      * @param pageId 页面ID
      * @return 页面
      */
-    Page selectByPrimaryKey(Integer pageId);
+    Page getPageById(Integer pageId);
 
     /**
      * 更新

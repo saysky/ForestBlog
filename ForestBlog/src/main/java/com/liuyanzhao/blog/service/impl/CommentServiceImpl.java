@@ -13,6 +13,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.liuyanzhao.blog.util.Functions;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,10 +57,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "comment", key = "'id_'+#id")
     public Comment getCommentById(Integer id) {
         Comment comment = null;
         try {
-            comment = commentMapper.selectByPrimaryKey(id);
+            comment = commentMapper.getCommentById(id);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("根据评论ID获得评论，id:{}, cause:{}", id, e);
@@ -106,6 +109,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = "comment", key = "'id_'+#categoryId")
     public void updateComment(Comment comment) {
         try {
             commentMapper.update(comment);

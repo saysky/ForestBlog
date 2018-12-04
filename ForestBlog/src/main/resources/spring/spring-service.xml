@@ -24,5 +24,6 @@
     <bean id="noticeService" class="com.liuyanzhao.blog.service.impl.NoticeServiceImpl"/>
     <bean id="menuService" class="com.liuyanzhao.blog.service.impl.MenuServiceImpl"/>
     <bean id="functions" class="com.liuyanzhao.blog.util.Functions"/>
+    <bean id="redisUtil" class="com.liuyanzhao.blog.util.RedisUtil"/>
 
 </beans>

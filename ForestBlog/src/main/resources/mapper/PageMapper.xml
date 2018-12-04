@@ -19,7 +19,7 @@
 
   <sql id="tb">page</sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getPageById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from <include refid="tb"/>
@@ -31,7 +31,7 @@
     where page_id = #{pageId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Page" >
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Page" useGeneratedKeys="true" keyProperty="pageId">
     insert into <include refid="tb"/>
     (page_id, page_key, page_title,
       page_content, page_create_time, page_update_time, 

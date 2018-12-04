@@ -3,6 +3,7 @@ package com.liuyanzhao.blog.controller.home;
 import com.github.pagehelper.PageInfo;
 import com.liuyanzhao.blog.entity.Article;
 import com.liuyanzhao.blog.entity.Tag;
+import com.liuyanzhao.blog.enums.ArticleStatus;
 import com.liuyanzhao.blog.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,9 @@ public class TagController {
         model.addAttribute("tag", tag);
 
         //文章列表
-        HashMap<String, Object> criteria = new HashMap<>(1);
+        HashMap<String, Object> criteria = new HashMap<>(2);
         criteria.put("tagId", tagId);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
         PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
         model.addAttribute("pageInfo", articlePageInfo);
 

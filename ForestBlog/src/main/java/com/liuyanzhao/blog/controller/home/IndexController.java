@@ -9,6 +9,7 @@ import com.liuyanzhao.blog.enums.CategoryStatus;
 import com.liuyanzhao.blog.enums.LinkStatus;
 import com.liuyanzhao.blog.enums.NoticeStatus;
 import com.liuyanzhao.blog.service.*;
+import com.liuyanzhao.blog.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -110,6 +111,14 @@ public class IndexController {
         return "Home/Error/500";
     }
 
+    @Autowired(required = false)
+    private RedisUtil redisUtil;
+
+    @RequestMapping("/testRedis")
+    @ResponseBody
+    public String testRedis(@RequestParam(name = "key") String key) {
+        return (String) redisUtil.get(key);
+    }
 }
 
 

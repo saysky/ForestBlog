@@ -34,7 +34,7 @@ public interface TagMapper {
      * @param tagId 标签ID
      * @return 标签
      */
-    Tag selectByPrimaryKey(Integer tagId);
+    Tag getTagById(Integer tagId);
 
     /**
      * 更新

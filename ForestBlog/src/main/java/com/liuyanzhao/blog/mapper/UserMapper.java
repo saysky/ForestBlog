@@ -33,7 +33,7 @@ public interface UserMapper {
      * @param userId 用户ID
      * @return 用户
      */
-    User selectByPrimaryKey(Integer userId);
+    User getUserById(Integer userId);
 
     /**
      * 更新

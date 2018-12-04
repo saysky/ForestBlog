@@ -43,8 +43,9 @@ public interface UserService {
      * 添加用户
      *
      * @param user 用户
+     * @return 用户
      */
-    void insertUser(User user);
+    User insertUser(User user);
 
     /**
      * 根据用户名和邮箱查询用户

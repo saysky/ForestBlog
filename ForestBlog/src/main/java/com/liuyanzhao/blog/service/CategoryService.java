@@ -18,13 +18,6 @@ public interface CategoryService {
      */
     Integer countCategory();
 
-    /**
-     * 根据文章ID获得分类列表
-     *
-     * @param articleId 文章ID
-     * @return 分类列表
-     */
-    List<Category> listCategoryByArticleId(Integer articleId);
 
     /**
      * 获得分类列表
@@ -45,6 +38,7 @@ public interface CategoryService {
      *
      * @param id ID
      */
+
     void deleteCategory(Integer id);
 
     /**
@@ -59,8 +53,9 @@ public interface CategoryService {
      * 添加分类
      *
      * @param category 分类
+     * @return 分类
      */
-    void insertCategory(Category category);
+    Category insertCategory(Category category);
 
     /**
      * 更新分类

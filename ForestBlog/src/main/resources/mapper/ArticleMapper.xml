@@ -24,14 +24,6 @@
     </sql>
 
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from
-        <include refid="tb"/>
-        where article_id = #{articleId,jdbcType=INTEGER}
-    </select>
-
     <select id="listAllNotWithContent" resultType="com.liuyanzhao.blog.entity.Article">
         SELECT
         article_id, article_user_id, article_title, article_create_time
@@ -43,7 +35,7 @@
 
     <select id="findAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        article.*
         FROM
         article
         <where>
@@ -56,9 +48,21 @@
             <if test="userId != null">
                 article.article_user_id = #{userId} AND
             </if>
+            <if test="categoryId != null">
+                article.article_id IN (
+                  SELECT article_category_ref.article_id FROM article_category_ref
+                  WHERE article_category_ref.category_id = #{categoryId}
+                ) AND
+            </if>
+            <if test="tagId != null">
+                article.article_id IN (
+                  SELECT article_tag_ref.article_id FROM article_tag_ref
+                  WHERE article_tag_ref.tag_id = #{tagId}
+                ) AND
+            </if>
             1 = 1
         </where>
-        ORDER BY `article_order` DESC, `article_id` DESC
+        ORDER BY `article`.`article_order` DESC, `article`.`article_id` DESC
     </select>
 
     <delete id="deleteById" parameterType="java.lang.Integer">
@@ -78,7 +82,8 @@
         </if>
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Article" useGeneratedKeys="true" keyProperty="articleId">
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Article" useGeneratedKeys="true"
+            keyProperty="articleId">
         insert into
         <include refid="tb"/>
         (article_user_id, article_title,

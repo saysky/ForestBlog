@@ -22,7 +22,7 @@
     user_last_login_ip, user_register_time, user_last_login_time, user_status
   </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from <include refid="tb"/>
@@ -35,7 +35,7 @@
         where user_id = #{userId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.User">
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.User" useGeneratedKeys="true" keyProperty="userId">
         insert into
         <include refid="tb"/>
         (user_id, user_name, user_pass,

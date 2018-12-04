@@ -6,6 +6,9 @@ import com.liuyanzhao.blog.entity.Tag;
 import com.liuyanzhao.blog.service.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,10 +63,11 @@ public class TagServiceImpl implements TagService {
 
 
     @Override
+    @Cacheable(value = "default", key = "'tag:'+#id")
     public Tag getTagById(Integer id) {
         Tag tag = null;
         try {
-            tag = tagMapper.selectByPrimaryKey(id);
+            tag = tagMapper.getTagById(id);
         } catch (Exception e) {            e.printStackTrace();
             log.error("根据ID获得标签失败, id:{}, cause:{}", id, e);
         }
@@ -71,16 +75,19 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void insertTag(Tag tag) {
+    @CachePut(value = "default", key = "'tag:'+#result.tagId")
+    public Tag insertTag(Tag tag) {
         try {
             tagMapper.insert(tag);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("添加标签失败, tag:{}, cause:{}", tag, e);
         }
+        return tag;
     }
 
     @Override
+    @CacheEvict(value = "default", key = "'tag:'+#tag.tagId")
     public void updateTag(Tag tag) {
         try {
             tagMapper.update(tag);
@@ -92,6 +99,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "default", key = "'tag:'+#id")
     public void deleteTag(Integer id) {
         try {
             tagMapper.deleteById(id);

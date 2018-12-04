@@ -45,8 +45,9 @@ public interface TagService {
 	 * 添加标签
 	 *
 	 * @param tag 标签
+	 * @return 标签
 	 */
-	void insertTag(Tag tag) ;
+	Tag insertTag(Tag tag) ;
 
 	/**
 	 * 修改标签

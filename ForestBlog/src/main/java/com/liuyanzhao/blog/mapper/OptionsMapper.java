@@ -29,7 +29,7 @@ public interface OptionsMapper {
      * @param optionId 系统设置ID
      * @return 系统设置
      */
-    Options selectByPrimaryKey(Integer optionId);
+    Options getOptionsById(Integer optionId);
 
     /**
      * 更新

@@ -15,7 +15,7 @@
 
   <sql id="tb">menu</sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getMenuById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from <include refid="tb"/>
@@ -25,7 +25,7 @@
     delete from <include refid="tb"/>
     where menu_id = #{menuId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Menu" >
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Menu" useGeneratedKeys="true" keyProperty="menuId">
     insert into <include refid="tb"/>
     (menu_id, menu_name, menu_url,
       menu_level, menu_icon, menu_order)

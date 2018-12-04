@@ -34,7 +34,7 @@ public interface NoticeMapper {
      * @param noticeId 公告ID
      * @return 公告
      */
-    Notice selectByPrimaryKey(Integer noticeId);
+    Notice getNoticeById(Integer noticeId);
 
     /**
      * 获得公告列表

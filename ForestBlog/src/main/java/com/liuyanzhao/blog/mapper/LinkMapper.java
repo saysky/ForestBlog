@@ -33,7 +33,7 @@ public interface LinkMapper {
      * @param linkId 链接ID
      * @return 影响行数
      */
-    Link selectByPrimaryKey(Integer linkId);
+    Link getLinkById(Integer linkId);
 
     /**
      * 更新

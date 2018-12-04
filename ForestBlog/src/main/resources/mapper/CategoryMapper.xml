@@ -16,26 +16,12 @@
     category_id, category_pid, category_name, category_description, category_order, category_icon
   </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from
-        <include refid="tb"/>
-        where category_id = #{categoryId,jdbcType=INTEGER}
-    </select>
 
-    <delete id="deleteById" parameterType="java.lang.Integer">
-        delete from
-        <include refid="tb"/>
-        where category_id = #{categoryId,jdbcType=INTEGER}
-    </delete>
-
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Category">
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Category" useGeneratedKeys="true" keyProperty="categoryId">
         insert into
         <include refid="tb"/>
-        (category_id, category_pid, category_name,
-        category_description, category_order, category_icon)
-        values (#{categoryId,jdbcType=INTEGER}, #{categoryPid,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR},
+        (category_pid, category_name,category_description, category_order, category_icon)
+        values (#{categoryPid,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR},
         #{categoryDescription,jdbcType=VARCHAR}, #{categoryOrder,jdbcType=INTEGER}, #{categoryIcon,jdbcType=VARCHAR})
     </insert>
 
@@ -75,7 +61,7 @@
         FROM
         <include refid="tb"/>
         WHERE
-        category.category_id=#{id}
+        category.category_id=#{value}
     </select>
 
 

@@ -31,7 +31,7 @@ public interface CommentMapper {
      * @param commentId 评论ID
      * @return 评论
      */
-    Comment selectByPrimaryKey(Integer commentId);
+    Comment getCommentById(Integer commentId);
 
     /**
      * 更新

@@ -22,7 +22,7 @@
   
   <sql id="tb">link</sql>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getLinkById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from link
@@ -34,7 +34,7 @@
     where link_id = #{linkId,jdbcType=INTEGER}
   </delete>
   
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Link" >
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Link" useGeneratedKeys="true" keyProperty="linkId">
     insert into link (link_id, link_url, link_name, 
       link_image, link_description, link_owner_nickname, 
       link_owner_contact, link_update_time, link_create_time, 

@@ -32,7 +32,7 @@ public interface MenuMapper {
      * @param menuId 菜单ID
      * @return 菜单
      */
-    Menu selectByPrimaryKey(Integer menuId);
+    Menu getMenuById(Integer menuId);
 
     /**
      * 更新

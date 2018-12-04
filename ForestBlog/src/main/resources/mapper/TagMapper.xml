@@ -12,7 +12,7 @@
 
   <sql id="tb">tag</sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="getTagById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from <include refid="tb"/>
@@ -24,10 +24,10 @@
     where tag_id = #{tagId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Tag" >
+  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Tag" useGeneratedKeys="true" keyProperty="tagId">
     insert into <include refid="tb"/>
-    (tag_id, tag_name, tag_description)
-    values (#{tagId,jdbcType=INTEGER}, #{tagName,jdbcType=VARCHAR}, #{tagDescription,jdbcType=VARCHAR})
+    (tag_name, tag_description)
+    values (#{tagName,jdbcType=VARCHAR}, #{tagDescription,jdbcType=VARCHAR})
   </insert>
 
 

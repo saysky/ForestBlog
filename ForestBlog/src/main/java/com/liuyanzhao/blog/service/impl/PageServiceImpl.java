@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PageServiceImpl implements PageService {
 
-    @Autowired
+    @Autowired(required = false)
     private PageMapper pageMapper;
 
     @Override
@@ -23,7 +23,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Page getPageById(Integer id) {
-        return pageMapper.selectByPrimaryKey(id);
+        return pageMapper.getPageById(id);
     }
 
     @Override

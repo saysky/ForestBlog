@@ -20,7 +20,7 @@ import java.util.List;
       * 
       * @param menu 菜单
       */
-     void insertMenu(Menu menu) ;
+     Menu insertMenu(Menu menu) ;
 
      /**
       * 删除菜单项目

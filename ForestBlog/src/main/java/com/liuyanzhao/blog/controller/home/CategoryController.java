@@ -3,6 +3,7 @@ package com.liuyanzhao.blog.controller.home;
 
 import com.github.pagehelper.PageInfo;
 import com.liuyanzhao.blog.entity.*;
+import com.liuyanzhao.blog.enums.ArticleStatus;
 import com.liuyanzhao.blog.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,9 @@ public class CategoryController {
         model.addAttribute("category", category);
 
         //文章列表
-        HashMap<String, Object> criteria = new HashMap<>(1);
+        HashMap<String, Object> criteria = new HashMap<>(2);
         criteria.put("categoryId", cateId);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
         PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
         model.addAttribute("pageInfo", articlePageInfo);
 
@@ -67,7 +69,7 @@ public class CategoryController {
         //获得热评文章
         List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
         model.addAttribute("mostCommentArticleList", mostCommentArticleList);
-        model.addAttribute("pageUrlPrefix", "/category?pageIndex");
+        model.addAttribute("pageUrlPrefix", "/category/"+pageIndex+"?pageIndex");
         return "Home/Page/articleListByCategory";
     }
 

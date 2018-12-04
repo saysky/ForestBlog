@@ -25,7 +25,7 @@
      comment_ip,comment_create_time, comment_role
   </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getCommentById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from
@@ -39,7 +39,7 @@
         where comment_id = #{commentId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Comment">
+    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Comment" useGeneratedKeys="true" keyProperty="commentId">
         insert into
         <include refid="tb"/>
         (comment_pid, comment_pname, comment_article_id,

@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class NoticeServiceImpl implements NoticeService {
 
-    @Autowired
+    @Autowired(required = false)
     private NoticeMapper noticeMapper;
 
 
@@ -40,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Notice getNoticeById(Integer id)  {
-        return noticeMapper.selectByPrimaryKey(id);
+        return noticeMapper.getNoticeById(id);
     }
 
 }

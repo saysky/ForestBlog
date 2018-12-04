@@ -36,7 +36,7 @@
             </c:if>
                 <%--显示点点点--%>
             <c:if test="${begin  > 2 }">
-                <span class="page-numbers dots">…</span>
+                <span class="page-numbers dots">...</span>
             </c:if>
                 <%--打印 页码--%>
             <c:forEach begin="${begin }" end="${end }" var="i">
@@ -50,8 +50,8 @@
                 </c:choose>
             </c:forEach>
                 <%-- 显示点点点 --%>
-            <c:if test="${end < pageInfo.pages-1 }">
-                <span class="page-numbers dots">…</span>
+            <c:if test="${end < pageInfo.pages-1}">
+                <span class="page-numbers dots">...</span>
             </c:if>
                 <%-- 显示最后一页的数字 --%>
             <c:if test="${end < pageInfo.pages }">

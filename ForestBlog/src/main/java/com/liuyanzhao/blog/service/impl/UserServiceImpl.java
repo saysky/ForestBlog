@@ -5,6 +5,9 @@ import com.liuyanzhao.blog.mapper.UserMapper;
 import com.liuyanzhao.blog.entity.User;
 import com.liuyanzhao.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,10 +22,10 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private ArticleMapper articleMapper;
 
     @Override
@@ -36,24 +39,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "default", key = "'user:'+#id")
     public User getUserById(Integer id) {
-        return userMapper.selectByPrimaryKey(id);
+        return userMapper.getUserById(id);
     }
 
     @Override
+    @CacheEvict(value = "default", key = "'user:'+#user.userId")
     public void updateUser(User user) {
         userMapper.update(user);
     }
 
     @Override
+    @CacheEvict(value = "default", key = "'user:'+#id")
     public void deleteUser(Integer id) {
         userMapper.deleteById(id);
     }
 
     @Override
-    public void insertUser(User user) {
+    @CachePut(value = "default", key = "'user:'+#result.userId")
+    public User insertUser(User user) {
         user.setUserRegisterTime(new Date());
         userMapper.insert(user);
+        return user;
     }
 
     @Override

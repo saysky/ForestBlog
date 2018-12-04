@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class LinkServiceImpl implements LinkService {
 	
-	@Autowired
+	@Autowired(required = false)
 	private LinkMapper linkMapper;
 	
 	@Override
@@ -44,7 +44,7 @@ public class LinkServiceImpl implements LinkService {
 
 	@Override
 	public Link getLinkById(Integer id)  {
-		return linkMapper.selectByPrimaryKey(id);
+		return linkMapper.getLinkById(id);
 	}
 
 }
