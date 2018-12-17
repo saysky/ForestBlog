@@ -33,12 +33,12 @@
             </div>
         </div>
 
-        <div class="layui-form-item layui-form-text">
+        <%-- <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容  <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
                 <textarea class="layui-textarea layui-hide" name="noticeContent" id="content" required>${noticeCustom.noticeContent}</textarea>
             </div>
-        </div>
+        </div> --%>
         <div class="layui-form-item">
             <label class="layui-form-label">Order </label>
             <div class="layui-input-inline">

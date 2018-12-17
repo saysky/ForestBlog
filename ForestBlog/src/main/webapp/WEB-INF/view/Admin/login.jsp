@@ -13,7 +13,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>${options.optionSiteTitle} &lsaquo; 登录</title>
     <link rel="stylesheet" href="/plugin/font-awesome/css/font-awesome.min.css">
-    <link rel="shortcut icon" href="/img/logo.png">
+    <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel='stylesheet' id='dashicons-css'  href='/plugin/login/dashicons.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='buttons-css'  href='/plugin/login/buttons.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='forms-css'  href='/plugin/login/forms.min.css' type='text/css' media='all' />
@@ -107,7 +107,7 @@
         if(typeof wpOnload=='function')wpOnload();
     </script>
 
-    <p id="backtoblog"><a href="/">&larr; 返回到风吟博客</a></p>
+    <p id="backtoblog"><a href="/">&larr; 返回到前台</a></p>
 
 </div>
 

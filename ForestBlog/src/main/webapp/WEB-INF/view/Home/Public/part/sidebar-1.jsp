@@ -25,12 +25,24 @@
         <%--热评文章 start--%>
         <aside class="widget hot_comment" >
             <h3 class="widget-title">
-                <i class="fa fa-bars"></i>热评文章
+                <i class="fa fa-align-right"></i>热评文章
             </h3>
             <div id="hot_comment_widget">
                 <ul>
-                    <c:forEach items="${mostCommentArticleList}" var="m">
+                    <c:forEach items="${mostCommentArticleList}" var="m" varStatus="size">
                         <li>
+                        	<c:if test="${size.count == 1}">
+                        		<span class="li-icon li-icon-1">1</span>
+                        	</c:if>
+                        	<c:if test="${size.count == 2}">
+                        		<span class="li-icon li-icon-2">2</span>
+                        	</c:if>
+                        	<c:if test="${size.count == 3}">
+                        		<span class="li-icon li-icon-3">3</span>
+                        	</c:if>
+                        	<c:if test="${size.count != 3 and size.count != 2 and size.count != 1}">
+                        		<span class="li-icon li-icon-${size.count}">${size.count}</span>
+                        	</c:if>
                             <a href="/article/${m.articleId}" rel="bookmark" title=" (${m.articleCommentCount}条评论)">
                                     ${m.articleTitle}
                             </a>
@@ -45,18 +57,49 @@
         <%--所有标签 start--%>
         <aside class="widget">
             <h3 class="widget-title">
-                <i class="fa fa-bars"></i>所有标签
+                <i class="fa fa-align-right"></i>所有标签
             </h3>
             <div class="tagcloud">
-                <c:forEach items="${tagList}" var="t">
-                    <a href="/tag/${t.tagId}"
-                       class="tag-link-129 tag-link-position-1" title="${t.articleCount}个话题"
-                       style="font-size: 14px;">
-                            ${t.tagName}
-                    </a>
-                </c:forEach>
-                <div class="clear"></div>
-            </div>
+            <c:forEach items="${tagList}" var="tag">
+                <c:if test="${tag.tagId%5==0}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#BF3EFF">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==1}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#B0E2FF">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==2}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#F08080">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==3}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#CD9B1D">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==4}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#00C5CD">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                
+            </c:forEach>
+            <div class="clear"></div>
+        </div>
             <div class="clear"></div>
         </aside>
         <%--所有标签 end--%>
@@ -64,7 +107,7 @@
         <%--博客主体-右侧侧边栏-随机文章 start--%>
         <aside id="random_post-7" class="widget random_post wow fadeInUp" data-wow-delay="0.3s">
             <h3 class="widget-title">
-                <i class="fa fa-bars"></i>随机文章
+                <i class="fa fa-align-right"></i>随机文章
             </h3>
             <div id="random_post_widget">
                 <ul>

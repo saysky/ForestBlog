@@ -67,8 +67,8 @@
                                                          alt="${a.articleCustom.articleTitle}">
                                                 </a>
                                                 <span class="cat">
-                                            <a href="/category/${a.categoryCustomList[a.categoryCustomList.size()-1].categoryId}">
-                                                    ${a.categoryCustomList[a.categoryCustomList.size()-1].categoryName}
+                                            <a href="/category/${a.categoryCustomList[a.categoryCustomList.size() - 1].categoryId}">
+                                                    ${a.categoryCustomList[a.categoryCustomList.size() - 1 ].categoryName}
                                             </a>
                                         </span>
                                             </figure>
@@ -86,7 +86,6 @@
                                                 <div class="archive-content">
                                                     <lyz:htmlFilter>${a.articleCustom.articleContent}</lyz:htmlFilter>......
                                                 </div>
-                                                <span class="title-l"></span>
                                                 <span class="new-icon">
                                     <c:choose>
                                         <c:when test="${a.articleCustom.articleStatus==2}">
@@ -111,7 +110,7 @@
                                     </span>
                                     <span class="views">
                                         <i class="fa fa-eye"></i>
-                                            ${a.articleCustom.articleViewCount} views
+                                            ${a.articleCustom.articleViewCount}
                                     </span>
                                     <span class="comment">&nbsp;&nbsp;
                                         <a href="/article/${a.articleCustom.articleId}#comments"

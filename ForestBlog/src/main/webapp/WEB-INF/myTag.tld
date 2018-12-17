@@ -5,13 +5,13 @@
 
     <tag>
         <name>htmlFilter</name>
-        <tag-class>com.liuyanzhao.blog.util.others.HtmlFilterTag</tag-class>
+        <tag-class>com.hfanss.blog.util.others.HtmlFilterTag</tag-class>
         <body-content>scriptless</body-content>
     </tag>
 
     <tag>
         <name>htmlFilter</name>
-        <tag-class>com.liuyanzhao.blog.util.others.HtmlFilterTag</tag-class>
+        <tag-class>com.hfanss.blog.util.others.HtmlFilterTag</tag-class>
         <body-content>scriptless</body-content>
     </tag>
 </taglib>

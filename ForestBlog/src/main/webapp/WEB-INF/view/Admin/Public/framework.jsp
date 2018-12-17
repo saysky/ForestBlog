@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <link rel="shortcut icon" href="/img/logo.png">
+    <link rel="shortcut icon" href="/img/favicon.ico">
     <title>
         ${options.optionSiteTitle}后台
             <rapid:block name="title"></rapid:block>

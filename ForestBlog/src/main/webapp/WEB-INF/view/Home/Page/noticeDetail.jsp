@@ -35,15 +35,21 @@
         <main id="main" class="site-main" role="main">
             <article class="post" style="min-height: 500px;">
                 <header class="entry-header">
-                    <h1 class="entry-title">
-                           ${noticeCustom.noticeTitle}
-                    </h1>
+                	<c:forEach items="${noticeCustom }" var="notice">
+	                    <h1 class="entry-title">
+	                           ${notice.noticeTitle} <a style="font-size:10px;float: right;"><fmt:formatDate value="${notice.noticeCreateTime}" pattern="yyyy年MM月dd日"/> </a>
+	                    </h1>
+	                    <%-- <div class="single-cat-tag">
+	                            <div class="single-cat">日期：<fmt:formatDate value="${notice.noticeCreateTime}" pattern="yyyy年MM月dd日"/>
+	                            </div>
+	                     </div> --%>
+                     </c:forEach>
                 </header><!-- .entry-header -->
                 <div class="entry-content">
-                    <div class="single-content">
+                    <%-- <div class="single-content">
                             ${noticeCustom.noticeContent}
-                    </div>
-
+                    </div> --%>
+					
                     <br><br>
 
                     <footer class="single-footer">
@@ -58,10 +64,7 @@
                         <ul id="fontsize">
                             <li>A+</li>
                         </ul>
-                        <div class="single-cat-tag">
-                            <div class="single-cat">日期：<fmt:formatDate value="${noticeCustom.noticeCreateTime}" pattern="yyyy年MM月dd日"/>
-                            </div>
-                        </div>
+                        
                     </footer><!-- .entry-footer -->
 
 

@@ -32,13 +32,13 @@
             </div>
         </div>
 
-        <div class="layui-form-item layui-form-text">
+       <!--  <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容  <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
                 <textarea class="layui-textarea layui-hide" name="noticeContent" lay-verify="content" id="content" required></textarea>
             </div>
         </div>
-        
+         -->
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="" >添加</button>

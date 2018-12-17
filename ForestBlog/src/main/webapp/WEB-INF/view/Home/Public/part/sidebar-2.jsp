@@ -9,68 +9,10 @@
 <div id="sidebar" class="widget-area all-sidebar"
      style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
 
-    <%--关于本站 start--%>
-    <aside class="widget about">
-        <h3 class="widget-title">
-            <i class="fa fa-bars"></i>关于本站
-        </h3>
-        <div id="feed_widget">
-            <div class="feed-about">
-                <div class="about-main">
-                    <div class="about-img">
-                        <img src="${options.optionAboutsiteAvatar}"
-                        alt="QR Code">
-                    </div>
-                    <div class="about-name">${options.optionAboutsiteTitle}</div>
-                    <div class="about-the">
-                        ${options.optionAboutsiteContent}
-                    </div>
-                </div>
-                <div class="clear"></div>
-                <ul>
-                    <li class="weixin">
-                        <a title="微信" id="weixin_btn" rel="external nofollow">
-                            <i class="fa fa-weixin"> </i>
-                            <div id="weixin_code" class="hide" >
-                                <img src="${options.optionAboutsiteWechat}" alt="">
-                            </div>
-                        </a>
-                    </li>
-                    <li class="tqq">
-                        <a target="blank" rel="external nofollow"
-                           href="http://wpa.qq.com/msgrd?V=3&amp;uin=${options.optionAboutsiteQq}&amp;Site=QQ&amp;Menu=yes"
-                           title="QQ在线">
-                            <i class="fa fa-qq"></i>
-                        </a>
-                    </li>
-                    <li class="tsina">
-                        <a title=""
-                           href="http://weibo.com/${options.optionAboutsiteWeibo}"
-                           target="_blank" rel="external nofollow">
-                            <i class="fa fa-weibo"></i>
-                        </a>
-                    </li>
-                    <li class="feed">
-                        <a title="" href="https://github.com/${options.optionAboutsiteGithub}" target="_blank"
-                           rel="external nofollow">
-                            <i class="fa fa-github"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="about-inf">
-                    <span class="about-pn">文章 ${siteBasicStatistics[0]} </span>
-                    <span class="about-cn">留言 ${siteBasicStatistics[1]} </span>
-                </div>
-            </div>
-        </div>
-        <div class="clear"></div>
-    </aside>
-    <%--关于本站 start--%>
-
     <%--网站概况 start--%>
     <aside id="php_text-22" class="widget php_text">
         <h3 class="widget-title">
-            <i class="fa fa-bars"></i>网站概况
+            <i class="fa fa-align-right"></i>网站概况
         </h3>
         <div class="textwidget widget-text">
             <ul class="site-profile">
@@ -79,9 +21,10 @@
                 <li><i class="fa fa-folder-o"></i> 分类数量：${siteBasicStatistics[2]} 个</li>
                 <li><i class="fa fa-tags"></i> 标签总数：${siteBasicStatistics[3]} 个</li>
                 <li><i class="fa fa-link"></i> 链接数量：${siteBasicStatistics[4]} 个</li>
-                <li><i class="fa fa-eye"></i> 浏览总量：${siteBasicStatistics[5]} 次</li>
+                <li><i class="fa fa-eye"></i> 总浏览量：<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></li>
+<%--                 <li><i class="fa fa-eye"></i> 文章点击总量：${siteBasicStatistics[5]} 次</li> --%>
                 <li><i class="fa fa-pencil-square-o"></i> 最后更新：
-                    <span style="color:#2F889A">
+                    <span style="color:#5CACEE">
                                         <fmt:formatDate value="${lastUpdateArticle.articleUpdateTime}" pattern="yyyy年MM月dd日"/>
 
                                    </span>
@@ -95,16 +38,27 @@
     <%--热评文章 start--%>
     <aside class="widget hot_comment">
         <h3 class="widget-title">
-            <i class="fa fa-bars"></i>热评文章
+            <i class="fa fa-align-right"></i>热评文章
         </h3>
         <div id="hot_comment_widget">
             <ul>
-                <c:forEach items="${mostCommentArticleList}" var="m">
+                <c:forEach items="${mostCommentArticleList}" var="m" varStatus="size">
                     <li>
-                        <a href="/article/${m.articleId}" rel="bookmark"
-                           title=" (${m.articleCommentCount}条评论)">
-                                ${m.articleTitle}
-                        </a>
+                       <c:if test="${size.count == 1}">
+                        		<span class="li-icon li-icon-1">1</span>
+                        	</c:if>
+                        	<c:if test="${size.count == 2}">
+                        		<span class="li-icon li-icon-2">2</span>
+                        	</c:if>
+                        	<c:if test="${size.count == 3}">
+                        		<span class="li-icon li-icon-3">3</span>
+                        	</c:if>
+                        	<c:if test="${size.count != 3 and size.count != 2 and size.count != 1}">
+                        		<span class="li-icon li-icon-${size.count}">${size.count}</span>
+                        	</c:if>
+                            <a href="/article/${m.articleId}" rel="bookmark" title=" (${m.articleCommentCount}条评论)">
+                                    ${m.articleTitle}
+                            </a>
                     </li>
                 </c:forEach>
             </ul>
@@ -116,15 +70,46 @@
     <%--所有标签 start--%>
     <aside class="widget">
         <h3 class="widget-title">
-            <i class="fa fa-bars"></i>所有标签
+            <i class="fa fa-align-right"></i>所有标签
         </h3>
         <div class="tagcloud">
             <c:forEach items="${tagList}" var="tag">
-                <a href="/tag/${tag.tagId}"
-                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
-                   style="font-size: 14px;">
-                        ${tag.tagName}
-                </a>
+                <c:if test="${tag.tagId%5==0}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#BF3EFF">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==1}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#B0E2FF">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==2}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#F08080">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==3}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#CD9B1D">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                <c:if test="${tag.tagId%5==4}">
+	                <a href="/tag/${tag.tagId}"
+	                   class="tag-link-129 tag-link-position-1" title="${tag.articleCount}个话题"
+	                   style="font-size: 14px;color:#00C5CD">
+	                        ${tag.tagName}
+	                </a>
+                </c:if>
+                
             </c:forEach>
             <div class="clear"></div>
         </div>
@@ -136,7 +121,7 @@
     <%--随机文章 start--%>
     <aside id="random_post-7" class="widget random_post wow fadeInUp" data-wow-delay="0.3s">
         <h3 class="widget-title">
-            <i class="fa fa-bars"></i>随机文章
+            <i class="fa fa-align-right"></i>随机文章
         </h3>
         <div id="random_post_widget">
             <ul>
@@ -155,7 +140,7 @@
 
     <%--最新评论 start--%>
     <aside id="recent_comments-2" class="widget recent_comments wow fadeInUp" data-wow-delay="0.3s"><h3
-            class="widget-title"><i class="fa fa-bars"></i>近期评论</h3>
+            class="widget-title"><i class="fa fa-align-right"></i>近期评论</h3>
         <div id="message" class="message-widget">
             <ul>
                 <c:forEach items="${recentCommentList}" var="r">

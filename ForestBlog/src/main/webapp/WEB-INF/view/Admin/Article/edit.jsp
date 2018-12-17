@@ -32,7 +32,20 @@
                 <input type="text" name="articleTitle" lay-verify="title" id="title" value="${articleCustom.articleTitle}" class="layui-input">
             </div>
         </div>
-
+		<div class="layui-form-item">
+			<label class="layui-form-label">封面</label>
+			<div class="layui-input-inline">
+				<div class="layui-upload">
+					<div class="layui-upload-list">
+						<img class="layui-upload-img" src="${articleCustom.articleImg}" id="demo2" width="100" height="100">
+						<p id="demoText2"></p>
+					</div>
+					<button type="button" class="layui-btn" id="test2">上传图片</button>
+					<input type="hidden" id="optionAboutsiteWechat" name="articleImg" value="${articleCustom.articleImg}">
+				</div>
+			</div>
+			<div class="layui-form-mid layui-word-aux">建议 430px*430px</div>
+		</div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容  <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
@@ -189,7 +202,36 @@
 
         });
         //end
+		//       上传封面
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#test2',
+                url: '/uploadFile',
+                before: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $('#demo2').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    $("#optionAboutsiteWechat").attr("value", res.data.src);
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                },
+                error: function () {
+                    var demoText = $('#demoText2');
+                    demoText.html('' +
+                        '<span style="color: #FF5722;">上传失败</span>' +
+                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
 
+        });  
 
 
 

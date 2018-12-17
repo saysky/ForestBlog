@@ -5,17 +5,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/myTag.tld" prefix="lyz" %>
 <%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
-
+<!-- 不算子计数 -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
     <rapid:override name="breadcrumb">
         <nav class="breadcrumb">
-            <div class="bull"><i class="fa fa-volume-up"></i></div>
+            <div class="bull"><i class="fa fa-volume-up" style="padding-top: 5px;"></i>&nbsp;每日名言:</div>
             <div id="scrolldiv">
                 <div class="scrolltext">
                     <ul style="margin-top: 0px;">
                         <c:forEach items="${noticeCustomList}" var="n">
                             <li class="scrolltext-title">
-                                <a href="/notice/${n.noticeId}" rel="bookmark">${n.noticeTitle}</a>
+                                <a href="/notice/${n.noticeId}" rel="bookmark"
+                                >${n.noticeTitle}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -34,8 +36,8 @@
 
                         <figure class="thumbnail">
                             <a href="/article/${a.articleCustom.articleId}">
-                                <img width="280" height="210"
-                                     src="/img/thumbnail/random/img_${a.articleCustom.articleId%400}.jpg"
+                                <img width="280" height="280"
+                                     src=" ${a.articleCustom.articleImg}"
                                      class="attachment-content size-content wp-post-image"
                                      alt="${a.articleCustom.articleTitle}">
                             </a>
@@ -59,7 +61,6 @@
                             <div class="archive-content">
                                 <lyz:htmlFilter>${a.articleCustom.articleContent}</lyz:htmlFilter>......
                             </div>
-                            <span class="title-l"></span>
                             <span class="new-icon">
                                     <c:choose>
                                         <c:when test="${a.articleCustom.articleStatus==2}">
@@ -84,7 +85,7 @@
                                     </span>
                                     <span class="views">
                                         <i class="fa fa-eye"></i>
-                                            ${a.articleCustom.articleViewCount} views
+                                            ${a.articleCustom.articleViewCount}
                                     </span>
                                     <span class="comment">&nbsp;&nbsp;
                                         <a href="/article/${a.articleCustom.articleId}#comments" rel="external nofollow">
@@ -194,23 +195,31 @@
         </div>
     </rapid:override>
     <%--左侧区域 end--%>
-
-    <%--侧边栏 start--%>
-    <rapid:override name="right">
-        <%@include file="Public/part/sidebar-2.jsp" %>
-    </rapid:override>
-    <%--侧边栏 end--%>
-
-    <%--友情链接 start--%>
+    
+	<%--友情链接 start--%>
     <rapid:override name="link">
         <div class="links-box">
             <div id="links">
                 <c:forEach items="${linkCustomList}" var="l">
                     <ul class="lx7">
                         <li class="link-f link-name">
-                            <a href="${l.linkUrl}" target="_blank">
-                                    ${l.linkName}
-                            </a>
+                            <a href="${l.linkUrl}" target="_blank"
+                            	<c:if test="${l.linkId%5==0}">
+                                		style="color: #FF83FA"
+                                </c:if>
+                                <c:if test="${l.linkId%5==1}">
+                                		style="color: #DC143C"
+                                </c:if>
+                                <c:if test="${l.linkId%5==2}">
+                                		style="color: #CAFF70"
+                                </c:if>
+                                <c:if test="${l.linkId%5==3}">
+                                		style="color: #BFEFFF"
+                                </c:if>
+                                <c:if test="${l.linkId%5==4}">
+                                		style="color: #9ACD32"
+                                </c:if>
+                               >${l.linkName}</a>
                         </li>
                     </ul>
                 </c:forEach>
@@ -219,5 +228,13 @@
         </div>
     </rapid:override>
     <%--友情链接 end--%>
+    
+    <%--侧边栏 start--%>
+    <rapid:override name="right">
+        <%@include file="Public/part/sidebar-2.jsp" %>
+    </rapid:override>
+    <%--侧边栏 end--%>
+
+    
 
 <%@ include file="Public/framework.jsp" %>

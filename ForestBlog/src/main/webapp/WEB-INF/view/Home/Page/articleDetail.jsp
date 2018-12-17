@@ -67,26 +67,26 @@
                     <div class="single-content">
                             ${articleDetailVo.articleCustom.articleContent}
                     </div>
-                    <div class="s-weixin">
+                    <!-- <div class="s-weixin">
                         <ul class="weimg1">
                             <li><strong>微信</strong></li>
                             <li>赶快加我聊天吧</li>
                             <li><img src="/img/weixin.jpg"></li>
                         </ul>
                         <ul class="weimg2">
-                            <li><strong>博客交流群</strong></li>
-                            <li>海纳百川，大家来水</li>
+                            <li><strong>QQ</strong></li>
+                            <li>赶快加我聊天吧</li>
                             <li><img src="/img/qqGroup.jpg" alt="weinxin"></li>
                         </ul>
                         <div class="clear"></div>
-                    </div>
+                    </div> -->
                     <div class="clear"></div>
                     <div id="social">
                         <div class="social-main">
                                     <span class="like">
                                         <a href="javascript:;" data-action="ding" data-id="1" title="点赞"
                                            class="favorite" onclick="increaseLikeCount()">
-                                            <i class="fa fa-thumbs-up"></i>赞
+                                            <i class="fa fa-thumbs-up" id="fa-fa-thumbs-up"></i>赞
                                             <i class="count"
                                                id="count-${articleDetailVo.articleCustom.articleId}">${articleDetailVo.articleCustom.articleLikeCount}</i>
                                         </a>
@@ -107,17 +107,13 @@
                                         </span>
                                 <div id="share">
                                     <ul class="bdsharebuttonbox bdshare-button-style1-16" data-bd-bind="1503997585792">
-                                        <li><a title="更多" class="bds_more fa fa-plus-square" data-cmd="more"
-                                               onclick="return false;" href="#"></a></li>
                                         <li><a title="分享到QQ空间" class="fa fa-qq" data-cmd="qzone" onclick="return false;"
                                                href="#"></a></li>
                                         <li><a title="分享到新浪微博" class="fa fa-weibo" data-cmd="tsina"
                                                onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到腾讯微博" class="fa fa-pinterest-square" data-cmd="tqq"
-                                               onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到人人网" class="fa fa-renren" data-cmd="renren"
-                                               onclick="return false;" href="#"></a></li>
                                         <li><a title="分享到微信" class="fa fa-weixin" data-cmd="weixin"
+                                               onclick="return false;" href="#"></a></li>
+                                        <li><a title="更多" class="bds_more fa fa-plus-square" data-cmd="more"
                                                onclick="return false;" href="#"></a></li>
                                     </ul>
                                 </div>
@@ -134,17 +130,21 @@
                                    href="/admin/article/edit/${articleDetailVo.articleCustom.articleId}">编辑</a>
                             </li>
                             </c:if>
-                            <li class="comment">
+                            <li class="comment" title="发表评论">
                                 <a href="/article/${articleDetailVo.articleCustom.articleId}#comments"
                                    rel="external nofollow">
                                     <i class="fa fa-comment-o"></i>
-                                    <i class="comment-count">${articleDetailVo.commentCustomList.size()}</i>
+                                    <c:if test="${articleDetailVo.commentCustomList.size()==0}">
+			                            <i class="comment-count">发表评论</i>
+                            		</c:if>
+                            		<c:if test="${articleDetailVo.commentCustomList.size()!=0}">
+                                    	<i class="comment-count">${articleDetailVo.commentCustomList.size()}</i>
+                            		</c:if>
                                 </a>
                             </li>
-                            <li class="views">
+                            <li class="views" title="阅读数量">
                                 <i class="fa fa-eye"></i> <span
                                     class="articleViewCount">${articleDetailVo.articleCustom.articleViewCount}</span>
-                                views
                             </li>
                             <li class="r-hide">
                                 <a href="javascript:pr()" title="侧边栏">
@@ -177,9 +177,23 @@
                 <ul class="" data-wow-delay="0.3s">
                     <c:forEach items="${articleDetailVo.tagCustomList}" var="t">
                         <li>
-                            <a href="/tag/${t.tagId}" rel="tag"
-                               style="background:#666666">
-                                    ${t.tagName}
+                            <a href="/tag/${t.tagId}" rel="tag" style="background:
+                            	<c:if test="${t.tagId%5==0}">
+                              			#912CEE
+                               	</c:if>
+                               	<c:if test="${t.tagId%5==1}">
+                              			#90EE90
+                               	</c:if>
+                               	<c:if test="${t.tagId%5==2}">
+                              			#CD3700
+                               	</c:if>
+                               	<c:if test="${t.tagId%5==3}">
+                              			#EEA9B8
+                               	</c:if>
+                               	<c:if test="${t.tagId%5==4}">
+                              			#FF00FF
+                               	</c:if>
+                               " >${t.tagName}
                             </a>
                         </li>
                     </c:forEach>
@@ -312,12 +326,12 @@
                     <form id="comment_form" method="post">
                         <c:if test="${sessionScope.user!=null}">
                             <div class="user_avatar">
-                                <img alt="言曌"
+                                <img alt="幻凡ss"
                                      src="${sessionScope.user.userAvatar}"
                                      class="avatar avatar-64 photo" height="64" width="64">
                                 登录者：${sessionScope.user.userNickname}
                                 <br> <a href="javascript:void(0)" onclick="logout()">登出</a>
-                                <input type="hidden" name="commentRole" value="1">
+                                <input type="hidden" name="commentRole" value="1" id="commentRole">
                                 <input type="hidden" name="commentAuthorName"
                                        value="${sessionScope.user.getUserNickname()}">
                                 <input type="hidden" name="commentAuthorEmail"
@@ -377,7 +391,7 @@
                                     <div class="comment-author vcard">
                                         <img class="avatar" src="${c.commentAuthorAvatar}" alt="avatar"
                                              style="display: block;">
-                                        <strong>${c.commentAuthorName} </strong>
+                                        <a href="${c.commentAuthorUrl}" target="_black"><strong>${c.commentAuthorName} </strong></a>
                                         <c:if test="${c.commentRole==1}">
                                             <i class="fa fa-black-tie" style="color: #c40000;"></i>
                                             <span class=""
@@ -426,7 +440,7 @@
                                                     <div class="comment-author vcard">
                                                         <img class="avatar" src="${c2.commentAuthorAvatar}" alt="avatar"
                                                              style="display: block;">
-                                                        <strong>${c2.commentAuthorName} </strong>
+                                                        <a href="${c2.commentAuthorUrl}"  target="_black"><strong>${c2.commentAuthorName} </strong></a>
                                                         <c:if test="${c2.commentRole==1}">
                                                             <i class="fa fa-black-tie" style="color: #c40000;"></i>
                                                             <span class=""

@@ -1,6 +1,6 @@
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
-<%@ page import="com.liuyanzhao.blog.util.Functions" %>
+<%@ page import="com.hfanss.blog.util.Functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
