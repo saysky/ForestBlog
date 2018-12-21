@@ -4,6 +4,9 @@ import com.liuyanzhao.blog.entity.Page;
 import com.liuyanzhao.blog.mapper.PageMapper;
 import com.liuyanzhao.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
+    @Cacheable(value = "default", key = "'page:'+#id")
     public Page getPageById(Integer id) {
         return pageMapper.getPageById(id);
     }
@@ -33,16 +37,19 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
+    @CachePut(value = "default", key = "'page:'+#page.pageId")
     public void insertPage(Page page) {
         pageMapper.insert(page);
     }
 
     @Override
+    @CacheEvict(value = "default", key = "'page:'+#id")
     public void deletePage(Integer id) {
         pageMapper.deleteById(id);
     }
 
     @Override
+    @CacheEvict(value = "default", key = "'page:'+#page.pageId")
     public void updatePage(Page page) {
         pageMapper.update(page);
     }

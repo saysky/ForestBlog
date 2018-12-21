@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.liuyanzhao.blog.util.Functions;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
     private ArticleMapper articleMapper;
 
     @Override
+    @CachePut(value = "default", key = "'comment:'+#comment.commentId")
     public void insertComment(Comment comment) {
         try {
             commentMapper.insert(comment);
@@ -57,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Cacheable(value = "comment", key = "'id_'+#id")
+    @Cacheable(value = "default", key = "'comment:'+#id")
     public Comment getCommentById(Integer id) {
         Comment comment = null;
         try {
@@ -109,7 +111,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @CacheEvict(value = "comment", key = "'id_'+#categoryId")
+    @CacheEvict(value = "default", key = "'comment:'+#comment.commentId")
     public void updateComment(Comment comment) {
         try {
             commentMapper.update(comment);

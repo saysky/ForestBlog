@@ -42,7 +42,7 @@ public class HomeResourceInterceptor implements WebRequestInterceptor {
      */
     @Override
     public void preHandle(WebRequest request) {
-        System.out.println("HomeResourceInterceptor...preHandle......");
+//        System.out.println("HomeResourceInterceptor...preHandle......");
 
 //        菜单显示
         List<Menu> menuList = menuService.listMenu();

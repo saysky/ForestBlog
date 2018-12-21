@@ -28,20 +28,20 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @CachePut(value = "menu", key = "'menu:'+#result.id")
+    @CachePut(value = "default", key = "'menu:'+#menu.menuId")
     public Menu insertMenu(Menu menu) {
         menuMapper.insert(menu);
         return menu;
     }
 
     @Override
-    @CacheEvict(value = "menu", key = "'menu:'+#id")
+    @CacheEvict(value = "default", key = "'menu:'+#id")
     public void deleteMenu(Integer id) {
         menuMapper.deleteById(id);
     }
 
     @Override
-    @CacheEvict(value = "menu", key = "'menu:'+#menu.menuId")
+    @CacheEvict(value = "default", key = "'menu:'+#menu.menuId")
     public void updateMenu(Menu menu) {
         menuMapper.update(menu);
     }
