@@ -109,7 +109,10 @@
 	<%--底部工具栏 end--%>
 	<div class="site-info">
 		<p style="text-align: center;">
-			Copyright © 2018 <a href="/" target="_blank" rel="noopener noreferrer">${options.optionSiteTitle}</a> All rights reserved. <a target="_blank" href="/map">
+			Copyright © 2018 
+			<a href="/" target="_blank" rel="noopener noreferrer">${options.optionSiteTitle}</a> 
+			All rights reserved <br>
+			<a target="_blank" href="/map">
 				<span class="font-text">站点地图</span>
 			</a>&nbsp;|&nbsp; <a target="_blank" href="#"> <span class="font-text">百度统计</span>
 			</a>

@@ -15,7 +15,9 @@
 
     <!-- 用户管理的service -->
     <bean id="userService" class="com.hfanss.blog.service.impl.UserServiceImpl"/>
-
+	<!-- COS文件上传的service -->
+    <bean id="uploadService" class="com.hfanss.blog.service.impl.CosServiceImpl"/>
+	
     <!-- 文章管理的service -->
     <bean id="articleService" class="com.hfanss.blog.service.impl.ArticleServiceImpl"/>
 

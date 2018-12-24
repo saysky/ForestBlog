@@ -38,6 +38,8 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public void insertComment(HttpServletRequest request, Comment comment) throws Exception {
 	    String ip = Functions.getIpAddr(request);
+	    String avatar = Functions.getGravatar(comment.getCommentAuthorEmail());//头像
+	    comment.setCommentLogoImgurl(avatar);
 	    comment.setCommentIp(ip);
 		commentMapper.insertSelective(comment);
 	}
@@ -84,8 +86,8 @@ public class CommentServiceImpl implements CommentService{
 			//评论信息
             CommentCustom commentCustom = commentCustomList.get(i);
 			//评论者Gravatar头像
-            String avatar = Functions.getGravatar(commentCustom.getCommentAuthorEmail());
-            commentCustom.setCommentAuthorAvatar(avatar);
+//            String avatar = Functions.getGravatar(commentCustom.getCommentAuthorEmail());
+            commentCustom.setCommentAuthorAvatar(commentCustom.getCommentLogoImgurl());
             commentListVo.setCommentCustom(commentCustomList.get(i));
 
 			commentListVoList.add(commentListVo);
@@ -114,8 +116,8 @@ public class CommentServiceImpl implements CommentService{
 			//评论信息
 			CommentCustom commentCustom = commentCustomList.get(i);
 			//评论者Gravatar头像
-			String avatar = Functions.getGravatar(commentCustom.getCommentAuthorEmail());
-			commentCustom.setCommentAuthorAvatar(avatar);
+//			String avatar = Functions.getGravatar(commentCustom.getCommentAuthorEmail());
+			commentCustom.setCommentAuthorAvatar(commentCustom.getCommentLogoImgurl());
 			commentListVo.setCommentCustom(commentCustomList.get(i));
 
 			commentListVoList.add(commentListVo);
@@ -155,7 +157,7 @@ public class CommentServiceImpl implements CommentService{
 			//给每个评论用户添加头像
 			String avatar = Functions.getGravatar(commentCustomList.get(i).getCommentAuthorEmail());
 			CommentCustom commentCustom = commentCustomList.get(i);
-			commentCustom.setCommentAuthorAvatar(avatar);
+			commentCustom.setCommentAuthorAvatar(commentCustom.getCommentLogoImgurl());
 			commentListVo.setCommentCustom(commentCustom);
 			//找到评论对应的文章信息
 			ArticleCustom articleCustom = articleMapperCustom.getArticleById(1,commentCustom.getCommentArticleId());

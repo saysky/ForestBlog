@@ -70,7 +70,7 @@
 		<div class="layui-form-item" pane="">
 			<label class="layui-form-label">标签</label>
 			<div id="tags-div" class="layui-input-block">
-				<input type="text" name="articleTagIds" lay-skin="primary" lay-verify="title"  title="用逗号间隔" placeholder="用逗号间隔"  onchange="chk()" autocomplete="off"class="layui-input">
+				<input type="text" name="articleTagIds" lay-skin="primary" lay-verify="articleTagIds"  title="用逗号间隔" placeholder="用逗号间隔"  onchange="chk()" autocomplete="off"class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">

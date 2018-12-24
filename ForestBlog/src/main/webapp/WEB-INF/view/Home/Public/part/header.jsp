@@ -12,7 +12,8 @@
     <div id="menu-box"  style="position: fixed;background: rgba(255, 255, 255, 0.7);">
         <div id="top-menu">
                 <span class="nav-search">
-                    <i class="fa fa-search"></i>
+<!--                      <i class="fa fa-search-plus" aria-hidden="true"></i> -->
+						搜索
                 </span>
             <div class="logo-site"><h1 class="site-title">
                 <a href="/admin" title="${options.optionSiteTitle}">

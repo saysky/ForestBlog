@@ -15,7 +15,8 @@
         comment_ip,
         comment_create_time,
         comment_role,
-        comment_status
+        comment_status,
+        comment_logo_imgurl
     </sql>
 
 

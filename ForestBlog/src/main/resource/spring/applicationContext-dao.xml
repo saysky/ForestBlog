@@ -58,7 +58,16 @@
         <!--加载mybatis全局配置文件-->
         <property name="configLocation" value="classpath:mybatis/Configuration.xml"/>
     </bean>
-
+	
+	<!-- <bean id="dbproperties" class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+			</list>
+		</property>
+	
+	</bean> -->
+	
     <!--mapper扫描器-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--如果需要扫描多个包，中间使用半角逗号隔开-->

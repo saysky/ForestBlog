@@ -5865,9 +5865,9 @@ li.search-inf {
 	.search-inf {
 		display: none;
 	}
-	.entry-meta {
+	/* .entry-meta {
 		display: none;
-	}
+	} */
 }
 /** 缁涘绨幋鏍х毈娴滐拷640px **/
 @media screen and (max-width: 640px) {

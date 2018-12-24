@@ -7,6 +7,7 @@ import com.hfanss.blog.entity.custom.CommentCustom;
 import com.hfanss.blog.entity.custom.CommentListVo;
 import com.hfanss.blog.service.ArticleService;
 import com.hfanss.blog.service.CommentService;
+import com.hfanss.blog.util.Functions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,9 @@ public class BackCommentController {
     @ResponseBody
     public void insertComment(HttpServletRequest request,Comment comment) throws Exception {
         //添加评论
+    	String avatar = Functions.getGravatar(comment.getCommentAuthorEmail());//头像
         comment.setCommentCreateTime(new Date());
+        comment.setCommentLogoImgurl(avatar);
         commentService.insertComment(request,comment);
         //更新文章的评论数
         Article article = articleService.getArticleById(null,comment.getCommentArticleId());

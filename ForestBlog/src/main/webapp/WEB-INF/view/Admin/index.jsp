@@ -295,16 +295,16 @@
                             </ul>
                             <ul class="subsubsub">
                                 <li class="all"><a
-                                        href="">全部<span
+                                        href="/admin/comment">全部<span
                                         class="count">（<span class="all-count">${allCommentCount}</span>）</span></a> |
                                 </li>
                                 <li class="moderated"><a
-                                        href="">待审<span
+                                        href="/admin/comment">待审<span
                                         class="count">（<span class="pending-count">${hiddenCommentCount}</span>）</span></a>
                                     |
                                 </li>
                                 <li class="approved"><a
-                                        href="">已批准<span
+                                        href="/admin/comment">已批准<span
                                         class="count">（<span
                                         class="approved-count">${approvedCommentCount}</span>）</span></a> |
                                 </li>

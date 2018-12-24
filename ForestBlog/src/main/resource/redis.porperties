@@ -1,0 +1,10 @@
+# Redis settings  
+redis.host=127.0.0.1
+redis.port=6379  
+#redis.pass=password
+redis.dbIndex=0  
+redis.expiration=3000  
+redis.maxIdle=300  
+redis.maxActive=600  
+redis.maxWait=1000  
+redis.testOnBorrow=true

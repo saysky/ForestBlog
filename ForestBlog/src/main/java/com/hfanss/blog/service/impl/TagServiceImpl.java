@@ -1,6 +1,13 @@
 package com.hfanss.blog.service.impl;
 
-import com.hfanss.blog.entity.Category;
+import java.util.ArrayList;
+import java.util.List;
+
+//import org.junit.platform.commons.util.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+
 import com.hfanss.blog.entity.Tag;
 import com.hfanss.blog.entity.custom.ArticleCustom;
 import com.hfanss.blog.entity.custom.ArticleListVo;
@@ -13,13 +20,6 @@ import com.hfanss.blog.mapper.custom.CategoryMapperCustom;
 import com.hfanss.blog.mapper.custom.TagMapperCustom;
 import com.hfanss.blog.service.TagService;
 import com.hfanss.blog.util.others.Page;
-
-import org.junit.platform.commons.util.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 言曌 on 2017/9/2.
@@ -166,7 +166,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public String getTagIds(String articleTagIds) throws Exception {
-		if (StringUtils.isBlank(articleTagIds)) {
+		if (StringUtils.isEmpty(articleTagIds)) {
 			return "";
 		}else {
 			String[] tagNames= articleTagIds.replaceAll("，", ",").split(",");

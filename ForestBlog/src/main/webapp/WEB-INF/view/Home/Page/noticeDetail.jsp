@@ -61,9 +61,9 @@
                                 </a>
                             </li>
                         </ul>
-                        <ul id="fontsize">
+                        <!-- <ul id="fontsize">
                             <li>A+</li>
-                        </ul>
+                        </ul> -->
                         
                     </footer><!-- .entry-footer -->
 

@@ -15,11 +15,12 @@
     <result column="comment_create_time" property="commentCreateTime" jdbcType="TIMESTAMP" />
     <result column="comment_role" property="commentRole" jdbcType="INTEGER" />
     <result column="comment_status" property="commentStatus" jdbcType="INTEGER" />
+    <result column="comment_logo_imgurl" property="commentLogoImgurl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     comment_id, comment_pid, comment_pname, comment_article_id, comment_author_name, 
     comment_author_email, comment_author_url, comment_content, comment_agent, comment_ip, 
-    comment_create_time, comment_role, comment_status
+    comment_create_time, comment_role, comment_status,comment_logo_imgurl
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,12 +37,12 @@
       comment_article_id, comment_author_name, comment_author_email, 
       comment_author_url, comment_content, comment_agent, 
       comment_ip, comment_create_time, comment_role, 
-      comment_status)
+      comment_status,comment_logo_imgurl)
     values (#{commentId,jdbcType=INTEGER}, #{commentPid,jdbcType=INTEGER}, #{commentPname,jdbcType=VARCHAR}, 
       #{commentArticleId,jdbcType=INTEGER}, #{commentAuthorName,jdbcType=VARCHAR}, #{commentAuthorEmail,jdbcType=VARCHAR}, 
       #{commentAuthorUrl,jdbcType=VARCHAR}, #{commentContent,jdbcType=VARCHAR}, #{commentAgent,jdbcType=VARCHAR}, 
       #{commentIp,jdbcType=VARCHAR}, #{commentCreateTime,jdbcType=TIMESTAMP}, #{commentRole,jdbcType=INTEGER}, 
-      #{commentStatus,jdbcType=INTEGER})
+      #{commentStatus,jdbcType=INTEGER}),#{commentLogoImgurl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hfanss.blog.entity.Comment" >
     insert into comment
@@ -85,6 +86,9 @@
       <if test="commentStatus != null" >
         comment_status,
       </if>
+      <if test="commentLogoImgurl != null" >
+        comment_logo_imgurl,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="commentId != null" >
@@ -125,6 +129,9 @@
       </if>
       <if test="commentStatus != null" >
         #{commentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="commentLogoImgurl != null" >
+        #{commentLogoImgurl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -167,6 +174,9 @@
       <if test="commentStatus != null" >
         comment_status = #{commentStatus,jdbcType=INTEGER},
       </if>
+      <if test="commentLogoImgurl != null" >
+        comment_logo_imgurl = #{commentLogoImgurl,jdbcType=VARCHAR},
+      </if>
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
@@ -183,7 +193,8 @@
       comment_ip = #{commentIp,jdbcType=VARCHAR},
       comment_create_time = #{commentCreateTime,jdbcType=TIMESTAMP},
       comment_role = #{commentRole,jdbcType=INTEGER},
-      comment_status = #{commentStatus,jdbcType=INTEGER}
+      comment_status = #{commentStatus,jdbcType=INTEGER},
+      comment_logo_imgurl = #{commentLogoImgurl,jdbcType=VARCHAR}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
 </mapper>

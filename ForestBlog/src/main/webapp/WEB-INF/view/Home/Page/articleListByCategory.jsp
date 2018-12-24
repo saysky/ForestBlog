@@ -61,10 +61,10 @@
 
                                             <figure class="thumbnail">
                                                 <a href="/article/${a.articleCustom.articleId}">
-                                                    <img width="280" height="210"
-                                                         src="/img/thumbnail/random/img_${a.articleCustom.articleId%400}.jpg"
-                                                         class="attachment-content size-content wp-post-image"
-                                                         alt="${a.articleCustom.articleTitle}">
+                                                    <img width="280" height="280"
+					                                     src=" ${a.articleCustom.articleImg}"
+					                                     class="attachment-content size-content wp-post-image"
+					                                     alt="${a.articleCustom.articleTitle}">
                                                 </a>
                                                 <span class="cat">
                                             <a href="/category/${a.categoryCustomList[a.categoryCustomList.size() - 1].categoryId}">

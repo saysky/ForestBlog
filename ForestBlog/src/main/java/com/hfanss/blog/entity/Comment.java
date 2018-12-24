@@ -28,8 +28,18 @@ public class Comment {
     private Integer commentRole;
 
     private Integer commentStatus;
+    
+    private String commentLogoImgurl;
+    
+    public String getCommentLogoImgurl() {
+		return commentLogoImgurl;
+	}
 
-    public Integer getCommentId() {
+	public void setCommentLogoImgurl(String commentLogoImgurl) {
+		this.commentLogoImgurl = commentLogoImgurl;
+	}
+
+	public Integer getCommentId() {
         return commentId;
     }
 
