@@ -6,8 +6,8 @@
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html)
 
 ## 效果预览
-
-预览地址：http://ssm.liuyanzhao.com  <br/>
+因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客，样式差不多，特此说明。 <br/>
+预览地址：http://blog.liuyanzhao.com  <br/>
 前台效果图  <br/>
 ![](https://liuyanzhao.com/wp-content/uploads/2018/12/ssmblog.png)
 
