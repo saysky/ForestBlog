@@ -7,12 +7,12 @@
 
 ## 效果预览
 
-预览地址：http://blog.liuyanzhao.com  <br/>
+预览地址：http://ssm.liuyanzhao.com  <br/>
 前台效果图  <br/>
 ![](https://liuyanzhao.com/wp-content/uploads/2018/12/ssmblog.png)
 
 后台效果图  <br/>
-![](https://liuyanzhao.com/wp-content/uploads/2018/12/ssmblog2.png)
+![](https://liuyanzhao.com/wp-content/uploads/2019/01/WX20190116-125236@2x.png)
 <br/>
 后台地址：/admin 或者 /login <br/>
 为了避免大家删除数据，暂时不给后台账号
