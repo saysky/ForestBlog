@@ -129,7 +129,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © ${options.optionSiteTitle} - 后台
+        © <a href="http://blog.liuyanzhao.com">言曌博客</a> 2017  欢迎加入开发者交流群 590480292，博主免费回答大家日常问题。同时博主代做毕设，解决开发问题，详情参看 <a href="https://liuyanzhao.com/bulletin/my-service/" target="_blank">有偿服务</a>
     </div>
 </div>
 

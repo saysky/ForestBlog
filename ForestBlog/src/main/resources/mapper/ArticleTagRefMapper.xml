@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.liuyanzhao.blog.mapper.ArticleTagRefMapper">
-  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.ArticleTagRef">
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.ArticleTagRefMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.ArticleTagRef">
     <result column="article_id" jdbcType="INTEGER" property="articleId" />
     <result column="tag_id" jdbcType="INTEGER" property="tagId" />
   </resultMap>
@@ -27,7 +27,7 @@
     where tag_id = #{value}
   </select>
 
-  <select id="listTagByArticleId" parameterType="java.lang.Integer" resultType="com.liuyanzhao.blog.entity.Tag">
+  <select id="listTagByArticleId" parameterType="java.lang.Integer" resultType="com.liuyanzhao.ssm.blog.entity.Tag">
     SELECT tag.* FROM tag, article_tag_ref
     WHERE article_tag_ref.article_id = #{value} AND
     article_tag_ref.tag_id = tag.tag_id

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.blog.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.User">
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.User">
         <id column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="user_pass" property="userPass" jdbcType="VARCHAR"/>
@@ -35,7 +35,7 @@
         where user_id = #{userId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.User" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.User" useGeneratedKeys="true" keyProperty="userId">
         insert into
         <include refid="tb"/>
         (user_id, user_name, user_pass,
@@ -48,7 +48,7 @@
         #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER})
     </insert>
 
-    <update id="update" parameterType="com.liuyanzhao.blog.entity.User">
+    <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.User">
         update
         <include refid="tb"/>
         <set>
@@ -67,8 +67,8 @@
     </update>
 
     <!--用户列表查询-->
-    <select id="listUser" parameterType="com.liuyanzhao.blog.entity.User"
-            resultType="com.liuyanzhao.blog.entity.User">
+    <select id="listUser" parameterType="com.liuyanzhao.ssm.blog.entity.User"
+            resultType="com.liuyanzhao.ssm.blog.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -77,7 +77,7 @@
     </select>
 
     <!--根据用户名或邮箱获得用户-->
-    <select id="getUserByNameOrEmail" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+    <select id="getUserByNameOrEmail" parameterType="String" resultType="com.liuyanzhao.ssm.blog.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -90,7 +90,7 @@
     </select>
 
     <!--根据用户名查用户-->
-    <select id="getUserByName" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+    <select id="getUserByName" parameterType="String" resultType="com.liuyanzhao.ssm.blog.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -102,7 +102,7 @@
     </select>
 
     <!--根据Email查用户-->
-    <select id="getUserByEmail" parameterType="String" resultType="com.liuyanzhao.blog.entity.User">
+    <select id="getUserByEmail" parameterType="String" resultType="com.liuyanzhao.ssm.blog.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.blog.mapper.OptionsMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Options">
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.OptionsMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Options">
         <id column="option_id" property="optionId" jdbcType="INTEGER"/>
         <result column="option_site_title" property="optionSiteTitle" jdbcType="VARCHAR"/>
         <result column="option_site_descrption" property="optionSiteDescrption" jdbcType="VARCHAR"/>
@@ -41,7 +41,7 @@
         where option_id = #{optionId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Options">
+    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Options">
         insert into
         <include refid="tb"/>
         (option_id, option_site_title, option_site_descrption,
@@ -61,7 +61,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.liuyanzhao.blog.entity.Options">
+    <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Options">
         update
         <include refid="tb"/>
         <set>
@@ -95,7 +95,7 @@
     </update>
 
 
-    <select id="getOptions" resultType="com.liuyanzhao.blog.entity.Options">
+    <select id="getOptions" resultType="com.liuyanzhao.ssm.blog.entity.Options">
         SELECT * FROM
         <include refid="tb"/>
         limit 1

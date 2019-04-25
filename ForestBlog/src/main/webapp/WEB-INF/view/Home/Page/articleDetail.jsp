@@ -3,14 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/myTag.tld" prefix="lyz" %>
 <%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
-
-<%--<rapid:override name="description">--%>
-<%--</rapid:override>--%>
-
-<%--<rapid:override name="keywords">--%>
-<%--</rapid:override>--%>
 
 <rapid:override name="title">
     <title>${article.articleTitle}</title>

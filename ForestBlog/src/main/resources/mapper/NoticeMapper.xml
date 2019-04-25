@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.blog.mapper.NoticeMapper" >
-  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Notice" >
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Notice" >
     <id column="notice_id" property="noticeId" jdbcType="INTEGER" />
     <result column="notice_title" property="noticeTitle" jdbcType="VARCHAR" />
     <result column="notice_content" property="noticeContent" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
     where notice_id = #{noticeId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Notice" useGeneratedKeys="true" keyProperty="noticeId">
+  <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Notice" useGeneratedKeys="true" keyProperty="noticeId">
     insert into <include refid="tb"/>
     (notice_id, notice_title, notice_content,
       notice_create_time, notice_update_time, 
@@ -39,7 +39,7 @@
       #{noticeStatus,jdbcType=INTEGER}, #{noticeOrder,jdbcType=INTEGER})
   </insert>
 
-  <update id="update" parameterType="com.liuyanzhao.blog.entity.Notice" >
+  <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Notice" >
     update <include refid="tb"/>
     <set >
       <if test="noticeTitle != null" > notice_title = #{noticeTitle,jdbcType=VARCHAR},</if>
@@ -52,7 +52,7 @@
     where notice_id = #{noticeId,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.liuyanzhao.blog.entity.Notice" >
+  <update id="updateByPrimaryKey" parameterType="com.liuyanzhao.ssm.blog.entity.Notice" >
     update <include refid="tb"/>
     set notice_title = #{noticeTitle,jdbcType=VARCHAR},
       notice_content = #{noticeContent,jdbcType=VARCHAR},
@@ -74,7 +74,7 @@
   </select>
 
   <!--获取公告列表-->
-  <select id="listNotice" resultType="com.liuyanzhao.blog.entity.Notice">
+  <select id="listNotice" resultType="com.liuyanzhao.ssm.blog.entity.Notice">
     SELECT
     <include refid="Base_Column_List"/>
     FROM  <include refid="tb"/>

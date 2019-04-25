@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.blog.mapper.PageMapper" >
-  <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.Page" >
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.PageMapper" >
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Page" >
     <id column="page_id" property="pageId" jdbcType="INTEGER" />
     <result column="page_key" property="pageKey" jdbcType="VARCHAR" />
     <result column="page_title" property="pageTitle" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
     where page_id = #{pageId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.liuyanzhao.blog.entity.Page" useGeneratedKeys="true" keyProperty="pageId">
+  <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Page" useGeneratedKeys="true" keyProperty="pageId">
     insert into <include refid="tb"/>
     (page_id, page_key, page_title,
       page_content, page_create_time, page_update_time, 
@@ -44,7 +44,7 @@
   </insert>
 
 
-  <update id="update" parameterType="com.liuyanzhao.blog.entity.Page" >
+  <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Page" >
     update <include refid="tb"/>
     <set >
       <if test="pageKey != null" > page_key = #{pageKey,jdbcType=VARCHAR},</if>
@@ -60,7 +60,7 @@
   </update>
 
   <!--获得页面列表-->
-  <select id="listPage" resultType="com.liuyanzhao.blog.entity.Page">
+  <select id="listPage" resultType="com.liuyanzhao.ssm.blog.entity.Page">
     SELECT
     <include refid="Base_Column_List"/>
     FROM <include refid="tb"/>
@@ -72,7 +72,7 @@
   </select>
 
   <!--根据key获得-->
-  <select id="getPageByKey" resultType="com.liuyanzhao.blog.entity.Page">
+  <select id="getPageByKey" resultType="com.liuyanzhao.ssm.blog.entity.Page">
     SELECT
     <include refid="Base_Column_List"/>
     FROM

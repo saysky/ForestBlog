@@ -19,6 +19,7 @@
                         <a href="/admin">进入后台</a>
                     </c:otherwise>
                 </c:choose>
+                <a href="https://liuyanzhao.com/bulletin/my-service" target="_blank" style="color:red;">毕设代做/有偿服务</a>
             </div>
             <div class="menu-topmenu-container">
                 <ul id="menu-topmenu" class="top-menu">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.liuyanzhao.blog.mapper.ArticleCategoryRefMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.blog.entity.ArticleCategoryRef">
+<mapper namespace="com.liuyanzhao.ssm.blog.mapper.ArticleCategoryRefMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.ArticleCategoryRef">
         <result column="article_id" jdbcType="INTEGER" property="articleId"/>
         <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
     </resultMap>
@@ -47,7 +47,7 @@
     </select>
 
     <select id="listCategoryByArticleId" parameterType="java.lang.Integer"
-            resultType="com.liuyanzhao.blog.entity.Category">
+            resultType="com.liuyanzhao.ssm.blog.entity.Category">
         SELECT
         category.category_id, category.category_pid, category.category_name
         FROM category, article_category_ref
