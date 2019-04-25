@@ -9,10 +9,10 @@
 因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客，样式差不多，特此说明。 <br/>
 预览地址：http://blog.liuyanzhao.com  <br/>
 前台效果图  <br/>
-![](https://liuyanzhao.com/wp-content/uploads/2018/12/ssmblog.png)
-
+![](https://liuyanzhao.com/wp-content/uploads/2019/04/home.png)
+<br/>
 后台效果图  <br/>
-![](https://liuyanzhao.com/wp-content/uploads/2019/01/WX20190116-125236@2x.png)
+![](https://liuyanzhao.com/wp-content/uploads/2019/04/admin.png)
 <br/>
 后台地址：/admin 或者 /login <br/>
 为了避免大家删除数据，暂时不给后台账号
@@ -27,12 +27,15 @@
 #### 3.请安装 Lombok 插件
 代码中多次使用 `@Data` 注解，请确保你的 IDE 安装了 `Lombok` 插件，否则找不到 getter/setter 方法
 
-#### 4.请安装 Redis
-项目中简单集成了 `Redis`，请确保提前安装好 `Redis`，`Redis` 密码在 `db.properties` 配置文件中有，默认为空
+#### 4.确保数据库版本是5.x 版本，8.x版本需要修改配置
+对于MySQL8.x版本需要修改 pom.xml 里MySQL驱动版本和数据库驱动名称
+
 
 #### 5.项目首页没有文件夹名称
 确保 tomcat 配置中 `application context` 是 /，而不是 /ForestBlog。这是导致你们首页css样式全无的原因，因为引用css路径都是 /xxx/xxx.css
 ![](https://liuyanzhao.com/wp-content/uploads/2018/12/tomcat.png)
+
+具体情况请看步骤
 
 ## 使用步骤
 任何问题都可以联系我 <br/>
@@ -55,7 +58,7 @@ forest_blog.sql: 数据库文件，请先创建数据库，然后以运行sql文
 
 #### 4、修改项目中的数据库连接信息   <br/>
 修改 `db.properties` 文件，该文件很容易找到，在 src/main/resources 中<br/>
-里面有 MySQL 和 Redis 的数据库连接信息，请确保已安装和启动 MySQL 和 Redis <br/>
+里面有 MySQL, 请确保已安装和启动 MySQL <br/>
 注意修改数据库地址、表名、用户名和密码。<br/>
 
  
@@ -85,3 +88,12 @@ Github地址：https://github.com/saysky/ForestBlog
 大更，重新规范了代码，完善了注释，集成了 Redis
 
 首次提交：2017年10月10日  <br/>
+
+## 请喝一杯奶茶
+请我喝一杯奶茶吧！
+插条广告：博主最近比较闲，长期接毕设定制，软件定制，Java问题解决 <br/>
+具体查看[有偿服务](https://liuyanzhao.com/bulletin/my-service)
+
+![](https://liuyanzhao.com/wp-content/uploads/2019/04/donate.png)
+
+
