@@ -44,11 +44,11 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="${loginUser.userAvatar}" class="layui-nav-img">
-                    ${loginUser.userName}
+                    <img src="${sessionScope.user.userAvatar}" class="layui-nav-img">
+                    ${sessionScope.user.userName}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/user/profile/${loginUser.userId}">基本资料</a></dd>
+                    <dd><a href="/admin/user/profile/${sessionScope.user.userId}">基本资料</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">

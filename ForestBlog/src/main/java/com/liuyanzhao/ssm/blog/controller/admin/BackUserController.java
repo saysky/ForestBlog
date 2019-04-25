@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -173,14 +174,14 @@ public class BackUserController {
     /**
      * 基本信息页面显示
      *
-     * @param id
      * @return
      */
-    @RequestMapping(value = "/profile/{id}")
-    public ModelAndView userProfileView(@PathVariable("id") Integer id)  {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/profile")
+    public ModelAndView userProfileView(HttpSession session)  {
 
-        User user =  userService.getUserById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        User sessionUser = (User) session.getAttribute("user");
+        User user =  userService.getUserById(sessionUser.getUserId());
         modelAndView.addObject("user",user);
 
         modelAndView.setViewName("Admin/User/profile");
