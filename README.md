@@ -9,10 +9,10 @@
 因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客，样式差不多，特此说明。 <br/>
 预览地址：http://blog.liuyanzhao.com  <br/>
 前台效果图  <br/>
-![](https://liuyanzhao.com/wp-content/uploads/2019/04/home.png)
+![image](https://github.com/saysky/ForestBlog/blob/master/uploads/home.png)
 <br/>
 后台效果图  <br/>
-![](https://liuyanzhao.com/wp-content/uploads/2019/04/admin.png)
+![image](https://github.com/saysky/ForestBlog/blob/master/uploads/admin.png)
 <br/>
 后台地址：/admin 或者 /login <br/>
 为了避免大家删除数据，暂时不给后台账号
@@ -33,7 +33,7 @@
 
 #### 5.项目首页没有文件夹名称
 确保 tomcat 配置中 `application context` 是 /，而不是 /ForestBlog。这是导致你们首页css样式全无的原因，因为引用css路径都是 /xxx/xxx.css
-![](https://liuyanzhao.com/wp-content/uploads/2018/12/tomcat.png)
+![image](https://github.com/saysky/ForestBlog/blob/master/uploads/tomcat.png)
 
 具体情况请看步骤
 
@@ -70,7 +70,7 @@ forest_blog.sql: 数据库文件，请先创建数据库，然后以运行sql文
 如果不修改，会出现无法上传失败；<br/>
 
 2. 给 IDEA 设置静态资源映射，在 tomcat 配置中 Deployment 里面添加，如图
-![](https://liuyanzhao.com/wp-content/uploads/2018/12/tomcat2.png)
+![image](https://github.com/saysky/ForestBlog/blob/master/uploads/tomcat2.png)
 
 如果你是在 Linux 服务器上部署，需要在 Tomcat 配置文件中添加 <br/>
 在 tomcat/conf/server.xml 的 Host 标签内添加如下代码 <br/>
@@ -94,6 +94,6 @@ Github地址：https://github.com/saysky/ForestBlog
 插条广告：博主最近比较闲，长期接毕设定制，软件定制，Java问题解决 <br/>
 具体查看[有偿服务](https://liuyanzhao.com/bulletin/my-service)
 
-![](https://liuyanzhao.com/wp-content/uploads/2019/04/donate.png)
+![image](https://github.com/saysky/ForestBlog/blob/master/uploads/donate.png)
 
 
