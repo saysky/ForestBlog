@@ -85,13 +85,21 @@ Github地址：https://github.com/saysky/ForestBlog
  
 ## 更新记录
 第二次更新：2018年11月26日 <br/>
-大更，重新规范了代码，完善了注释，集成了 Redis
+大更，重新规范了代码，完善了注释
 
 首次提交：2017年10月10日  <br/>
 
+### 更新但为开源，需要的可以联系博主
+2019年2月(已完成) <br/>
+基于 SpringBoot+ElasticSearch+Shiro+FreeMarker+AdminLte实现，几乎重做，预览地址：http://blog.liuyanzhao.com <br/>
+
+2019年7月(开发中)  <br/>
+前端使用 Vue Element UI改造，后端优化 <br/>
+
+
 ## 请喝一杯奶茶
 请我喝一杯奶茶吧！
-插条广告：博主最近比较闲，长期接毕设定制，软件定制，Java问题解决 <br/>
+插条广告：博主最近有点时间，长期接毕设定制，软件定制，Java问题解决 <br/>
 具体查看[有偿服务](https://liuyanzhao.com/bulletin/my-service)
 
 ![image](https://github.com/saysky/ForestBlog/blob/master/uploads/donate.png)
