@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.liuyanzhao.ssm.blog.util.Functions.getIpAddr;
+import static com.liuyanzhao.ssm.blog.util.MyUtils.getIpAddr;
 
 /**
  * @author liuyanzhao

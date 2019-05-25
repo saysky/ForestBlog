@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.liuyanzhao.ssm.blog.entity.Article;
 import com.liuyanzhao.ssm.blog.entity.Comment;
 import com.liuyanzhao.ssm.blog.enums.ArticleStatus;
-import com.liuyanzhao.ssm.blog.util.Functions;
+import com.liuyanzhao.ssm.blog.util.MyUtils;
 import com.liuyanzhao.ssm.blog.service.ArticleService;
 import com.liuyanzhao.ssm.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class BackCommentController {
     @ResponseBody
     public void insertComment(HttpServletRequest request, Comment comment) {
         //添加评论
-        comment.setCommentIp(Functions.getIpAddr(request));
+        comment.setCommentIp(MyUtils.getIpAddr(request));
         comment.setCommentCreateTime(new Date());
         commentService.insertComment(comment);
         //更新文章的评论数
@@ -142,7 +142,7 @@ public class BackCommentController {
         articleService.updateArticle(article);
         //添加评论
         comment.setCommentCreateTime(new Date());
-        comment.setCommentIp(Functions.getIpAddr(request));
+        comment.setCommentIp(MyUtils.getIpAddr(request));
         commentService.insertComment(comment);
         return "redirect:/admin/comment";
     }

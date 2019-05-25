@@ -22,7 +22,7 @@
     <style type="text/css">
         body{
             font-family: "Microsoft YaHei", Helvetica, Arial, Lucida Grande, Tahoma, sans-serif;
-            background: url(http://blogcdn.liuyanzhao.com/img/loginBg.jpg);
+            background: url(/img/loginBg.jpg);
             width:100%;
             height:100%;
         }

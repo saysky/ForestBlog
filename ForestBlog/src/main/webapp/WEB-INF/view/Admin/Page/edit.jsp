@@ -84,7 +84,7 @@
             //上传图片,必须放在 创建一个编辑器前面
             layedit.set({
                 uploadImage: {
-                    url: '/uploadFile' //接口url
+                    url: '/admin/upload/img' //接口url
                     , type: 'post' //默认post
                 }
             });

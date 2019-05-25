@@ -109,7 +109,7 @@
                 upload = layui.upload;
             var uploadInst = upload.render({
                 elem: '#test1',
-                url: '/uploadFile',
+                url: '/admin/upload/img',
                 before: function (obj) {
                     console.log(obj);
                     obj.preview(function (index, file, result) {

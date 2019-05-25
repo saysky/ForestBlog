@@ -482,6 +482,22 @@
     <script src="/js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+
+        $(document).ready(function () {
+            if ($('#author_name').val() == '') {
+                var author = localStorage.getItem("author");
+                $("#author_name").val(author == 'undefined' ? '' : author);
+            }
+            if ($('#author_email').val() == '') {
+                var email = localStorage.getItem("email");
+                $("#author_email").val(email == 'undefined' ? '' : email);
+            }
+            if ($('#author_url').val() == '') {
+                var url = localStorage.getItem("url");
+                $("#author_url").val(url == 'undefined' ? '' : url);
+            }
+        });
+
         var articleId = $("#articleDetail").attr("data-id");
         increaseViewCount(articleId);
         layui.code({
@@ -489,6 +505,7 @@
             // skin: 'notepad', //如果要默认风格，不用设定该key。
             about: false
         });
+
     </script>
 
 </rapid:override>

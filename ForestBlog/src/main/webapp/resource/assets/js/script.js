@@ -353,11 +353,23 @@ $("#comment_form").submit(function () {
         url: '/comment',
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
         data: $("#comment_form").serialize(),
-        success: function () {
+        success: function (data) {
+            if (data.code == 0) {
+                layer.msg("评论成功！");
+                localStorage.setItem('author', $("#author_name").val());
+                localStorage.setItem('email', $("#author_email").val());
+                localStorage.setItem('url', $("#author_url").val());
+                window.setTimeout(window.location.reload, 2000);
+                return false;
+            } else {
+                layer.msg(data.msg);
+            }
+
         },
         error: function () {
         }
     })
+    return false;
 })
 
 //百度分享

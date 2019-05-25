@@ -51,14 +51,14 @@
             </if>
             <if test="categoryId != null">
                 article.article_id IN (
-                  SELECT article_category_ref.article_id FROM article_category_ref
-                  WHERE article_category_ref.category_id = #{categoryId}
+                SELECT article_category_ref.article_id FROM article_category_ref
+                WHERE article_category_ref.category_id = #{categoryId}
                 ) AND
             </if>
             <if test="tagId != null">
                 article.article_id IN (
-                  SELECT article_tag_ref.article_id FROM article_tag_ref
-                  WHERE article_tag_ref.tag_id = #{tagId}
+                SELECT article_tag_ref.article_id FROM article_tag_ref
+                WHERE article_tag_ref.tag_id = #{tagId}
                 ) AND
             </if>
             1 = 1
@@ -248,10 +248,10 @@
     <update id="updateCommentCount" parameterType="Integer">
         UPDATE
         <include refid="tb"/>
-        SET article_comment_count=
+        SET article_comment_count =
         (
         SELECT count(*) FROM `comment`
-        WHERE article.article_id=comment.comment_article_id AND comment_status=1
+        WHERE article.article_id=comment.comment_article_id
         )
         WHERE article_id=#{articleId}
     </update>
