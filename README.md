@@ -1,3 +1,4 @@
+最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS)
 # 关于项目
 
 该博客是基于SSM实现的一个个人博客系统，适合初学SSM和个人博客制作的同学学习。
@@ -6,13 +7,13 @@
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html)
 
 ## 效果预览
-因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客，样式差不多，特此说明。 <br/>
+因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客（已开源：[SENS](https://github.com/saysky/SENS)），样式差不多，特此说明。 <br/>
 预览地址：http://blog.liuyanzhao.com  <br/>
 前台效果图  <br/>
-![image](https://github.com/saysky/ForestBlog/blob/master/uploads/home.png)
+![image](uploads/home.png)
 <br/>
 后台效果图  <br/>
-![image](https://github.com/saysky/ForestBlog/blob/master/uploads/admin.png)
+![image](uploads/admin.png)
 <br/>
 后台地址：/admin 或者 /login <br/>
 为了避免大家删除数据，暂时不给后台账号
