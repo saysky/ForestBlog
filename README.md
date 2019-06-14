@@ -90,9 +90,10 @@ Github地址：https://github.com/saysky/ForestBlog
 
 首次提交：2017年10月10日  <br/>
 
-### 更新但为开源，需要的可以联系博主
+### 新的架构博客已开源，需要的可以联系博主
 2019年2月(已完成) <br/>
 基于 SpringBoot+ElasticSearch+Shiro+FreeMarker+AdminLte实现，几乎重做，预览地址：http://blog.liuyanzhao.com <br/>
+[SENS](https://github.com/saysky/SENS)
 
 2019年7月(开发中)  <br/>
 前端使用 Vue Element UI改造，后端优化 <br/>
