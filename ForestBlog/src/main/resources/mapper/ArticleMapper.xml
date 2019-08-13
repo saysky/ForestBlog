@@ -34,7 +34,7 @@
         ORDER BY article_id DESC
     </select>
 
-    <select id="findAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT
         article.*
         FROM
