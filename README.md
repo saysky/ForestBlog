@@ -1,3 +1,4 @@
+最新消息，SpringCloud 博客、音乐、商城、论坛系统开发中，开源，[sens-parent](https://github.com/saysky/sens-parent) <br/>
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS)
 # 关于项目
 
