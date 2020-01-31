@@ -48,7 +48,7 @@
                     ${sessionScope.user.userName}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/user/profile/${sessionScope.user.userId}">基本资料</a></dd>
+                    <dd><a href="/admin/user/profile">基本资料</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
