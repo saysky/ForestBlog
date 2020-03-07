@@ -7,6 +7,10 @@
 前端采用Layui框架和扒了一个[网站](http://liuyanzhao.com)的前台样式。 <br/>
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html)
 
+最新写了一篇该项目的毕业设计论文，需要的朋友可以联系
+
+博主提供该项目的讲解，问题解决，部署等服务
+
 ## 效果预览
 因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。目前部署的是SpringBoot+MyBatis+FreeMarker的博客（已开源：[SENS](https://github.com/saysky/SENS)），样式差不多，特此说明。 <br/>
 预览地址：http://blog.liuyanzhao.com  <br/>
