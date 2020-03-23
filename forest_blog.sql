@@ -35,7 +35,11 @@ CREATE TABLE `article` (
   `article_update_time` datetime DEFAULT NULL,
   `article_create_time` datetime DEFAULT NULL,
   `article_summary` text,
-  PRIMARY KEY (`article_id`)
+  PRIMARY KEY (`article_id`),
+  KEY `article_article_user_id` (`article_user_id`),
+  KEY `article_article_update_time` (`article_update_time`),
+  KEY `article_article_order_article_id` (`article_order`, `article_id`),
+  FULLTEXT KEY `article_article_title` (`article_title`)
 ) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
