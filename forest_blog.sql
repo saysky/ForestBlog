@@ -94,7 +94,7 @@ CREATE TABLE `category` (
   `category_icon` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_name` (`category_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=100000007 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=100000007 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `category`
@@ -122,7 +122,7 @@ CREATE TABLE `comment` (
   `comment_create_time` datetime DEFAULT NULL,
   `comment_role` int(1) DEFAULT NULL,
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `comment`
@@ -266,7 +266,7 @@ CREATE TABLE `tag` (
   `tag_description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`tag_id`),
   UNIQUE KEY `tag_name` (`tag_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `tag`
