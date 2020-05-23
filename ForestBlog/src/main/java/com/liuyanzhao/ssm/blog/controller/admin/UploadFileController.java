@@ -22,7 +22,7 @@ public class UploadFileController {
     /**
      * 文件保存目录，物理路径
      */
-    public final String rootPath = "/Users/liuyanzhao/Documents/uploads";
+    public final String rootPath = "D:\\File\\code\\java\\ForestBlog\\uploads";
 
     public final String allowSuffix = ".bmp.jpg.jpeg.png.gif.pdf.doc.zip.rar.gz";
 
