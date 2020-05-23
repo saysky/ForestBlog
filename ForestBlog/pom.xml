@@ -136,11 +136,10 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
         </dependency>
-        <!-- apache共公包 -->
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <!-- 添加junit支持 -->
         <dependency>
@@ -214,7 +213,11 @@
             <artifactId>hutool-all</artifactId>
             <version>4.1.13</version>
         </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>org.apache.tomcat.embed</groupId>-->
+<!--            <artifactId>tomcat-embed-core</artifactId>-->
+<!--            <version>8.5.47</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <properties>

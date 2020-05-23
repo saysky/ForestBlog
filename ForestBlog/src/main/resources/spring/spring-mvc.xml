@@ -17,8 +17,12 @@
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
-
-    <context:component-scan base-package="com.liuyanzhao.ssm.blog" />
+    <!-- 自动扫描且只扫描SpringMVC注解 -->
+    <context:component-scan base-package="com.liuyanzhao.ssm.blog">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 
     <!-- 一个配置节解决映射器和适配器的配置注解配置 -->
     <mvc:annotation-driven></mvc:annotation-driven>

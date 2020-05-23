@@ -31,7 +31,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      classpath:spring/spring-*.xml,
+      classpath:spring/spring-core.xml,
     </param-value>
   </context-param>
 
@@ -72,7 +72,28 @@
     <servlet-name>ForestBlog</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
+<!--druid监控  -->
+  <servlet>
+    <servlet-name>druidStatView</servlet-name>
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    <init-param>
+      <!-- 允许清空统计数据 -->
+      <param-name>resetEnable</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loginUsername</param-name>
+      <param-value>yan</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loginPassword</param-name>
+      <param-value>123456</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>druidStatView</servlet-name>
+    <url-pattern>/druid/*</url-pattern>
+  </servlet-mapping>
   <!--随时获得request-->
   <listener>
     <listener-class>
@@ -89,6 +110,7 @@
     <filter-name>HiddenHttpMethodFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+<!--  Spring3.0中获取put表单的参数 该过滤器只能接受enctype值为application/x-www-form-urlencoded的表单-->
   <filter>
     <filter-name>HttpPutFormContentFilter</filter-name>
     <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
