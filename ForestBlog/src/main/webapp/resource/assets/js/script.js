@@ -359,7 +359,7 @@ $("#comment_form").submit(function () {
                 localStorage.setItem('author', $("#author_name").val());
                 localStorage.setItem('email', $("#author_email").val());
                 localStorage.setItem('url', $("#author_url").val());
-                window.setTimeout(window.location.reload, 2000);
+                window.setTimeout("window.location.reload()", 2000);
                 return false;
             } else {
                 layer.msg(data.msg);
