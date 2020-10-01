@@ -109,11 +109,3 @@ Github地址：https://github.com/saysky/ForestBlog
 前端使用 Vue Element UI改造，后端优化 <br/>
 
 
-## 请喝一杯奶茶
-请我喝一杯奶茶吧！
-插条广告：博主最近有点时间，长期接毕设定制，软件定制，Java问题解决 <br/>
-具体查看[有偿服务](https://liuyanzhao.com/bulletin/my-service)
-
-![image](https://github.com/saysky/ForestBlog/blob/master/uploads/donate.png)
-
-
