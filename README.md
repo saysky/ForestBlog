@@ -1,7 +1,3 @@
-# 修改：
-  1. MarkDown 支持
-  2. 图片上传（剪切板粘贴/图床功能）
-  
 最新消息，SpringCloud 博客、音乐、商城、论坛系统开发中，开源，[sens-parent](https://github.com/saysky/sens-parent) <br/>
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
 最新消息 SpringBoot/SSM两个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)
