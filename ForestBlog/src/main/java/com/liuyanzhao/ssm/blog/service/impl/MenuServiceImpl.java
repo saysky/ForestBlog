@@ -16,7 +16,7 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
 
 
-    @Autowired(required = false)
+    @Autowired
     private MenuMapper menuMapper;
 
     @Override

@@ -23,10 +23,10 @@ import java.util.List;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired(required = false)
+    @Autowired
     private CommentMapper commentMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleMapper articleMapper;
 
     @Override

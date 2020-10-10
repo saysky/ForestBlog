@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class NoticeServiceImpl implements NoticeService {
 
-    @Autowired(required = false)
+    @Autowired
     private NoticeMapper noticeMapper;
 
     @Override

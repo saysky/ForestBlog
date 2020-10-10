@@ -23,10 +23,10 @@ import java.util.List;
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired(required = false)
+    @Autowired
     private CategoryMapper categoryMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleCategoryRefMapper articleCategoryRefMapper;
 
     @Override

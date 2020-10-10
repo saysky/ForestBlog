@@ -28,13 +28,13 @@ import java.util.List;
 @Slf4j
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleMapper articleMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleCategoryRefMapper articleCategoryRefMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleTagRefMapper articleTagRefMapper;
 
     @Override
@@ -142,6 +142,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(Integer id) {
         articleMapper.deleteById(id);
+        // 删除分类关联
+        articleCategoryRefMapper.deleteByArticleId(id);
     }
 
 

@@ -19,10 +19,10 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired(required = false)
+    @Autowired
     private UserMapper userMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleMapper articleMapper;
 
     @Override
