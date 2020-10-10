@@ -99,15 +99,6 @@
                     </a>
                 </li>
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:;">
-                        用户
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="/admin/user">全部用户</a></dd>
-                        <dd><a href="/admin/user/insert">添加用户</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
                     <a href="javascript:;">设置</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/admin/menu">菜单</a></dd>
