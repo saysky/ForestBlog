@@ -104,7 +104,7 @@ public class ArticleController {
      * @param id 文章ID
      * @return 点赞量数量
      */
-    @RequestMapping(value = "/article/like/{id}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/article/like/{id}", method = {RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
     public String increaseLikeCount(@PathVariable("id") Integer id) {
         Article article = articleService.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), id);
@@ -120,7 +120,7 @@ public class ArticleController {
      * @param id 文章ID
      * @return 访问量数量
      */
-    @RequestMapping(value = "/article/view/{id}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/article/view/{id}", method = {RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
     public String increaseViewCount(@PathVariable("id") Integer id) {
         Article article = articleService.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), id);

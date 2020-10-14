@@ -62,7 +62,7 @@ public class BackUserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/checkUserName",method = RequestMethod.POST)
+    @RequestMapping(value = "/checkUserName",method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
     public String checkUserName(HttpServletRequest request)  {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -89,7 +89,7 @@ public class BackUserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/checkUserEmail",method = RequestMethod.POST)
+    @RequestMapping(value = "/checkUserEmail",method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
     public String checkUserEmail(HttpServletRequest request)  {
         Map<String, Object> map = new HashMap<String, Object>();

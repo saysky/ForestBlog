@@ -45,13 +45,13 @@ public class AdminController {
      * @return
      */
     @RequestMapping("/admin")
-    public String index(Model model)  {
+    public String index(Model model) {
         //文章列表
         List<Article> articleList = articleService.listRecentArticle(5);
-        model.addAttribute("articleList",articleList);
+        model.addAttribute("articleList", articleList);
         //评论列表
         List<Comment> commentList = commentService.listRecentComment(5);
-        model.addAttribute("commentList",commentList);
+        model.addAttribute("commentList", commentList);
         return "Admin/index";
     }
 
@@ -72,29 +72,29 @@ public class AdminController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/loginVerify",method = RequestMethod.POST)
+    @RequestMapping(value = "/loginVerify", method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
-    public String loginVerify(HttpServletRequest request, HttpServletResponse response)  {
+    public String loginVerify(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberme = request.getParameter("rememberme");
         User user = userService.getUserByNameOrEmail(username);
-        if(user==null) {
-            map.put("code",0);
-            map.put("msg","用户名无效！");
-        } else if(!user.getUserPass().equals(password)) {
-            map.put("code",0);
-            map.put("msg","密码错误！");
+        if (user == null) {
+            map.put("code", 0);
+            map.put("msg", "用户名无效！");
+        } else if (!user.getUserPass().equals(password)) {
+            map.put("code", 0);
+            map.put("msg", "密码错误！");
         } else {
             //登录成功
-            map.put("code",1);
-            map.put("msg","");
+            map.put("code", 1);
+            map.put("msg", "");
             //添加session
             request.getSession().setAttribute("user", user);
             //添加cookie
-            if(rememberme!=null) {
+            if (rememberme != null) {
                 //创建两个Cookie对象
                 Cookie nameCookie = new Cookie("username", username);
                 //设置Cookie的有效期为3天
@@ -120,7 +120,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "/admin/logout")
-    public String logout(HttpSession session)  {
+    public String logout(HttpSession session) {
         session.removeAttribute("user");
         session.invalidate();
         return "redirect:/login";

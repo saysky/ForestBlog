@@ -55,7 +55,7 @@ public class BackCommentController {
      * @param request
      * @param comment
      */
-    @RequestMapping(value = "/insert", method = {RequestMethod.POST})
+    @RequestMapping(value = "/insert", method = {RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
     public void insertComment(HttpServletRequest request, Comment comment) {
         //添加评论
