@@ -121,7 +121,9 @@ CREATE TABLE `comment` (
   `comment_ip` varchar(50) DEFAULT NULL,
   `comment_create_time` datetime DEFAULT NULL,
   `comment_role` int(1) DEFAULT NULL,
-  PRIMARY KEY (`comment_id`)
+  PRIMARY KEY (`comment_id`),
+  KEY `comment_comment_article_id` (`comment_article_id`),
+  KEY `comment_comment_pid` (`comment_pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
