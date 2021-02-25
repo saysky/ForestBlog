@@ -48,6 +48,8 @@ public class Category implements Serializable {
     public Category(Integer categoryId) {
         this.categoryId = categoryId;
     }
+    
+    public Category() {}
 
     /**
      * 未分类
