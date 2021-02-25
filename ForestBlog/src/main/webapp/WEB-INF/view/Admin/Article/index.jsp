@@ -36,6 +36,7 @@
             <input type="hidden" name="currentUrl" id="currentUrl" value="">
             <table class="layui-table">
                 <colgroup>
+                    <col width="100">
                     <col width="300">
                     <col width="150">
                     <col width="100">
@@ -45,6 +46,7 @@
                 </colgroup>
                 <thead>
                 <tr>
+                    <th>用户</th>
                     <th>标题</th>
                     <th>所属分类</th>
                     <th>状态</th>
@@ -56,6 +58,9 @@
                 <tbody>
                 <c:forEach items="${pageInfo.list}" var="a">
                     <tr>
+                        <td>
+                            <a title="${a.user.userName}" href="/admin/user/edit/${a.articleUserId}" target="_blank">${a.user.userNickname}</a>
+                        </td>
                         <td>
                             <a href="/article/${a.articleId}"
                                target="_blank">

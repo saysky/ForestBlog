@@ -171,20 +171,4 @@ public class BackUserController {
         return "redirect:/admin/user";
     }
 
-    /**
-     * 基本信息页面显示
-     *
-     * @return
-     */
-    @RequestMapping(value = "/profile")
-    public ModelAndView userProfileView(HttpSession session)  {
-
-        ModelAndView modelAndView = new ModelAndView();
-        User sessionUser = (User) session.getAttribute("user");
-        User user =  userService.getUserById(sessionUser.getUserId());
-        modelAndView.addObject("user",user);
-
-        modelAndView.setViewName("Admin/User/profile");
-        return modelAndView;
-    }
 }

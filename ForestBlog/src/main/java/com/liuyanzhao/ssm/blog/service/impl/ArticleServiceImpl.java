@@ -3,11 +3,9 @@ package com.liuyanzhao.ssm.blog.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuyanzhao.ssm.blog.enums.ArticleCommentStatus;
+import com.liuyanzhao.ssm.blog.mapper.*;
 import com.liuyanzhao.ssm.blog.service.ArticleService;
 import com.liuyanzhao.ssm.blog.entity.*;
-import com.liuyanzhao.ssm.blog.mapper.ArticleCategoryRefMapper;
-import com.liuyanzhao.ssm.blog.mapper.ArticleMapper;
-import com.liuyanzhao.ssm.blog.mapper.ArticleTagRefMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +34,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleTagRefMapper articleTagRefMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Override
     public Integer countArticle(Integer status) {
@@ -98,8 +102,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> listRecentArticle(Integer limit) {
-        return articleMapper.listArticleByLimit(limit);
+    public List<Article> listRecentArticle(Integer userId, Integer limit) {
+        return articleMapper.listArticleByLimit(userId, limit);
     }
 
     @Override
@@ -140,10 +144,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteArticle(Integer id) {
         articleMapper.deleteById(id);
         // 删除分类关联
         articleCategoryRefMapper.deleteByArticleId(id);
+        // 删除标签管理
+        articleTagRefMapper.deleteByArticleId(id);
+        // 删除评论
+        commentMapper.deleteByArticleId(id);
     }
 
 
@@ -161,6 +170,8 @@ public class ArticleServiceImpl implements ArticleService {
                 categoryList.add(Category.Default());
             }
             articleList.get(i).setCategoryList(categoryList);
+
+            articleList.get(i).setUser(userMapper.getUserById(articleList.get(i).getArticleUserId()));
 //            //封装TagList
 //            List<Tag> tagList = articleTagRefMapper.listTagByArticleId(articleList.get(i).getArticleId());
 //            articleList.get(i).setTagList(tagList);

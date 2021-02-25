@@ -62,7 +62,7 @@ public class IndexController {
         List<Tag> allTagList = tagService.listTag();
         model.addAttribute("allTagList", allTagList);
         //最新评论
-        List<Comment> recentCommentList = commentService.listRecentComment(10);
+        List<Comment> recentCommentList = commentService.listRecentComment(null, 10);
         model.addAttribute("recentCommentList", recentCommentList);
         model.addAttribute("pageUrlPrefix", "/article?pageIndex");
         return "Home/index";
@@ -91,7 +91,7 @@ public class IndexController {
         List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
         model.addAttribute("mostCommentArticleList", mostCommentArticleList);
         //最新评论
-        List<Comment> recentCommentList = commentService.listRecentComment(10);
+        List<Comment> recentCommentList = commentService.listRecentComment(null, 10);
         model.addAttribute("recentCommentList", recentCommentList);
         model.addAttribute("pageUrlPrefix", "/search?pageIndex");
         return "Home/Page/search";
@@ -101,6 +101,13 @@ public class IndexController {
     public String NotFound(@RequestParam(required = false) String message, Model model) {
         model.addAttribute("message", message);
         return "Home/Error/404";
+    }
+
+
+    @RequestMapping("/403")
+    public String Page403(@RequestParam(required = false) String message, Model model) {
+        model.addAttribute("message", message);
+        return "Home/Error/403";
     }
 
     @RequestMapping("/500")

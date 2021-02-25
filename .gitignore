@@ -1,5 +1,5 @@
 !.mvn/wrapper/maven-wrapper.jar
-target/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -13,6 +13,8 @@ target/
 *.iws
 *.iml
 *.ipr
+*.log
+*.gz
 
 ### NetBeans ###
 nbproject/private/
@@ -22,5 +24,11 @@ dist/
 nbdist/
 .nb-gradle/
 
-#Mac
 .DS_Store
+
+target/
+.mvn/
+mvnw.cmd
+mvnw
+sens-log/
+/templates

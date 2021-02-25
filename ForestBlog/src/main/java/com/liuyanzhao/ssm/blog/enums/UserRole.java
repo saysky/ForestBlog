@@ -1,29 +1,32 @@
 package com.liuyanzhao.ssm.blog.enums;
 
 /**
+ * 角色枚举
+ *
  * @author 言曌
- * @date 2018/11/17 下午4:47
+ * @date 2021/2/25 2:31 下午
  */
 
-public enum Role {
+public enum UserRole {
 
-    OWNER(1, "博主"),
-    VISITOR(0, "其他用户");
+    ADMIN("admin", "管理员"),
 
-    private Integer value;
+    USER("user", "用户");
+
+    private String value;
 
     private String message;
 
-    Role(Integer value, String message) {
+    UserRole(String value, String message) {
         this.value = value;
         this.message = message;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

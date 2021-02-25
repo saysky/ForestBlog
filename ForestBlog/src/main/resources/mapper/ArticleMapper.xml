@@ -82,6 +82,10 @@
             </foreach>
         </if>
     </delete>
+    <delete id="deleteByUserId">
+        DELETE FROM <include refid="tb"/>
+        WHERE article_user_id = #{userId}
+    </delete>
 
     <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Article" useGeneratedKeys="true"
             keyProperty="articleId">
@@ -321,7 +325,21 @@
         article_update_time, article_is_comment, article_status, article_order
         FROM
         <include refid="tb"/>
+        <where>
+            <if test="userId != null">
+                article_user_id = #{userId}
+            </if>
+        </where>
         ORDER BY article_id DESC
-        LIMIT #{value}
+        LIMIT #{limit}
+    </select>
+
+    <select id="listArticleIdsByUserId" resultType="java.lang.Integer">
+        SELECT
+            article_id
+        FROM
+            <include refid="tb"/>
+        WHERE
+            article_user_id = #{userId}
     </select>
 </mapper>

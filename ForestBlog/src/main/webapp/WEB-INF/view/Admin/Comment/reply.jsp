@@ -35,7 +35,6 @@
         <input type="hidden" name="commentPid" value="${comment.commentId}">
         <input type="hidden" name="commentPname" value="${comment.commentAuthorName}">
         <input type="hidden" name="commentArticleId" value="${comment.commentArticleId}">
-        <input type="hidden" name="commentRole" value="1">
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">原内容</label>
@@ -44,24 +43,6 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">我的昵称 </label>
-            <div class="layui-input-block">
-                <input type="text" name="commentAuthorName"  value="${sessionScope.user.getUserNickname()}" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">我的邮箱 </label>
-            <div class="layui-input-block">
-                <input type="text" name="commentAuthorEmail"  value="${sessionScope.user.getUserEmail()}" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">我的网址 </label>
-            <div class="layui-input-block">
-                <input type="text" name="commentAuthorUrl"  value="${sessionScope.user.getUserUrl()}" class="layui-input">
-            </div>
-        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">我的回复</label>
             <div class="layui-input-block">

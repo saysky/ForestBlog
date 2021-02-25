@@ -4,6 +4,7 @@ import com.liuyanzhao.ssm.blog.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -55,7 +56,16 @@ public interface CommentMapper {
      *
      * @return 列表
      */
-    List<Comment> listComment();
+    List<Comment> listComment(HashMap<String, Object> criteria);
+
+
+    /**
+     * 获得某个用户收到的评论
+     *
+     * @return 列表
+     */
+    List<Comment> getReceiveComment(List<Integer> articleIds);
+
 
     /**
      * 统计评论数
@@ -70,7 +80,8 @@ public interface CommentMapper {
      * @param limit 查询数量
      * @return 列表
      */
-    List<Comment> listRecentComment(@Param(value = "limit") Integer limit);
+    List<Comment> listRecentComment(@Param(value = "userId") Integer userId,
+                                    @Param(value = "limit") Integer limit);
 
     /**
      * 获得评论的子评论
@@ -79,4 +90,22 @@ public interface CommentMapper {
      * @return 列表
      */
     List<Comment> listChildComment(@Param(value = "id") Integer id);
+
+
+    /**
+     * 根据用户ID删除
+     *
+     * @param userId 用户ID
+     * @return 影响函数
+     */
+    Integer deleteByUserId(Integer userId);
+
+
+    /**
+     * 根据文章ID删除
+     *
+     * @param articleId 文章ID
+     * @return 影响函数
+     */
+    Integer deleteByArticleId(Integer articleId);
 }

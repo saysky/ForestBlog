@@ -18,7 +18,7 @@ public class UserServiceTest extends BaseTest {
 
     @Test
     public void getUserById() {
-        User user = userService.getUserById(1);
+        User user = userService.getUserById(122222);
         System.out.println(user);
         Assert.notNull(user, "用户不存在");
     }

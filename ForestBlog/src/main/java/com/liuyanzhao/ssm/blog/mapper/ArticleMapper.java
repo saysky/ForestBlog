@@ -24,6 +24,14 @@ public interface ArticleMapper {
     Integer deleteById(Integer articleId);
 
     /**
+     * 根据用户ID删除
+     *
+     * @param userId 用户ID
+     * @return 影响函数
+     */
+    Integer deleteByUserId(Integer userId);
+
+    /**
      * 添加文章
      *
      * @param article 文章
@@ -195,7 +203,7 @@ public interface ArticleMapper {
      * @param limit 查询数量
      * @return 列表
      */
-    List<Article> listArticleByLimit(Integer limit);
+    List<Article> listArticleByLimit(@Param("userId") Integer userId, @Param("limit") Integer limit);
 
     /**
      * 批量删除文章
@@ -204,4 +212,11 @@ public interface ArticleMapper {
      * @return 影响行数
      */
     Integer deleteBatch(@Param("ids") List<Integer> ids);
+
+    /**
+     * 获得一个用户的文章id集合
+     * @param userId
+     * @return
+     */
+    List<Integer> listArticleIdsByUserId(Integer userId);
 }

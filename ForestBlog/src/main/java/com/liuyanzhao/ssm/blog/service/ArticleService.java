@@ -67,7 +67,7 @@ public interface ArticleService {
      * @param limit 查询数量
      * @return 列表
      */
-    List<Article> listRecentArticle(Integer limit);
+    List<Article> listRecentArticle(Integer userId, Integer limit);
 
 
     /**

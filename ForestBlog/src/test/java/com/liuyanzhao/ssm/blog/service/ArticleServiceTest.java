@@ -28,7 +28,7 @@ public class ArticleServiceTest extends BaseTest {
 
     @Test
     public void listRecentArticle() {
-        List<Article> articleList = articleService.listRecentArticle(5);
+        List<Article> articleList = articleService.listRecentArticle(null, 5);
         Assert.notEmpty(articleList, "文章数量为0");
     }
 }
