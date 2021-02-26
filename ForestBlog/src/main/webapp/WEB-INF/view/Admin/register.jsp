@@ -66,19 +66,6 @@
         <body class="login login-action-login wp-core-ui  locale-zh-cn">
             <div id="login">
                 <h1><a href="/" title="欢迎您光临本站！" tabindex="-1">${options.optionSiteTitle}</a></h1>
-                <%
-                    String username = "";
-                    String password = "";
-                    //获取当前站点的所有Cookie
-                    Cookie[] cookies = request.getCookies();
-                    for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
-                        if ("username".equals(cookies[i].getName())) {
-                            username = cookies[i].getValue();
-                        } else if ("password".equals(cookies[i].getName())) {
-                            password = cookies[i].getValue();
-                        }
-                    }
-                %>
                 <form name="registerForm" id="registerForm" method="post">
                     <p>
                         <label for="username">用户名<br/>
@@ -144,7 +131,6 @@
                             data: $("#registerForm").serialize(),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 if (data.code == 0) {
                                     alert('注册成功');
                                     window.location.href = "/login";
