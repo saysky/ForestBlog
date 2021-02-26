@@ -1,10 +1,13 @@
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
 最新消息 SpringBoot/SSM/Duubo多个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)<br/>
-[博主付费商品](https://liuyanzhao.com/shop.html)
+[更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
+
 
 # 关于项目
 该博客是基于SSM实现的个人博客系统，适合初学SSM和个人博客制作的同学学习。<br/>
-不支持用户注册，需要多用户的可以去看 [SENS](https://github.com/saysky/SENS) 和 [ChuyunBlog](https://github.com/saysky/ChuyunBlog) <br/>
+最新版本支持用户注册，包含用户和管理员两个角色 。<br/>
+博主已写了一篇该项目的毕业论文和录制了2个小时的代码讲解可以供大家学习，需要的可以联系博主，微信847064370。<br/>
+
 主要涉及技术包括的包括 Maven、Spring、SpringMVC、MyBatis、JSP、MySQL等。 <br/>
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html) <br/>
 预览地址 [https://forestblog.liuyanzhao.com](https://forestblog.liuyanzhao.com)
