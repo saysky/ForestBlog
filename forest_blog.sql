@@ -79,7 +79,9 @@ COMMIT;
 DROP TABLE IF EXISTS `article_category_ref`;
 CREATE TABLE `article_category_ref` (
   `article_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  KEY `idx_article_id` (`article_id`),
+  KEY `idx_category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
