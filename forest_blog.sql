@@ -161,7 +161,8 @@ DROP TABLE IF EXISTS `article_tag_ref`;
 CREATE TABLE `article_tag_ref` (
   `article_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
-  PRIMARY KEY (`article_id`,`tag_id`)
+  PRIMARY KEY (`article_id`,`tag_id`),
+  KEY `article_tag_ref_tag_id` (`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
