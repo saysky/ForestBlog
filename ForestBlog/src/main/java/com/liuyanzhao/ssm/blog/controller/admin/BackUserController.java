@@ -2,6 +2,7 @@ package com.liuyanzhao.ssm.blog.controller.admin;
 
 
 import com.liuyanzhao.ssm.blog.entity.User;
+import com.liuyanzhao.ssm.blog.enums.UserRole;
 import com.liuyanzhao.ssm.blog.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,11 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "")
-    public ModelAndView userList()  {
+    public ModelAndView userList() {
         ModelAndView modelandview = new ModelAndView();
 
         List<User> userList = userService.listUser();
-        modelandview.addObject("userList",userList);
+        modelandview.addObject("userList", userList);
 
         modelandview.setViewName("Admin/User/index");
         return modelandview;
@@ -50,7 +51,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/insert")
-    public ModelAndView insertUserView()  {
+    public ModelAndView insertUserView() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Admin/User/insert");
         return modelAndView;
@@ -62,22 +63,22 @@ public class BackUserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/checkUserName",method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
+    @RequestMapping(value = "/checkUserName", method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
-    public String checkUserName(HttpServletRequest request)  {
+    public String checkUserName(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         String username = request.getParameter("username");
         User user = userService.getUserByName(username);
         int id = Integer.valueOf(request.getParameter("id"));
         //用户名已存在,但不是当前用户(编辑用户的时候，不提示)
-        if(user!=null) {
-            if(user.getUserId()!=id) {
+        if (user != null) {
+            if (user.getUserId() != id) {
                 map.put("code", 1);
                 map.put("msg", "用户名已存在！");
             }
         } else {
-            map.put("code",0);
-            map.put("msg","");
+            map.put("code", 0);
+            map.put("msg", "");
         }
         String result = new JSONObject(map).toString();
         return result;
@@ -89,22 +90,22 @@ public class BackUserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/checkUserEmail",method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
+    @RequestMapping(value = "/checkUserEmail", method = RequestMethod.POST, produces = {"text/plain;charset=UTF-8"})
     @ResponseBody
-    public String checkUserEmail(HttpServletRequest request)  {
+    public String checkUserEmail(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         String email = request.getParameter("email");
         User user = userService.getUserByEmail(email);
         int id = Integer.valueOf(request.getParameter("id"));
         //用户名已存在,但不是当前用户(编辑用户的时候，不提示)
-        if(user!=null) {
-            if(user.getUserId()!=id) {
+        if (user != null) {
+            if (user.getUserId() != id) {
                 map.put("code", 1);
                 map.put("msg", "电子邮箱已存在！");
             }
         } else {
-            map.put("code",0);
-            map.put("msg","");
+            map.put("code", 0);
+            map.put("msg", "");
         }
         String result = new JSONObject(map).toString();
         return result;
@@ -117,13 +118,14 @@ public class BackUserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
-    public String insertUserSubmit(User user)  {
+    @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    public String insertUserSubmit(User user) {
         User user2 = userService.getUserByName(user.getUserName());
         User user3 = userService.getUserByEmail(user.getUserEmail());
-        if(user2==null&&user3==null) {
+        if (user2 == null && user3 == null) {
             user.setUserRegisterTime(new Date());
             user.setUserStatus(1);
+            user.setUserRole(UserRole.USER.getValue());
             userService.insertUser(user);
         }
         return "redirect:/admin/user";
@@ -136,7 +138,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id)  {
+    public String deleteUser(@PathVariable("id") Integer id) {
         userService.deleteUser(id);
         return "redirect:/admin/user";
     }
@@ -148,11 +150,11 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editUserView(@PathVariable("id") Integer id)  {
+    public ModelAndView editUserView(@PathVariable("id") Integer id) {
         ModelAndView modelAndView = new ModelAndView();
 
-        User user =  userService.getUserById(id);
-        modelAndView.addObject("user",user);
+        User user = userService.getUserById(id);
+        modelAndView.addObject("user", user);
 
         modelAndView.setViewName("Admin/User/edit");
         return modelAndView;
@@ -165,8 +167,8 @@ public class BackUserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
-    public String editUserSubmit(User user)  {
+    @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    public String editUserSubmit(User user) {
         userService.updateUser(user);
         return "redirect:/admin/user";
     }

@@ -210,7 +210,7 @@ public class AdminController {
     /**
      * 编辑个人信息页面显示
      *
-     * @param loginUser
+     * @param session
      * @return
      */
     @RequestMapping(value = "/admin/profile/edit")

@@ -122,6 +122,8 @@
                         alert("请输入完整信息！")
                     } else if (password != confirmPass) {
                         alert("两次密码不一致!");
+                    } else if(user.length < 4 || user.length > 20) {
+                        alert('用户名长度不合法');
                     } else {
                         $.ajax({
                             async: false,//同步，待请求完毕后再执行后面的代码
