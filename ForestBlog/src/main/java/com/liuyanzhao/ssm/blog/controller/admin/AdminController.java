@@ -72,7 +72,8 @@ public class AdminController {
      * @return
      */
     @RequestMapping("/login")
-    public String loginPage() {
+    public String
+    loginPage() {
         return "Admin/login";
     }
 

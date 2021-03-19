@@ -11,7 +11,7 @@
  Target Server Version : 50643
  File Encoding         : 65001
 
- Date: 25/02/2021 18:21:15
+ Date: 19/03/2021 18:06:34
 */
 
 SET NAMES utf8mb4;
@@ -22,19 +22,19 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article` (
-  `article_id` int(11) NOT NULL AUTO_INCREMENT,
-  `article_user_id` int(11) unsigned DEFAULT NULL,
-  `article_title` varchar(255) DEFAULT NULL,
-  `article_content` mediumtext,
-  `article_view_count` int(11) DEFAULT '0',
-  `article_comment_count` int(11) DEFAULT '0',
-  `article_like_count` int(11) DEFAULT '0',
-  `article_is_comment` int(1) unsigned DEFAULT NULL,
-  `article_status` int(1) unsigned DEFAULT '1',
-  `article_order` int(11) unsigned DEFAULT NULL,
-  `article_update_time` datetime DEFAULT NULL,
-  `article_create_time` datetime DEFAULT NULL,
-  `article_summary` text,
+  `article_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章ID',
+  `article_user_id` int(11) unsigned DEFAULT NULL COMMENT '用户ID',
+  `article_title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `article_content` mediumtext COMMENT '内容',
+  `article_view_count` int(11) DEFAULT '0' COMMENT '访问量',
+  `article_comment_count` int(11) DEFAULT '0' COMMENT '评论数',
+  `article_like_count` int(11) DEFAULT '0' COMMENT '点赞数',
+  `article_is_comment` int(1) unsigned DEFAULT NULL COMMENT '是否允许评论',
+  `article_status` int(1) unsigned DEFAULT '1' COMMENT '状态',
+  `article_order` int(11) unsigned DEFAULT NULL COMMENT '排序值',
+  `article_update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `article_create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `article_summary` text COMMENT '摘要',
   PRIMARY KEY (`article_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
@@ -66,11 +66,6 @@ INSERT INTO `article` VALUES (29, 1, 'IDEA启动EDAS项目', '<h2>一、下载ED
 INSERT INTO `article` VALUES (30, 1, 'SpringBoot + mongodb 整合, 记录网站操作日志，常用查询操作', '<div class=\"single-content\"><p>mongodb 是一种文档型数据库。跟 Redis 一样是非关系型数据库，Redis 属于那种小而快的数据库，常常用作缓存。</p><p>而如果我们需要存一些类似于日志的那种，可以尝试用 mongodb (当然也有人用 MySQL，就是有点慢)。我们尝试用 mongodb 来存储博客的日志信息。</p><p>本文主要介绍&nbsp;<a href=\"https://liuyanzhao.com/tag/springboot/\" title=\"查看与 SpringBoot 相关的文章\" target=\"_blank\">SpringBoot</a>&nbsp;和 mongodb 整合，和基本的查询操作。</p><p>&nbsp;</p><h2>一、依赖和配置</h2><p>创建 springboot 项目，引入 web 和 lombok，然后再添加 mongodb 依赖</p><p><strong>1、pom.xml</strong></p><div class=\"dp-highlighter\"><div class=\"bar\"></div><ol class=\"dp-xml\" start=\"1\"><li class=\"alt\"><span class=\"comments\"><!--mongodb--></span></li><li class=\"\"><span class=\"tag\">&lt;</span><span class=\"tag-name\">dependency</span><span class=\"tag\">&gt;</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tag\">&lt;</span><span class=\"tag-name\">groupId</span><span class=\"tag\">&gt;</span>org.springframework.boot<span class=\"tag\"><!--</span--><span class=\"tag-name\">groupId</span><span class=\"tag\">&gt;</span></span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"tag\">&lt;</span><span class=\"tag-name\">artifactId</span><span class=\"tag\">&gt;</span>spring-boot-starter-data-mongodb<span class=\"tag\"><!--</span--><span class=\"tag-name\">artifactId</span><span class=\"tag\">&gt;</span></span></li><li class=\"alt\"><span class=\"tag\"><!--</span--><span class=\"tag-name\">dependency</span><span class=\"tag\">&gt;</span></span></li></ol></div><p>类似 Spring Data JPA</p><p>&nbsp;</p><p><strong>2、application.properties</strong></p><div class=\"dp-highlighter\"><div class=\"bar\"></div><ol class=\"dp-j\" start=\"1\"><li class=\"alt\">spring.data.mongodb.uri=mongodb:<span class=\"comment\">//localhost:27017/saysky</span></li></ol></div><p>saysky是数据库名称，确保你本地启动了 mongodb</p><p>&nbsp;</p><h2>二、代码实例</h2><p><strong>1、日志实体</strong></p><div class=\"dp-highlighter\"><div class=\"bar\"></div><ol class=\"dp-j\" start=\"1\"><li class=\"alt\"><span class=\"keyword\">package</span>&nbsp;com.liuyanzhao.mongodb.model;</li><li class=\"\"></li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;lombok.Data;</li><li class=\"\"></li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;java.util.Date;</li><li class=\"\"></li><li class=\"alt\"><span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;*&nbsp;日志</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;*&nbsp;@author&nbsp;言曌</span></li><li class=\"\"><span class=\"comment\">&nbsp;*&nbsp;@date&nbsp;2018/9/3&nbsp;20:00</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;*/</span></li><li class=\"\"><span class=\"annotation\">@Data</span></li><li class=\"alt\"><span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">class</span>&nbsp;Log&nbsp;{</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;Long&nbsp;id;</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;Long&nbsp;userId;</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;Integer&nbsp;type;</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;String&nbsp;url;</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;String&nbsp;desc;</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;Date&nbsp;createTime;</li><li class=\"\">}</li></ol></div><p>&nbsp;</p><p><strong>2、LogRepository</strong></p><div class=\"dp-highlighter\"><div class=\"bar\"></div><ol class=\"dp-j\" start=\"1\"><li class=\"alt\"><span class=\"keyword\">package</span>&nbsp;com.liuyanzhao.mongodb.dao;</li><li class=\"\"></li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;com.liuyanzhao.mongodb.model.Log;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.springframework.data.domain.Page;</li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;org.springframework.data.domain.Pageable;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.springframework.data.mongodb.repository.MongoRepository;</li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;org.springframework.stereotype.Repository;</li><li class=\"\"></li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;java.util.Date;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;java.util.List;</li><li class=\"alt\"></li><li class=\"\"></li><li class=\"alt\"><span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;*&nbsp;@author&nbsp;言曌</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;*&nbsp;@date&nbsp;2018/9/3&nbsp;14:17</span></li><li class=\"\"><span class=\"comment\">&nbsp;*/</span></li><li class=\"alt\"><span class=\"annotation\">@Repository</span></li><li class=\"\"><span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">interface</span>&nbsp;LogRepository&nbsp;<span class=\"keyword\">extends</span>&nbsp; <log, long>&nbsp;{</log, long></li><li class=\"alt\"></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">/**</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;根据用户ID查询</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;userId</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;List<log>&nbsp;findByUserId(Long&nbsp;userId);</log></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;根据描述查询</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;desc</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;List<log>&nbsp;findByDesc(String&nbsp;desc);</log></li><li class=\"alt\"></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">/**</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;根据创建日期范围查询</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;startTime</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;endTime</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;List<log>&nbsp;findByCreateTimeBetween(Date&nbsp;startTime,&nbsp;Date&nbsp;endTime);</log></li><li class=\"alt\"></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;根据描述查询</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;分页查询</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;desc</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;Page<log>&nbsp;findByDesc(String&nbsp;desc,&nbsp;Pageable&nbsp;pageable);</log></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;根据创建日期范围查询</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;分页查询</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;startTime</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;endTime</span></li><li class=\"\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;Page<log>&nbsp;findByCreateTimeBetween(Date&nbsp;startTime,&nbsp;Date&nbsp;endTime,Pageable&nbsp;pageable);</log></li><li class=\"alt\"></li><li class=\"\">}</li></ol></div><p>&nbsp;</p><p><strong>3、测试类</strong></p><div class=\"dp-highlighter\"><div class=\"bar\"></div><ol class=\"dp-j\" start=\"1\"><li class=\"alt\"><span class=\"keyword\">package</span>&nbsp;com.liuyanzhao.mongodb.dao;</li><li class=\"\"></li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;com.liuyanzhao.mongodb.model.Log;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.junit.Test;</li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;org.junit.runner.RunWith;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.springframework.beans.factory.annotation.Autowired;</li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;org.springframework.boot.test.context.<a href=\"https://liuyanzhao.com/tag/springboot/\" title=\"查看与 SpringBoot 相关的文章\" target=\"_blank\">SpringBoot</a>Test;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.springframework.data.domain.Page;</li><li class=\"alt\"><span class=\"keyword\">import</span>&nbsp;org.springframework.data.domain.PageRequest;</li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;org.springframework.test.context.junit4.SpringRunner;</li><li class=\"alt\"></li><li class=\"\"><span class=\"keyword\">import</span>&nbsp;java.util.Date;</li><li class=\"alt\"></li><li class=\"\"></li><li class=\"alt\"><span class=\"comment\">/**</span></li><li class=\"\"><span class=\"comment\">&nbsp;*&nbsp;@author&nbsp;言曌</span></li><li class=\"alt\"><span class=\"comment\">&nbsp;*&nbsp;@date&nbsp;2018/9/3&nbsp;14:21</span></li><li class=\"\"><span class=\"comment\">&nbsp;*/</span></li><li class=\"alt\"><span class=\"annotation\">@<a href=\"https://liuyanzhao.com/tag/springboot/\" title=\"查看与 SpringBoot 相关的文章\" target=\"_blank\">SpringBoot</a>Test</span></li><li class=\"\"><span class=\"annotation\">@RunWith</span>(SpringRunner.<span class=\"keyword\">class</span>)</li><li class=\"alt\"><span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">class</span>&nbsp;LogRepositoryTest&nbsp;{</li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"annotation\">@Autowired</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">private</span>&nbsp;LogRepository&nbsp;logRepository;</li><li class=\"alt\"></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"annotation\">@Test</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">void</span>&nbsp;save()&nbsp;{</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log&nbsp;log&nbsp;=&nbsp;<span class=\"keyword\">new</span>&nbsp;Log();</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setId(7L);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setType(<span class=\"number\">1</span>);</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setDesc(<span class=\"string\">\"更新用户\"</span>);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setUserId(10002L);</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setUrl(<span class=\"string\">\"/user/update\"</span>);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.setCreateTime(<span class=\"keyword\">new</span>&nbsp;Date());</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logRepository.save(log);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;}</li><li class=\"alt\"></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"annotation\">@Test</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">void</span>&nbsp;findById()&nbsp;{</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log&nbsp;Log&nbsp;=&nbsp;logRepository.findById(1L).get();</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(Log);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;}</li><li class=\"alt\"></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"annotation\">@Test</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">void</span>&nbsp;findByDes()&nbsp;{</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//不分页</span></li><li class=\"\"><span class=\"comment\">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List<log>&nbsp;LogList&nbsp;=&nbsp;logRepository.findByDesc(\"添加用户\");</log></span></li><li class=\"alt\"><span class=\"comment\">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(LogList);</span></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//分页查询</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//查询第1页，每页显示2条</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PageRequest&nbsp;pageRequest&nbsp;=&nbsp;<span class=\"keyword\">new</span>&nbsp;PageRequest(<span class=\"number\">0</span>,<span class=\"number\">2</span>);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page<log>&nbsp;logPage&nbsp;=&nbsp;logRepository.findByDesc(<span class=\"string\">\"添加用户\"</span>,pageRequest);</log></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(logPage);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;}</li><li class=\"alt\"></li><li class=\"\"></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"annotation\">@Test</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"keyword\">public</span>&nbsp;<span class=\"keyword\">void</span>&nbsp;findByCreateTimeBetween()&nbsp;{</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//根据时间区间查询</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//不分页</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;createdAtStart&nbsp;=&nbsp;<span class=\"keyword\">new</span>&nbsp;Date(1535974057016L);</li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;createdAtEnd&nbsp;=&nbsp;<span class=\"keyword\">new</span>&nbsp;Date(1535974145009L);</li><li class=\"alt\"><span class=\"comment\">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List<log>&nbsp;LogList&nbsp;=&nbsp;logRepository.findByCreateTimeBetween(createdAtStart,createdAtEnd);</log></span></li><li class=\"\"><span class=\"comment\">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(LogList);</span></li><li class=\"alt\"></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//分页查询</span></li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"comment\">//查询第1页，每页显示2条</span></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PageRequest&nbsp;pageRequest&nbsp;=&nbsp;<span class=\"keyword\">new</span>&nbsp;PageRequest(<span class=\"number\">0</span>,<span class=\"number\">2</span>);</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page<log>&nbsp;logPage&nbsp;=&nbsp;logRepository.findByCreateTimeBetween(createdAtStart,createdAtEnd,pageRequest);</log></li><li class=\"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(logPage);</li><li class=\"alt\">&nbsp;&nbsp;&nbsp;&nbsp;}</li><li class=\"\"></li><li class=\"alt\">}</li></ol></div><p>&nbsp;</p><p>我们通过mongodb可视化工具可以看到数据</p><p><a href=\"https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb.png\" class=\"fancybox\" data-fancybox-group=\"button\"><img class=\"wp-image-8733 aligncenter\" data-original=\"https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb.png\" src=\"https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb.png\" alt=\"SpringBoot + mongodb 整合, 记录网站操作日志，常用查询操作\" width=\"618\" height=\"320\" srcset=\"https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb.png 858w, https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb-300x155.png 300w, https://media.liuyanzhao.com/wp-content/uploads/2018/09/mongodb-768x397.png 768w\" sizes=\"(max-width: 618px) 100vw, 618px\"></a></p><p>&nbsp;</p><h2>三、更多查询</h2><p>因为引入的&nbsp;MongoRepository 是一种 JPA 框架，所以增删改查都很容易。</p><p>可以参考 Spring Data JPA 方法命名规范</p><p></p><p></p><p></p><p></p></div><div class=\"s-weixin\"><ul class=\"weimg1\" style=\"text-align: center;\"></ul></div>', 2, 0, 0, 1, 1, 1, '2019-04-25 21:43:06', '2018-11-25 21:01:24', 'mongodb 是一种文档型数据库。跟 Redis 一样是非关系型数据库，Redis 属于那种小而快的数据库，常常用作缓存。而如果我们需要存一些类似于日志的那种，可以尝试用 mongodb (当然也有人用 MySQL，就是有点慢)。我们尝试用 mongodb 来存储博客的日志信息。本文主要介绍&nb');
 INSERT INTO `article` VALUES (31, 1, 'RocketMQ 实战之快速入门', '<div><p>最近 RocketMQ 刚刚上生产环境，闲暇之时在这里做一些分享，主要目的是让初学者能快速上手RocketMQ。</p>\r\n<h2>RocketMQ 是什么</h2>\r\n<p>Github 上关于 RocketMQ 的介绍：<br>\r\nRcoketMQ 是一款低延迟、高可靠、可伸缩、易于使用的消息中间件。具有以下特性：</p>\r\n<ol>\r\n<li>支持发布/订阅（Pub/Sub）和点对点（P2P）消息模型</li>\r\n<li>在一个队列中可靠的先进先出（FIFO）和严格的顺序传递</li>\r\n<li>支持拉（pull）和推（push）两种消息模式</li>\r\n<li>单一队列百万消息的堆积能力</li>\r\n<li>支持多种消息协议，如 JMS、MQTT 等</li>\r\n<li>分布式高可用的部署架构,满足至少一次消息传递语义</li>\r\n<li>提供 docker 镜像用于隔离测试和云集群部署</li>\r\n<li>提供配置、指标和监控等功能丰富的 Dashboard</li>\r\n</ol>\r\n<p>对于这些特性描述，大家简单过一眼就即可，深入学习之后自然就明白了。</p>\r\n<h2>专业术语</h2>\r\n<h3>Producer</h3>\r\n<p>消息生产者，生产者的作用就是将消息发送到 MQ，生产者本身既可以产生消息，如读取文本信息等。也可以对外提供接口，由外部应用来调用接口，再由生产者将收到的消息发送到 MQ。</p>\r\n<h3>Producer Group</h3>\r\n<p>生产者组，简单来说就是多个发送同一类消息的生产者称之为一个生产者组。在这里可以不用关心，只要知道有这么一个概念即可。</p>\r\n<h3>Consumer</h3>\r\n<p>消息消费者，简单来说，消费 MQ 上的消息的应用程序就是消费者，至于消息是否进行逻辑处理，还是直接存储到数据库等取决于业务需要。</p>\r\n<h3>Consumer Group</h3>\r\n<p>消费者组，和生产者类似，消费同一类消息的多个 consumer 实例组成一个消费者组。</p>\r\n<h3>Topic</h3>\r\n<p>Topic 是一种消息的逻辑分类，比如说你有订单类的消息，也有库存类的消息，那么就需要进行分类，一个是订单 Topic 存放订单相关的消息，一个是库存 Topic 存储库存相关的消息。</p>\r\n<h3>Message</h3>\r\n<p>Message 是消息的载体。一个 Message 必须指定 topic，相当于寄信的地址。Message 还有一个可选的 tag 设置，以便消费端可以基于 tag 进行过滤消息。也可以添加额外的键值对，例如你需要一个业务 key 来查找 broker 上的消息，方便在开发过程中诊断问题。</p>\r\n<h3>Tag</h3>\r\n<p>标签可以被认为是对 Topic 进一步细化。一般在相同业务模块中通过引入标签来标记不同用途的消息。</p>\r\n<h3>Broker</h3>\r\n<p>Broker 是 RocketMQ 系统的主要角色，其实就是前面一直说的 MQ。Broker 接收来自生产者的消息，储存以及为消费者拉取消息的请求做好准备。</p>\r\n<h3>Name Server</h3>\r\n<p>Name Server 为 producer 和 consumer 提供路由信息。</p>\r\n<h2>RocketMQ 架构</h2>\r\n<div class=\"image-package\">\r\n<div class=\"image-container\">\r\n<div class=\"image-container-fill\"></div>\r\n<div class=\"image-view\" data-width=\"975\" data-height=\"434\"><img data-original-src=\"//upload-images.jianshu.io/upload_images/6332814-7885601f065a3556.png\" data-original-width=\"975\" data-original-height=\"434\" data-original-format=\"image/png\" data-original-filesize=\"69606\" class=\"\" src=\"//upload-images.jianshu.io/upload_images/6332814-7885601f065a3556.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/975/format/webp\"></div>\r\n</div>\r\n<div class=\"image-caption\">RocketMQ 架构</div>\r\n</div>\r\n<p>由这张图可以看到有四个集群，分别是 NameServer 集群、Broker 集群、Producer 集群和 Consumer 集群：</p>\r\n<ol>\r\n<li>NameServer: 提供轻量级的服务发现和路由。 每个 NameServer 记录完整的路由信息，提供等效的读写服务，并支持快速存储扩展。</li>\r\n<li>Broker: 通过提供轻量级的 Topic 和 Queue 机制来处理消息存储,同时支持推（push）和拉（pull）模式以及主从结构的容错机制。</li>\r\n<li>Producer：生产者，产生消息的实例，拥有相同 Producer Group 的 Producer 组成一个集群。</li>\r\n<li>Consumer：消费者，接收消息进行消费的实例，拥有相同 Consumer Group 的<br>\r\nConsumer 组成一个集群。</li>\r\n</ol>\r\n<p>简单说明一下图中箭头含义，从 Broker 开始，Broker Master1 和 Broker Slave1 是主从结构，它们之间会进行数据同步，即 Date Sync。同时每个 Broker 与<br>\r\nNameServer 集群中的所有节<br>\r\n点建立长连接，定时注册 Topic 信息到所有 NameServer 中。</p>\r\n<p>Producer 与 NameServer 集群中的其中一个节点（随机选择）建立长连接，定期从 NameServer 获取 Topic 路由信息，并向提供 Topic 服务的 Broker Master 建立长连接，且定时向 Broker 发送心跳。Producer 只能将消息发送到 Broker master，但是 Consumer 则不一样，它同时和提供 Topic 服务的 Master 和 Slave<br>\r\n建立长连接，既可以从 Broker Master 订阅消息，也可以从 Broker Slave 订阅消息。</p>\r\n<h2>RocketMQ 集群部署模式</h2>\r\n<ol>\r\n<li>单 master 模式<br>\r\n也就是只有一个 master 节点，称不上是集群，一旦这个 master 节点宕机，那么整个服务就不可用，适合个人学习使用。</li>\r\n<li>多 master 模式<br>\r\n多个 master 节点组成集群，单个 master 节点宕机或者重启对应用没有影响。<br>\r\n优点：所有模式中性能最高<br>\r\n缺点：单个 master 节点宕机期间，未被消费的消息在节点恢复之前不可用，消息的实时性就受到影响。<br>\r\n<strong>注意</strong>：使用同步刷盘可以保证消息不丢失，同时 Topic 相对应的 queue 应该分布在集群中各个节点，而不是只在某各节点上，否则，该节点宕机会对订阅该 topic 的应用造成影响。</li>\r\n<li>多 master 多 slave 异步复制模式<br>\r\n在多 master 模式的基础上，每个 master 节点都有至少一个对应的 slave。master<br>\r\n节点可读可写，但是 slave 只能读不能写，类似于 mysql 的主备模式。<br>\r\n优点： 在 master 宕机时，消费者可以从 slave 读取消息，消息的实时性不会受影响，性能几乎和多 master 一样。<br>\r\n缺点：使用异步复制的同步方式有可能会有消息丢失的问题。</li>\r\n<li>多 master 多 slave 同步双写模式<br>\r\n同多 master 多 slave 异步复制模式类似，区别在于 master 和 slave 之间的数据同步方式。<br>\r\n优点：同步双写的同步模式能保证数据不丢失。<br>\r\n缺点：发送单个消息 RT 会略长，性能相比异步复制低10%左右。<br>\r\n刷盘策略：同步刷盘和异步刷盘（指的是节点自身数据是同步还是异步存储）<br>\r\n同步方式：同步双写和异步复制（指的一组 master 和 slave 之间数据的同步）<br>\r\n<strong>注意</strong>：要保证数据可靠，需采用同步刷盘和同步双写的方式，但性能会较其他方式低。</li>\r\n</ol>\r\n<h2>RocketMQ 单主部署</h2>\r\n<p>鉴于是快速入门，我选择的是第一种单 master 的部署模式。先说明一下我的安装环境：</p>\r\n<ol>\r\n<li>Centos 7.2</li>\r\n<li>jdk 1.8</li>\r\n<li>Maven 3.2.x</li>\r\n<li>Git</li>\r\n</ol>\r\n<p>这里 git 可用可不用，主要是用来直接下载 github 上的源码。也可以选择自己到<br>\r\ngithub 上下载，然后上传到服务器上。以git操作为示例。</p>\r\n<ol>\r\n<li>clone 源码并用 maven 编译</li>\r\n</ol>\r\n<pre class=\"hljs bash\"><code class=\"bash\">&gt; git <span class=\"hljs-built_in\">clone</span> https://github.com/alibaba/RocketMQ.git /opt/RocketMQ\r\n&gt; <span class=\"hljs-built_in\">cd</span> /opt/RocketMQ &amp;&amp; mvn -Dmaven.test.skip=<span class=\"hljs-literal\">true</span> clean package install assembly:assembly -U\r\n&gt; <span class=\"hljs-built_in\">cd</span> target/alibaba-rocketmq-broker/alibaba-rocketmq\r\n</code></pre>\r\n<p><strong>此处可能遇到的问题</strong><br>\r\n一、执行\"git clone <a href=\"https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Falibaba%2FRocketMQ.git\" target=\"_blank\" rel=\"nofollow\">https://github.com/alibaba/RocketMQ.git</a> /home/inspkgs/RocketMQ\"时出现以下提示：</p>\r\n<pre class=\"hljs python\"><code class=\"python\">fatal: unable to access <span class=\"hljs-string\">\'https://github.com/alibaba/RocketMQ.git/\'</span>: Could <span class=\"hljs-keyword\">not</span> resolve host: github.com; Unknown error\r\n</code></pre>\r\n<p>解决办法：一般是由于网络原因造成的，执行以下命令</p>\r\n<pre class=\"hljs css\"><code class=\"css\">&gt; <span class=\"hljs-selector-tag\">ping</span> <span class=\"hljs-selector-tag\">github</span><span class=\"hljs-selector-class\">.com</span>\r\n</code></pre>\r\n<p>确定可以 ping 通之后，再重新执行 git clone 命令。<br>\r\n二、执行\"mvn -Dmaven.test.skip=true clean package install assembly:assembly -U\"编译时，可能出现下载相关jar很慢的情况。<br>\r\n这也是由于默认 maven 中央仓库在国外的原因，可以根据需要在 /home/maven/conf/setting.xml 中的 <mirrors></mirrors> 添加以下内容后重新编译：</p>\r\n<pre class=\"hljs xml\"><code class=\"xml\"><span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">mirror</span>&gt;</span>\r\n    <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">id</span>&gt;</span>aliyun<span class=\"hljs-tag\"><!--<span class=\"hljs-name\"-->id</span>&gt;\r\n    <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">mirrorOf</span>&gt;</span>central<span class=\"hljs-tag\"><!--<span class=\"hljs-name\"-->mirrorOf</span>&gt;\r\n    <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">name</span>&gt;</span>aliyun maven<span class=\"hljs-tag\"><!--<span class=\"hljs-name\"-->name</span>&gt;\r\n    <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class=\"hljs-tag\"><!--<span class=\"hljs-name\"-->url</span>&gt;\r\n<span class=\"hljs-tag\"><!--<span class=\"hljs-name\"-->mirror</span>&gt;\r\n</code></pre>\r\n<ol start=\"2\">\r\n<li>启动 Name Server</li>\r\n</ol>\r\n<pre class=\"hljs cpp\"><code class=\"cpp\">&gt; nohup sh /opt/RocketMQ/bin/mqnamesrv &amp;\r\n<span class=\"hljs-comment\">//执行 jps 查看进程</span>\r\n&gt; jps\r\n<span class=\"hljs-number\">25913</span> NamesrvStartup\r\n<span class=\"hljs-comment\">//查看日志确保服务已正常启动</span>\r\n&gt; tail -f ~/logs/rocketmqlogs/namesrv.<span class=\"hljs-built_in\">log</span>\r\nThe Name Server boot success...\r\n</code></pre>\r\n<ol start=\"3\">\r\n<li>启动 broker</li>\r\n</ol>\r\n<pre class=\"hljs cpp\"><code class=\"cpp\">&gt; nohup sh /opt/RocketMQ/bin/mqbroker -n localhost:<span class=\"hljs-number\">9876</span> &amp;\r\n<span class=\"hljs-comment\">//执行 jps 查看进程</span>\r\n&gt; jps\r\n<span class=\"hljs-number\">25954</span> BrokerStartup\r\n<span class=\"hljs-comment\">//查看日志确保服务已正常启动</span>\r\n&gt; tail -f ~/logs/rocketmqlogs/broker.<span class=\"hljs-built_in\">log</span> \r\nThe broker[broker-a, <span class=\"hljs-number\">10.1</span><span class=\"hljs-number\">.54</span><span class=\"hljs-number\">.121</span>:<span class=\"hljs-number\">10911</span>] boot success...\r\n</code></pre>\r\n<ol start=\"4\">\r\n<li>发送和接收消息<br>\r\n发送/接收消息之前,我们需要告诉客户端 NameServer 地址。RocketMQ 提供了多种方式来实现这一目标。为简单起见,我们使用环境变量 NAMESRV_ADDR。</li>\r\n</ol>\r\n<pre class=\"hljs bash\"><code class=\"bash\">&gt; <span class=\"hljs-built_in\">export</span> NAMESRV_ADDR=localhost:9876\r\n&gt; sh /opt/RocketMQ/bin/tools.sh com.alibaba.rocketmq.example.quickstart.Producer\r\nSendResult [sendStatus=SEND_OK, msgId= ...\r\n&gt; sh /opt/RocketMQ/bin/tools.sh com.alibaba.rocketmq.example.quickstart.Consumer\r\nConsumeMessageThread_%d Receive New Messages: [MessageExt...\r\n</code></pre>\r\n<ol start=\"5\">\r\n<li>关闭服务</li>\r\n</ol>\r\n<pre class=\"hljs python\"><code class=\"python\">&gt; sh /opt/RocketMQ/bin/mqshutdown broker\r\nThe mqbroker(<span class=\"hljs-number\">36695</span>) <span class=\"hljs-keyword\">is</span> running...\r\nSend shutdown request to mqbroker(<span class=\"hljs-number\">36695</span>) OK\r\n&gt; sh /opt/RocketMQ/bin/mqshutdown namesrv\r\nThe mqnamesrv(<span class=\"hljs-number\">36664</span>) <span class=\"hljs-keyword\">is</span> running...\r\nSend shutdown request to mqnamesrv(<span class=\"hljs-number\">36664</span>) OK\r\n</code></pre>\r\n<h2>生产者、消费者 Demo</h2>\r\n<ol>\r\n<li>生产者</li>\r\n</ol>\r\n<pre class=\"hljs java\"><code class=\"java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-class\"><span class=\"hljs-keyword\">class</span> <span class=\"hljs-title\">Producer</span> </span>{\r\n    <span class=\"hljs-function\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title\">main</span><span class=\"hljs-params\">(String[] args)</span> <span class=\"hljs-keyword\">throws</span> MQClientException, InterruptedException </span>{\r\n\r\n        <span class=\"hljs-comment\">//声明并初始化一个producer</span>\r\n        <span class=\"hljs-comment\">//需要一个producer group名字作为构造方法的参数，这里为producer1</span>\r\n        DefaultMQProducer producer = <span class=\"hljs-keyword\">new</span> DefaultMQProducer(<span class=\"hljs-string\">\"producer1\"</span>);\r\n        \r\n        <span class=\"hljs-comment\">//设置NameServer地址,此处应改为实际NameServer地址，多个地址之间用；分隔</span>\r\n        <span class=\"hljs-comment\">//NameServer的地址必须有，但是也可以通过环境变量的方式设置，不一定非得写死在代码里</span>\r\n        producer.setNamesrvAddr(<span class=\"hljs-string\">\"10.1.54.121:9876;10.1.54.122:9876\"</span>);\r\n        \r\n        <span class=\"hljs-comment\">//调用start()方法启动一个producer实例</span>\r\n        producer.start();\r\n\r\n        <span class=\"hljs-comment\">//发送10条消息到Topic为TopicTest，tag为TagA，消息内容为“Hello RocketMQ”拼接上i的值</span>\r\n        <span class=\"hljs-keyword\">for</span> (<span class=\"hljs-keyword\">int</span> i = <span class=\"hljs-number\">0</span>; i &lt; <span class=\"hljs-number\">10</span>; i++) {\r\n            <span class=\"hljs-keyword\">try</span> {\r\n                Message msg = <span class=\"hljs-keyword\">new</span> Message(<span class=\"hljs-string\">\"TopicTest\"</span>,<span class=\"hljs-comment\">// topic</span>\r\n                        <span class=\"hljs-string\">\"TagA\"</span>,<span class=\"hljs-comment\">// tag</span>\r\n                        (<span class=\"hljs-string\">\"Hello RocketMQ \"</span> + i).getBytes(RemotingHelper.DEFAULT_CHARSET)<span class=\"hljs-comment\">// body</span>\r\n                );\r\n                \r\n                <span class=\"hljs-comment\">//调用producer的send()方法发送消息</span>\r\n                <span class=\"hljs-comment\">//这里调用的是同步的方式，所以会有返回结果</span>\r\n                SendResult sendResult = producer.send(msg);\r\n                \r\n                <span class=\"hljs-comment\">//打印返回结果，可以看到消息发送的状态以及一些相关信息</span>\r\n                System.out.println(sendResult);\r\n            } <span class=\"hljs-keyword\">catch</span> (Exception e) {\r\n                e.printStackTrace();\r\n                Thread.sleep(<span class=\"hljs-number\">1000</span>);\r\n            }\r\n        }\r\n\r\n        <span class=\"hljs-comment\">//发送完消息之后，调用shutdown()方法关闭producer</span>\r\n        producer.shutdown();\r\n    }\r\n}\r\n</code></pre>\r\n<ol start=\"2\">\r\n<li>消费者</li>\r\n</ol>\r\n<pre class=\"hljs java\"><code class=\"java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-class\"><span class=\"hljs-keyword\">class</span> <span class=\"hljs-title\">Consumer</span> </span>{\r\n\r\n    <span class=\"hljs-function\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title\">main</span><span class=\"hljs-params\">(String[] args)</span> <span class=\"hljs-keyword\">throws</span> InterruptedException, MQClientException </span>{\r\n    \r\n        <span class=\"hljs-comment\">//声明并初始化一个consumer</span>\r\n        <span class=\"hljs-comment\">//需要一个consumer group名字作为构造方法的参数，这里为consumer1</span>\r\n        DefaultMQPushConsumer consumer = <span class=\"hljs-keyword\">new</span> DefaultMQPushConsumer(<span class=\"hljs-string\">\"consumer1\"</span>);\r\n\r\n        <span class=\"hljs-comment\">//同样也要设置NameServer地址</span>\r\n        consumer.setNamesrvAddr(<span class=\"hljs-string\">\"10.1.54.121:9876;10.1.54.122:9876\"</span>);\r\n\r\n        <span class=\"hljs-comment\">//这里设置的是一个consumer的消费策略</span>\r\n        <span class=\"hljs-comment\">//CONSUME_FROM_LAST_OFFSET 默认策略，从该队列最尾开始消费，即跳过历史消息</span>\r\n        <span class=\"hljs-comment\">//CONSUME_FROM_FIRST_OFFSET 从队列最开始开始消费，即历史消息（还储存在broker的）全部消费一遍</span>\r\n        <span class=\"hljs-comment\">//CONSUME_FROM_TIMESTAMP 从某个时间点开始消费，和setConsumeTimestamp()配合使用，默认是半个小时以前</span>\r\n        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);\r\n\r\n        <span class=\"hljs-comment\">//设置consumer所订阅的Topic和Tag，*代表全部的Tag</span>\r\n        consumer.subscribe(<span class=\"hljs-string\">\"TopicTest\"</span>, <span class=\"hljs-string\">\"*\"</span>);\r\n\r\n        <span class=\"hljs-comment\">//设置一个Listener，主要进行消息的逻辑处理</span>\r\n        consumer.registerMessageListener(<span class=\"hljs-keyword\">new</span> MessageListenerConcurrently() {\r\n\r\n            <span class=\"hljs-meta\">@Override</span>\r\n            <span class=\"hljs-function\"><span class=\"hljs-keyword\">public</span> ConsumeConcurrentlyStatus <span class=\"hljs-title\">consumeMessage</span><span class=\"hljs-params\">(List<messageext> msgs,\r\n                                                            ConsumeConcurrentlyContext context)</messageext></span> </span>{\r\n\r\n                System.out.println(Thread.currentThread().getName() + <span class=\"hljs-string\">\" Receive New Messages: \"</span> + msgs);\r\n                \r\n                <span class=\"hljs-comment\">//返回消费状态</span>\r\n                <span class=\"hljs-comment\">//CONSUME_SUCCESS 消费成功</span>\r\n                <span class=\"hljs-comment\">//RECONSUME_LATER 消费失败，需要稍后重新消费</span>\r\n                <span class=\"hljs-keyword\">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;\r\n            }\r\n        });\r\n\r\n        <span class=\"hljs-comment\">//调用start()方法启动consumer</span>\r\n        consumer.start();\r\n\r\n        System.out.println(<span class=\"hljs-string\">\"Consumer Started.\"</span>);\r\n    }\r\n}\r\n</code></pre>\r\n<p></p></div><br><br>', 4, 0, 0, 1, 1, 1, '2019-04-25 21:43:02', '2018-11-25 21:02:40', '最近 RocketMQ 刚刚上生产环境，闲暇之时在这里做一些分享，主要目的是让初学者能快速上手RocketMQ。\r\nRocketMQ 是什么\r\nGithub 上关于 RocketMQ 的介绍：\r\nRcoketMQ 是一款低延迟、高可靠、可伸缩、易于使用的消息中间件。具有以下特性：\r\n\r\n支持发布/订');
 INSERT INTO `article` VALUES (32, 2, 'Docker_入门？只要这篇就够了！（纯干货适合0基础小白）', '<p>原文地址：<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=https://blog.csdn.net/S_gy_Zetrov/article/details/78161154\" target=\"_blank\" rel=\"noopener noreferrer\">https://blog.csdn.net/S_gy_Zetrov/article/details/78161154</a></p><h2 id=\"写在前面\">写在前面</h2><ul><li>这篇博客适合谁？<ul><li>对于Docker并不了解，只是有一点模糊的感觉，觉得Docker可以当成虚拟机用之类的</li><li>只是下载了Docker软件，对于怎么配置，怎么玩，第一步干什么，完全一无所知</li><li>本文适用于mac，PC用户不保证文章的效果，现在离开来得及</li></ul></li><li>网上Docker相关的教程都泛滥了，为啥还要写，为啥我要看你的文章<ul><li>首先欢迎你，能搜索到我的博客就是缘分</li><li>其次，确实，现在Docker相关的文章真的太多了，那我为什么还要写呢？原因有三：<ul><li>其一，文章是很多，各种1小时入门什么的，相信你已经在知乎看过很多了，我也看过，<br>因为我就是从知乎那几篇教程为起点，自己抠出来的，现在把自己的心得和经验贴出来，我觉得既是对自己负责也能服务他人。</li><li>其二，我从对Docker只有及其模糊（真的是模糊，我除了知道Docker是跟虚拟系统有关其他啥都不知道），到现在起码一<br>问一不知（对应一问三不知）的状态，大概花了8个小时。这期间全靠我从网络上搜索到的资料。现在用我的话写出来，我觉得对于跟我相同开始情况的小白用户，能省不少时间，所以我要写。</li><li>其三，因为我自己是纯靠搜索到的教程和技术文章学习的Docker，我自然是懂得干涩的语言对学习的拖慢。所以我自己写的时候，自然会考虑到这个问题。本文尽量不用技术用语，尽量使用通俗易懂的文字，为进一步拉低Docker的入门门槛作出我自己的贡献。</li></ul></li></ul></li><li>这篇文章主要是哪方面的Docker文章，纯入门？你做了哪些工作？<ul><li>很高兴你问了我这个问题。本文主要：<ul><li>首先对于Docker的概念作出我的解释，尽量通俗易懂</li><li>接着针对我用Docker的目的，从最开始的软件下载，到最后push一个自己的镜像到hub，整个过程以白话的形式描述出来，降低入门门槛，节省你的学习时间</li></ul></li><li>我做了哪些工作？这是个好问题！<ul><li>首先，我一直都很好奇Docker这个东西，但从来没有机会去使用它。但是，这学期OS课的lab，纯Linux系统编程，虽然使用双系统或者虚拟机都是纯小学生的难易程度了，也不麻烦，但我想，为什么不用Docker呢？用双系统或者虚拟机也太过小儿科！所以，我就这样接触了Docker</li><li>那么我使用Docker实现了什么？在lab中，我们需要用到的是纯终端下的gcc工具链还有vim等，那么这就是我需要的全部软件了！于是我在Docker中实现了「gcc+gdb<br>+vim」环境，并push到了hub中。</li></ul></li></ul></li><li>你这篇博客有没有抄别人的？<ul><li>额，我学习Docker时确实看了很多很多（真的是很多）文章，现在写这篇博客，除了自己的经验心得，自然还得去看那些文章。但我能保证的是，我写的都是取精华去糟粕，不然这篇文章就不必存在了你说是不是？</li><li>参考资料会在文后统一附上，谢谢！</li></ul></li></ul><p>好了，闲话说完，我们开始吧！</p><p>&nbsp;</p><h2 id=\"入门docker你要下载什么注册什么\">入门Docker，你要下载什么？注册什么？</h2><p id=\"dockerapp你肯定是要下载的\"><strong><span>+ Docker.app你肯定是要下载的！</span></strong></p><p>Docker for mac，这个你肯定要下载：<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=https://www.docker.com/community-edition\" target=\"_blank\" rel=\"noopener noreferrer\">点我下载Docker for mac的社区免费版本</a></p><p>&nbsp;</p><p id=\"注册docker官方账号你需要它\"><strong><span>+ 注册Docker官方账号，你需要它！</span></strong></p><p>注册一个Docker的官方账号，有利而无害，相信我！<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=https://cloud.docker.com/swarm/sgyzetrov/dashboard/onboarding/cloud-registry\" target=\"_blank\" rel=\"noopener noreferrer\">点我注册Docker Cloud官方账号</a></p><p>Docker安装好，账号也注册后，点击桌面顶栏的Docker图标，点击sign in，登陆你的Docker账号。</p><p>&nbsp;</p><h2 id=\"注册daocloud账号获取加速服务\"><span>+ 注册DaoCloud账号，获取加速服务！</span></h2><p>不可否认，有时直接从Docker官方往本地pull镜像会十分缓慢。。。这时我们可以通过国内的Docker服务提供商免费获取加速pull镜像服务，阿里网易好像都有这种服务，我选择的是DaoCloud：<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=https://account.daocloud.io/signup\" target=\"_blank\" rel=\"noopener noreferrer\">点我注册DaoCloud账号</a></p><p>注册后登陆DaoCloud，找到这个按钮：</p><p><img title=\"\" data-original=\"https://img-blog.csdn.net/20171005113053850?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvU19neV9aZXRyb3Y=/font/5a6L5L2T/fontsize/1400/fill/I0ZGMDAwMA==/dissolve/90/gravity/Center\" src=\"https://media.liuyanzhao.com/wp-content/themes/begin/img/blank.gif\" alt=\"docker1.png\"></p><p>接着，按照它的步骤，为自己添加Docker加速服务</p><p><img title=\"\" data-original=\"https://img-blog.csdn.net/20171005113639144?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvU19neV9aZXRyb3Y=/font/5a6L5L2T/fontsize/1400/fill/I0ZGMDAwMA==/dissolve/70/gravity/Center\" src=\"https://media.liuyanzhao.com/wp-content/themes/begin/img/blank.gif\" alt=\"docker2\"></p><h4></h4><p id=\"到此准备工作结束进入下一部分\"><strong><span>+ 到此准备工作结束，进入下一部分！</span></strong></p><p>&nbsp;</p><h2 id=\"要想入门docker首先你需要理解docker\">要想入门Docker，首先你需要理解Docker！</h2><p>我也不扯淡了，直接上我对Docker的理解：(Copyright ©&nbsp;<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=http://blog.csdn.net/s_gy_zetrov\" target=\"_blank\" rel=\"noopener noreferrer\">http://blog.csdn.net/s_gy_zetrov</a>. All Rights Reserved)</p><p>Docker，可以说是一个终端命令行的虚拟机，但更准确的说法，其实应该是一个虚拟环境。比如，你想要在PC上无缝使用Linux么？那么虚拟机并不是你唯一的出路，你还有Docker！我更愿意称Docker为一个容器，当然这只是Docker的一个狭义解释，Docker不止是一个容器。Docker包含3个重要概念：</p><ul><li>一个，是镜像（Image），镜像是静态的、可以被用户互相分享的文件。我们玩过双系统和虚拟机的人都知道，首先你需要一个.iso镜像，才能安装系统。Docker中的镜像也是这个东西，<strong><span>镜像是静态的，你不能对他操作，只能pull别人的镜像或者push自己的镜像</span></strong>。</li><li>还有一个，是容器（Container），前面说过，镜像是静态不可操作的，只能被分享和下载，那什么是能被操作的呢？就是容器里！容器可以理解为镜像的动态状态，也就是我们虚拟机中系统装好后的状态，其实这么说是不对的，容器最符合的描述应该是Linux的iso文件的<code>Live CD</code>模式，比如我们玩双系统时都进入过<code>Live CD</code>模式，不安装系统而直接进入系统，很神奇是吧，Docker的容器就是这个概念，只不过更加轻量更加迅速便捷。但是<code>Live CD</code>的害处就是你关机后作出的修改安装的软件全部gg，<strong><span>容器也是一样，一旦被直接推出，之前安装的gcc啊vim啊啥的就会全部gg掉。如果要保存修改，就需要将当前容器封装成一个新的镜像，这样下次启动这个新的镜像后之前作出的修改还都在</span></strong>。</li><li>最后，是仓库（Repository）。各位在前面看到我写的pull和push什么的，有没有晕？不知道各位对于git熟悉不熟悉，Docker中的仓库很像git的代码仓库，你可以pull自己之前push到自己仓库的镜像到本地，也可以pull别人push到公共仓库的镜像到自己本地。说白了就是百度云盘，你可以上传（push）自己做好环境的Docker上去，也可以下载（pull）自己云端的镜像到本地。同时，我们知道百度云最大的特点就是分享（你懂的嘿嘿嘿），类比Docker，如果你得到百度云分享链接（别人的镜像名字、标签和别人的用户名），你还可以下载（pull）别人分享的镜像到自己的本地，别人也可以下载（pull）你的镜像，因为Docker仓库都是公共的。当然，每个免费用户有一个名额把自己的一个镜像设为私有，也就是禁止被分享给别人，类比百度云上你自己保存的而没有被生成分享链接的小姐姐。</li></ul><p>接下来来张高大上的概念图，各位看个热闹2333</p><p><img title=\"\" data-original=\"https://img-blog.csdn.net/20171005120538429?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvU19neV9aZXRyb3Y=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast\" src=\"https://media.liuyanzhao.com/wp-content/themes/begin/img/blank.gif\" alt=\"docker3.png\"></p><h3 id=\"接下来就是实战了打开你的iterm2我是iterm2党2333打开普通terminal也行这个不影响\">接下来就是实战了！打开你的iTerm2！（我是iTerm2党2333，打开普通terminal也行，这个不影响）</h3><p>&nbsp;</p><p id=\"查看docker版本信息\"><strong><span>+ 查看Docker版本信息</span></strong></p><pre class=\"prettyprint\"><code class=\"hljs livecodeserver has-numbering\">终端输入：\r\n<strong><span>docker <span class=\"hljs-built_in\">version</span></span></strong></code></pre><p>&nbsp;</p><p>显示的我的版本信息</p><pre class=\"prettyprint\"><code class=\"hljs r has-numbering\"> ~$ docker version\r\nClient:\r\n Version:      <span class=\"hljs-number\">17.06</span><span class=\"hljs-number\">.2</span>-ce\r\n API version:  <span class=\"hljs-number\">1.30</span>\r\n Go version:   go1.8.3\r\n Git commit:   cec0b72\r\n Built:        Tue Sep  <span class=\"hljs-number\">5</span> <span class=\"hljs-number\">20</span>:<span class=\"hljs-number\">12</span>:<span class=\"hljs-number\">06</span> <span class=\"hljs-number\">2017</span>\r\n OS/Arch:      darwin/amd64\r\n <span class=\"hljs-keyword\">...</span>\r\n //omitted by sgy(Copyright © http://blog.csdn.net/s_gy_zetrov. All Rights Reserved)\r\n <span class=\"hljs-keyword\">...</span></code></pre><p>不过我一般不需要那么多信息，所以一直用的是<code>docker -v</code>命令</p><h4></h4><p id=\"是时候pull你的第一个镜像下来的\"><strong><span>+ 是时候pull你的第一个镜像下来的！</span></strong></p><p>Docker安装好后是不会自带镜像的，你需要从仓库自己pull一个镜像下来，自己制作自己的镜像也是一个道理，你可以通过在已有的镜像基础上生成自己的镜像或者看一下这篇博客:&nbsp;<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=http://blog.csdn.net/shiqiangdexin/article/details/52472195\" target=\"_blank\" rel=\"noopener noreferrer\">随便百度的如何创建自己Docker镜像得到的教程</a></p><p>Docker镜像官方好像只提供Linux，这个很容易想，windows和mac是要交钱的吧大概？（否）</p><p>搜索ubuntu的Docker镜像<strong><span><code>docker search ubuntu</code></span></strong>，这个如果你想要什么centos，直接改就行，不区分写法,我的返回结果：</p><pre class=\"prettyprint\"><code class=\"hljs r has-numbering\">~$ docker search ubuntu\r\nNAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED\r\nubuntu                                                 Ubuntu is a Debian-based Linux operating s...   <span class=\"hljs-number\">6636</span>                [OK]\r\ndorowu/ubuntu-desktop-lxde-vnc                         Ubuntu with openssh-server and NoVNC            <span class=\"hljs-number\">131</span>                                     [OK]\r\nrastasheep/ubuntu-sshd                                 Dockerized SSH service, built on top of of...   <span class=\"hljs-number\">105</span>                                     [OK]\r\nansible/ubuntu14.04-ansible                            Ubuntu <span class=\"hljs-number\">14.04</span> LTS with ansible                   <span class=\"hljs-number\">86</span>                                      [OK]\r\nubuntu-upstart                                         Upstart is an event-based replacement <span class=\"hljs-keyword\">for</span> <span class=\"hljs-keyword\">...</span>   <span class=\"hljs-number\">80</span>                  [OK]\r\nneurodebian                                            NeuroDebian provides neuroscience research...   <span class=\"hljs-number\">40</span>                  [OK]\r\nubuntu-debootstrap                                     debootstrap --variant=minbase --components...   <span class=\"hljs-number\">31</span>                  [OK]\r\n<span class=\"hljs-keyword\">...</span>\r\n//omitted by sgy(Copyright © http://blog.csdn.net/s_gy_zetrov. All Rights Reserved)\r\n<span class=\"hljs-keyword\">...</span></code></pre><p>&nbsp;</p><p>拉取官方最新版的ubuntu镜像：<strong><span><code>docker pull ubuntu:latest</code></span></strong>，其中的latest是一个标签（tag），表示是当前最新版本。你应该得到的信息，类似这样的</p><pre class=\"prettyprint\"><code class=\"hljs r has-numbering\">～$ docker pull ubuntu:latest\r\nTrying to pull repository docker.io/<span class=\"hljs-keyword\">library</span>/ubuntu <span class=\"hljs-keyword\">...</span> \r\nlatest: Pulling from docker.io/<span class=\"hljs-keyword\">library</span>/ubuntu\r\naed158d74952: Pull complete \r\n773ae8273d14: Pull complete \r\nd1d487w88782: Pull complete \r\ncd3d6cd6c0cf: Pull complete \r\n8d73bu79120c: Pull complete \r\nDigest: sha256:35bc48a1ca97c3f74rhf378hj92hd82j29i4hf4hf84nf0dhnsid232de8d8\r\nStatus: Downloaded newer image <span class=\"hljs-keyword\">for</span> docker.io/ubuntu:latest</code></pre><p><strong><span>你输入的命令实际上相当于<code>docker pull registry.hub.docker.com/ubuntu:latest</code>命令，即从注册服务器<code>registry.hub.docker.com</code>中的名为<code>ubuntu</code>的仓库中下载标签为<code>latest</code>的镜像</span></strong>。</p><p>&nbsp;</p><p>由于我的lab统一要求，ubuntu需要14.04版本，所以我在hub里面搜了搜，<strong><span>找到了一个用户分享的14.04 64位纯净镜像（base image）</span></strong>，下面将他的镜像扒下来</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span>docker pull chug/ubuntu14.<span class=\"hljs-number\">04</span>x64</code></pre><p>这个用户还有很多其他版本的ubuntu系统，12 13 14的32位64位都有，全是纯净镜像。</p><h4></h4><p id=\"查看你本地的镜像仓库\"><strong><span>+ 查看你本地的镜像仓库！</span></strong></p><p>把初始镜像拉下来后，就可以启动它了，不过，可以先使用<code>docker images</code>命令查看你自己的本地镜像，我随便找了个例子，你的也应该是类似这样的：</p><pre class=\"prettyprint\"><code class=\"hljs lua has-numbering\">～$ <span><strong>docker images</strong></span>\r\nREPOSITORY          TAG                 IMAGE ID            CREATED             SIZE\r\ndocker.<span class=\"hljs-built_in\">io</span>/ubuntu    <span class=\"hljs-number\">16.04</span>               e4415b714b62        <span class=\"hljs-number\">11</span> days ago         <span class=\"hljs-number\">128.1</span> MB\r\ndocker.<span class=\"hljs-built_in\">io</span>/ubuntu    latest              e4415b714b62        <span class=\"hljs-number\">11</span> days ago         <span class=\"hljs-number\">128.1</span> MB\r\ndocker.<span class=\"hljs-built_in\">io</span>/ubuntu    <span class=\"hljs-number\">12.04</span>               aefa163f7a7e        <span class=\"hljs-number\">11</span> days ago         <span class=\"hljs-number\">103.5</span> MB\r\ndocker.<span class=\"hljs-built_in\">io</span>/centos    latest              <span class=\"hljs-number\">0584</span>b3d2cf6d        <span class=\"hljs-number\">3</span> weeks ago         <span class=\"hljs-number\">196.5</span> MB</code></pre><p>&nbsp;</p><p>从网上一个教程中找到以下说法，比我说的好，那就看这个吧！</p><blockquote><p>在列出信息中，可以看到几个字段信息:</p><ul><li>来自于哪个仓库，比如 ubuntu</li><li>镜像的标记，比如 16.04</li><li>它的 ID 号(唯一)，比如e4415b714b62</li><li>创建时间</li><li>镜像大小</li></ul><p>其中镜像的 ID 唯一标识了镜像，注意到 ubuntu:16.04 和 ubuntu:latest具有相同的镜像 ID ，说明它们实际上是同一镜像。 TAG 信息用来标记来自同一个仓库的不同镜像。例如 ubuntu 仓库中有多个镜像，通过 TAG 信息来区分发行版本，例如10.04 、 12.04 、 12.10 、 13.04 、 14.04 等。例如可以使用<code>docker run -t -i ubuntu:16.04 /bin/bash</code>命令指定使用镜像<code>ubuntu:16.04</code>来启动一个容器。如果不指定具体的标记，则默认使用<code>latest</code>标记信息。</p></blockquote><h4></h4><p id=\"启动你的镜像并尽情安装软件吧\"><strong><span>+ 启动你的镜像并尽情安装软件吧！</span></strong></p><p>以下内容均以我自己pull下来的chug的初始镜像为例：</p><p>现在你已经有一个初始的镜像了，注意这个里面是什么都没有的，连vim都没装，是精简到不能再精简的镜像了。</p><p>首先启动它：</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">～<span class=\"hljs-variable\">$ </span>docker run -it chug/ubuntu14.<span class=\"hljs-number\">04</span>x64 /bin/bash\r\nroot<span class=\"hljs-variable\">@aa97ba3292ce</span><span class=\"hljs-symbol\">:/</span><span class=\"hljs-comment\">#</span></code></pre><p><strong><span>-it 表示运行在交互模式，是-i -t的缩写，即-it是两个参数：-i和-t。前者表示打开并保持stdout，后者表示分配一个终端（pseudo-tty）一般这个模式就是可以启动bash，然后和容器有命令行的交互</span></strong></p><p>可以看到我们终端的字头变成<code>root@aa97ba3292ce:/#</code>了，这就意味着我们的镜像已经创建了一个容器实例。现在我们可以对这个“ubuntu系统”进行操作了</p><p>&nbsp;</p><p>比如安装vim：</p><pre class=\"prettyprint\"><code class=\"hljs applescript has-numbering\">root@aa97ba3292ce:/<span class=\"hljs-comment\"># <strong><span>apt-get install vim</span></strong></span>\r\nReading package lists... Done\r\nBuilding dependency tree... Done\r\nThe following extra packages will be installed:\r\n  <span class=\"hljs-type\">file</span> libexpat1 libffi6 libgpm2 libmagic1 libpython2<span class=\"hljs-number\">.7</span> libpython2<span class=\"hljs-number\">.7</span>-minimal libpython2<span class=\"hljs-number\">.7</span>-stdlib libsqlite3-<span class=\"hljs-number\">0</span> libssl1<span class=\"hljs-number\">.0</span><span class=\"hljs-number\">.0</span> mime-support vim-common vim-runtime\r\nSuggested packages:\r\n  gpm ctags vim-doc vim-scripts\r\nThe following NEW packages will be installed:\r\n  <span class=\"hljs-type\">file</span> libexpat1 libffi6 libgpm2 libmagic1 libpython2<span class=\"hljs-number\">.7</span> libpython2<span class=\"hljs-number\">.7</span>-minimal libpython2<span class=\"hljs-number\">.7</span>-stdlib libsqlite3-<span class=\"hljs-number\">0</span> libssl1<span class=\"hljs-number\">.0</span><span class=\"hljs-number\">.0</span> mime-support vim vim-common vim-runtime\r\n<span class=\"hljs-number\">0</span> upgraded, <span class=\"hljs-number\">14</span> newly installed, <span class=\"hljs-number\">0</span> <span class=\"hljs-keyword\">to</span> remove <span class=\"hljs-keyword\">and</span> <span class=\"hljs-number\">0</span> <span class=\"hljs-keyword\">not</span> upgraded.\r\nNeed <span class=\"hljs-keyword\">to</span> <span class=\"hljs-keyword\">get</span> <span class=\"hljs-number\">10.7</span> MB <span class=\"hljs-keyword\">of</span> archives.\r\nAfter this operation, <span class=\"hljs-number\">50.7</span> MB <span class=\"hljs-keyword\">of</span> additional disk <span class=\"hljs-constant\">space</span> will be used.\r\nDo you want <span class=\"hljs-keyword\">to</span> <span class=\"hljs-keyword\">continue</span>? [Y/n]</code></pre><p>看到我没有用sudo，是因为本来就已经是超级用户（root）状态了。</p><p>同理按照我自己的需求，我安装了gcc和gdb</p><h4></h4><p id=\"想退出容器很简单\"><span><strong>+ 想退出容器？很简单！</strong></span></p><p>如果使用exit，命令退出，则容器的状态处于Exit，而不是后台运行。如果想让容器一直运行，而不是停止，可以使用快捷键&nbsp;<strong><span>ctrl+p ctrl+q</span></strong>&nbsp;退出，此时容器的状态为Up。</p><p>查看当前正在运行的容器：</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span><strong><span>docker ps</span></strong>\r\n<span class=\"hljs-constant\">CONTAINER</span> <span class=\"hljs-constant\">ID</span>        <span class=\"hljs-constant\">IMAGE</span>                 <span class=\"hljs-constant\">COMMAND</span>             <span class=\"hljs-constant\">CREATED</span>             <span class=\"hljs-constant\">STATUS</span>              <span class=\"hljs-constant\">PORTS</span>               <span class=\"hljs-constant\">NAMES</span>\r\naa97ba3292ce        chug/ubuntu14.<span class=\"hljs-number\">04</span>x64   <span class=\"hljs-string\">\"/bin/bash\"</span>         <span class=\"hljs-number\">7</span> minutes ago       <span class=\"hljs-constant\">Up</span> <span class=\"hljs-number\">7</span> minutes                           relaxed_hoover</code></pre><p>&nbsp;</p><p>看到当前有一个ID为aa97ba3292ce的容器(Copyright ©&nbsp;<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=http://blog.csdn.net/s_gy_zetrov\" target=\"_blank\" rel=\"noopener noreferrer\">http://blog.csdn.net/s_gy_zetrov</a>. All Rights Reserved)</p><p>启动、停止、重启容器aa97ba3292ce的命令：</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span><strong><span>docker start aa97ba3292ce</span></strong>\r\n~<span class=\"hljs-variable\">$ </span><span><strong>docker stop aa97ba3292ce</strong></span>\r\n~<span class=\"hljs-variable\">$ </span><span><strong>docker restart aa97ba3292ce</strong></span></code></pre><p>&nbsp;</p><p><strong><span>后台启动一个容器后，如果想进入到这个容器，可以使用attach命令</span></strong>：</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span><strong><span>docker attach aa97ba3292ce</span></strong></code></pre><h4></h4><h4></h4><p id=\"软件装完想保存环境commit帮你\"><span><strong>+ 软件装完，想保存环境？commit帮你！</strong></span></p><p>将容器转化为一个镜像，即执行commit操作，完成后可使用<strong><span><code>docker images</code></span></strong>查看</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">root<span class=\"hljs-variable\">@aa97ba3292ce</span><span class=\"hljs-symbol\">:/</span><span class=\"hljs-comment\">#exit //先退出容器</span>\r\n~<span class=\"hljs-variable\">$ </span><strong><span>docker commit -m <span class=\"hljs-string\">\"ubuntu with vim\"</span> -a <span class=\"hljs-string\">\"sgy\"</span> aa97ba3292ce sgy/<span class=\"hljs-symbol\">ubuntu:</span>vim</span></strong>\r\n~<span class=\"hljs-variable\">$ </span>docker images\r\n<span class=\"hljs-constant\">REPOSITORY</span>                    <span class=\"hljs-constant\">TAG</span>    <span class=\"hljs-constant\">IMAGE</span> <span class=\"hljs-constant\">ID</span>         <span class=\"hljs-constant\">CREATED</span>             <span class=\"hljs-constant\">SIZE</span>\r\nsgy/ubuntu                    vim    <span class=\"hljs-number\">52166</span>e4475ed     <span class=\"hljs-number\">5</span> seconds ago       <span class=\"hljs-number\">358.1</span> <span class=\"hljs-constant\">MB</span>\r\nchug/ubuntu14.<span class=\"hljs-number\">04</span>x64           latest <span class=\"hljs-number\">05</span>84b3d2cf6d     <span class=\"hljs-number\">9</span> days ago          <span class=\"hljs-number\">196.5</span> <span class=\"hljs-constant\">MB</span></code></pre><p>&nbsp;</p><p>其中，-m指定说明信息；-a指定用户信息；aa97ba3292ce代表容器的id；sgy/ubuntu:vim指定目标镜像的用户名、仓库名和 tag 信息。我这里都是为了博客瞎编的用户名，我自己的用户名也不是sgy，你运行命令的时候使用自己注册Docker时的用户名。</p><p>此时Docker中就有了我们新建的镜像sgy/ubuntu:vim，此镜像和原有的ubuntu镜像区别在于多了个vim工具。此时我们利用新镜像创建的容器，本身就自带vim了。</p><p>启动新创建的镜像，可以看到vim已经自带了。</p><pre class=\"prettyprint\"><code class=\"hljs r has-numbering\">~$ <strong><span>docker run -it sgy/ubuntu:vim /bin/bash</span></strong>\r\nroot@520afc596c51:/<span class=\"hljs-comment\"># vim --version</span>\r\nVIM - Vi IMproved <span class=\"hljs-number\">7.4</span> (<span class=\"hljs-number\">2013</span> Aug <span class=\"hljs-number\">10</span>, compiled Apr  <span class=\"hljs-number\">4</span> <span class=\"hljs-number\">2017</span> <span class=\"hljs-number\">18</span>:<span class=\"hljs-number\">14</span>:<span class=\"hljs-number\">54</span>)\r\n<span class=\"hljs-keyword\">...</span>\r\n//omitted by sgy(Copyright © http://blog.csdn.net/s_gy_zetrov. All Rights Reserved)\r\n<span class=\"hljs-keyword\">...</span></code></pre><p>利用exit退出容器。此时Docker引擎中就有了两个容器，可使用<code>docker ps -a</code>查看。</p><h4></h4><h4>+ 想要删除容器或者镜像？用这个！</h4><p>如果想删除容器或者镜像，可以使用rm命令，注意：<span><strong>删除镜像前必须先删除以此镜像为基础的容器（哪怕是已经停止的容器），否则无法删除该镜像，会报错<code>Failed to remove image (e4415b714b62): Error response from daemon: conflict: unable to delete e4415b714b62 (cannot be forced) - image has dependent child images</code>类似这种</strong></span>。</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span><strong><span>docker rm container_id</span></strong>\r\n~<span class=\"hljs-variable\">$ </span><span><strong>docker rmi image_id</strong></span></code></pre><p>&nbsp;</p><p>有的时候尽管删除了全部容器，镜像还是无法删除，这时点击mac顶栏中的docker logo，选择restart，然后再试一次rmi，应该就没问题了。(Copyright ©&nbsp;<a href=\"https://liuyanzhao.com/wp-content/themes/begin/inc/go.php?url=http://blog.csdn.net/s_gy_zetrov\" target=\"_blank\" rel=\"noopener noreferrer\">http://blog.csdn.net/s_gy_zetrov</a>. All Rights Reserved)</p><h4 id=\"附上一张高大上的docker命令图\">+ 附上一张高大上的Docker命令图</h4><p><img title=\"\" data-original=\"https://img-blog.csdn.net/20171005132826220\" src=\"https://media.liuyanzhao.com/wp-content/themes/begin/img/blank.gif\" alt=\"docker4.png\"></p><h4></h4><p id=\"一次配置到处使用那就push到hub上吧\"><span><strong>+ 一次配置，到处使用？那就push到hub上吧！</strong></span></p><p>因为之前已经在Docker.app中登陆了Docker账号，所以现在直接</p><pre class=\"prettyprint\"><code class=\"hljs ruby has-numbering\">~<span class=\"hljs-variable\">$ </span><strong><span>docker push sgy/<span class=\"hljs-symbol\">ubuntu:</span>vim</span></strong></code></pre><p>就可以了！</p><p>下次到了机房，在ubuntu系统中安装Docker，配置好加速器，启动Docker，<strong><span><code>docker login</code></span></strong>登陆自己的账号，然后直接<code>~$&nbsp;<span><strong>docker pull sgy/ubuntu:vim</strong></span></code>就可以把你push到hub的已经配置好的环境的镜像给扒下来。做完实验，再push上去就ok了！</p><h2></h2><h2>Docker中安装gcc、gdb时遇到的问题</h2><p id=\"add-apt-repository-command-not-found\"><span><strong>+ add-apt-repository: command not found</strong></span></p><p>14.04系统解决办法：</p><pre class=\"prettyprint\"><code class=\"hljs lasso has-numbering\">apt<span class=\"hljs-attribute\">-get</span> install software<span class=\"hljs-attribute\">-properties</span><span class=\"hljs-attribute\">-common</span></code></pre><p>&nbsp;</p><p>older版本的系统：</p><pre class=\"prettyprint\"><code class=\"hljs lasso has-numbering\">apt<span class=\"hljs-attribute\">-get</span> install python<span class=\"hljs-attribute\">-software</span><span class=\"hljs-attribute\">-properties</span></code></pre><h4></h4><p id=\"docker中使用gdb无法进入断点无法调试\"><strong><span>+ Docker中使用gdb无法进入断点，无法调试</span></strong></p><p>加上<code>--privileged</code>参数</p><pre class=\"prettyprint\"><code class=\"hljs applescript has-numbering\">～$ docker <span class=\"hljs-command\">run</span> -<span class=\"hljs-keyword\">it</span> <span class=\"hljs-comment\">--privileged sgy/ubuntu:vim /bin/bash</span></code></pre>', 14, 10, 0, 1, 1, 1, '2019-04-25 21:42:58', '2018-11-25 21:05:05', '原文地址：https://blog.csdn.net/S_gy_Zetrov/article/details/78161154写在前面这篇博客适合谁？对于Docker并不了解，只是有一点模糊的感觉，觉得Docker可以当成虚拟机用之类的只是下载了Docker软件，对于怎么配置，怎么玩，第一步干什么，');
-INSERT INTO `article` VALUES (43, 2, '222', '222', 0, 0, 0, 1, 0, 1, '2021-02-25 08:17:13', '2021-02-25 08:17:13', '222');
-INSERT INTO `article` VALUES (44, 5, '2222222', '2222', 0, 0, 0, 1, 0, 1, '2021-02-25 09:14:35', '2021-02-25 09:14:35', '2222');
-INSERT INTO `article` VALUES (40, 2, '文章测试文章测试', '<p>文章测试文章测试</p>', 0, 0, 0, 1, 1, 1, '2021-02-25 07:03:15', '2021-02-25 07:03:15', '文章测试文章测试');
-INSERT INTO `article` VALUES (41, 2, '222', '222', 0, 0, 0, 1, 0, 1, '2021-02-25 08:11:17', '2021-02-25 08:11:17', '222');
-INSERT INTO `article` VALUES (42, 2, '333', '3333', 0, 0, 0, 1, 0, 1, '2021-02-25 08:11:22', '2021-02-25 08:11:22', '3333');
 COMMIT;
 
 -- ----------------------------
@@ -78,70 +73,71 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `article_category_ref`;
 CREATE TABLE `article_category_ref` (
-  `article_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `article_id` int(11) NOT NULL COMMENT '文章ID',
+  `category_id` int(11) NOT NULL COMMENT '分类ID',
+  PRIMARY KEY (`article_id`,`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_category_ref
 -- ----------------------------
 BEGIN;
-INSERT INTO `article_category_ref` VALUES (25, 10);
-INSERT INTO `article_category_ref` VALUES (25, 12);
-INSERT INTO `article_category_ref` VALUES (24, 10);
-INSERT INTO `article_category_ref` VALUES (24, 13);
-INSERT INTO `article_category_ref` VALUES (26, 15);
-INSERT INTO `article_category_ref` VALUES (26, 100000004);
-INSERT INTO `article_category_ref` VALUES (14, 1);
-INSERT INTO `article_category_ref` VALUES (14, 9);
-INSERT INTO `article_category_ref` VALUES (17, 1);
-INSERT INTO `article_category_ref` VALUES (17, 2);
-INSERT INTO `article_category_ref` VALUES (16, 1);
-INSERT INTO `article_category_ref` VALUES (16, 2);
-INSERT INTO `article_category_ref` VALUES (15, 1);
-INSERT INTO `article_category_ref` VALUES (15, 8);
-INSERT INTO `article_category_ref` VALUES (13, 10);
-INSERT INTO `article_category_ref` VALUES (13, 13);
-INSERT INTO `article_category_ref` VALUES (12, 1);
-INSERT INTO `article_category_ref` VALUES (12, 2);
-INSERT INTO `article_category_ref` VALUES (11, 1);
-INSERT INTO `article_category_ref` VALUES (11, 2);
-INSERT INTO `article_category_ref` VALUES (4, 10);
-INSERT INTO `article_category_ref` VALUES (4, 14);
-INSERT INTO `article_category_ref` VALUES (5, 1);
-INSERT INTO `article_category_ref` VALUES (5, 8);
 INSERT INTO `article_category_ref` VALUES (1, 1);
 INSERT INTO `article_category_ref` VALUES (1, 9);
 INSERT INTO `article_category_ref` VALUES (2, 1);
 INSERT INTO `article_category_ref` VALUES (2, 9);
-INSERT INTO `article_category_ref` VALUES (6, 1);
-INSERT INTO `article_category_ref` VALUES (6, 9);
-INSERT INTO `article_category_ref` VALUES (10, 1);
-INSERT INTO `article_category_ref` VALUES (10, 2);
-INSERT INTO `article_category_ref` VALUES (9, 1);
-INSERT INTO `article_category_ref` VALUES (9, 9);
-INSERT INTO `article_category_ref` VALUES (8, 1);
-INSERT INTO `article_category_ref` VALUES (8, 9);
 INSERT INTO `article_category_ref` VALUES (3, 1);
 INSERT INTO `article_category_ref` VALUES (3, 8);
+INSERT INTO `article_category_ref` VALUES (4, 10);
+INSERT INTO `article_category_ref` VALUES (4, 14);
+INSERT INTO `article_category_ref` VALUES (5, 1);
+INSERT INTO `article_category_ref` VALUES (5, 8);
+INSERT INTO `article_category_ref` VALUES (6, 1);
+INSERT INTO `article_category_ref` VALUES (6, 9);
 INSERT INTO `article_category_ref` VALUES (7, 1);
 INSERT INTO `article_category_ref` VALUES (7, 9);
+INSERT INTO `article_category_ref` VALUES (8, 1);
+INSERT INTO `article_category_ref` VALUES (8, 9);
+INSERT INTO `article_category_ref` VALUES (9, 1);
+INSERT INTO `article_category_ref` VALUES (9, 9);
+INSERT INTO `article_category_ref` VALUES (10, 1);
+INSERT INTO `article_category_ref` VALUES (10, 2);
+INSERT INTO `article_category_ref` VALUES (11, 1);
+INSERT INTO `article_category_ref` VALUES (11, 2);
+INSERT INTO `article_category_ref` VALUES (12, 1);
+INSERT INTO `article_category_ref` VALUES (12, 2);
+INSERT INTO `article_category_ref` VALUES (13, 10);
+INSERT INTO `article_category_ref` VALUES (13, 13);
+INSERT INTO `article_category_ref` VALUES (14, 1);
+INSERT INTO `article_category_ref` VALUES (14, 9);
+INSERT INTO `article_category_ref` VALUES (15, 1);
+INSERT INTO `article_category_ref` VALUES (15, 8);
+INSERT INTO `article_category_ref` VALUES (16, 1);
+INSERT INTO `article_category_ref` VALUES (16, 2);
+INSERT INTO `article_category_ref` VALUES (17, 1);
+INSERT INTO `article_category_ref` VALUES (17, 2);
 INSERT INTO `article_category_ref` VALUES (23, 1);
 INSERT INTO `article_category_ref` VALUES (23, 7);
-INSERT INTO `article_category_ref` VALUES (34, 10);
-INSERT INTO `article_category_ref` VALUES (34, 13);
-INSERT INTO `article_category_ref` VALUES (33, 10);
-INSERT INTO `article_category_ref` VALUES (33, 13);
-INSERT INTO `article_category_ref` VALUES (32, 15);
-INSERT INTO `article_category_ref` VALUES (32, 100000006);
-INSERT INTO `article_category_ref` VALUES (31, 15);
-INSERT INTO `article_category_ref` VALUES (31, 16);
-INSERT INTO `article_category_ref` VALUES (30, 10);
-INSERT INTO `article_category_ref` VALUES (30, 13);
-INSERT INTO `article_category_ref` VALUES (29, 15);
-INSERT INTO `article_category_ref` VALUES (29, 100000003);
+INSERT INTO `article_category_ref` VALUES (24, 10);
+INSERT INTO `article_category_ref` VALUES (24, 13);
+INSERT INTO `article_category_ref` VALUES (25, 10);
+INSERT INTO `article_category_ref` VALUES (25, 12);
+INSERT INTO `article_category_ref` VALUES (26, 15);
+INSERT INTO `article_category_ref` VALUES (26, 100000004);
 INSERT INTO `article_category_ref` VALUES (28, 15);
 INSERT INTO `article_category_ref` VALUES (28, 100000003);
+INSERT INTO `article_category_ref` VALUES (29, 15);
+INSERT INTO `article_category_ref` VALUES (29, 100000003);
+INSERT INTO `article_category_ref` VALUES (30, 10);
+INSERT INTO `article_category_ref` VALUES (30, 13);
+INSERT INTO `article_category_ref` VALUES (31, 15);
+INSERT INTO `article_category_ref` VALUES (31, 16);
+INSERT INTO `article_category_ref` VALUES (32, 15);
+INSERT INTO `article_category_ref` VALUES (32, 100000006);
+INSERT INTO `article_category_ref` VALUES (33, 10);
+INSERT INTO `article_category_ref` VALUES (33, 13);
+INSERT INTO `article_category_ref` VALUES (34, 10);
+INSERT INTO `article_category_ref` VALUES (34, 13);
 INSERT INTO `article_category_ref` VALUES (35, 1);
 INSERT INTO `article_category_ref` VALUES (35, 7);
 INSERT INTO `article_category_ref` VALUES (36, 1);
@@ -159,8 +155,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `article_tag_ref`;
 CREATE TABLE `article_tag_ref` (
-  `article_id` int(11) NOT NULL,
-  `tag_id` int(11) NOT NULL,
+  `article_id` int(11) NOT NULL COMMENT '文章ID',
+  `tag_id` int(11) NOT NULL COMMENT '标签ID',
   PRIMARY KEY (`article_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -212,12 +208,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `category_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `category_pid` int(11) DEFAULT NULL,
-  `category_name` varchar(50) DEFAULT NULL,
-  `category_description` varchar(255) DEFAULT NULL,
-  `category_order` int(11) unsigned DEFAULT '1',
-  `category_icon` varchar(20) DEFAULT NULL,
+  `category_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `category_pid` int(11) DEFAULT NULL COMMENT '分类父ID',
+  `category_name` varchar(50) DEFAULT NULL COMMENT '分类名称',
+  `category_description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `category_order` int(11) unsigned DEFAULT '1' COMMENT '排序值',
+  `category_icon` varchar(20) DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_name` (`category_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100000009 DEFAULT CHARSET=utf8;
@@ -257,20 +253,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
-  `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `comment_pid` int(11) unsigned DEFAULT '0',
-  `comment_pname` varchar(255) DEFAULT NULL,
-  `comment_article_id` int(11) unsigned DEFAULT NULL,
-  `comment_author_name` varchar(50) DEFAULT NULL,
-  `comment_author_email` varchar(50) DEFAULT NULL,
-  `comment_author_url` varchar(50) DEFAULT NULL,
-  `comment_author_avatar` varchar(100) DEFAULT NULL,
-  `comment_content` varchar(1000) DEFAULT NULL,
-  `comment_agent` varchar(200) DEFAULT NULL,
-  `comment_ip` varchar(50) DEFAULT NULL,
-  `comment_create_time` datetime DEFAULT NULL,
-  `comment_role` int(1) DEFAULT NULL,
-  `comment_user_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '评论ID',
+  `comment_pid` int(11) unsigned DEFAULT '0' COMMENT '上级评论ID',
+  `comment_pname` varchar(255) DEFAULT NULL COMMENT '上级评论名称',
+  `comment_article_id` int(11) unsigned NOT NULL COMMENT '文章ID',
+  `comment_author_name` varchar(50) DEFAULT NULL COMMENT '评论人名称',
+  `comment_author_email` varchar(50) DEFAULT NULL COMMENT '评论人邮箱',
+  `comment_author_url` varchar(50) DEFAULT NULL COMMENT '评论人个人主页',
+  `comment_author_avatar` varchar(100) DEFAULT NULL COMMENT '评论人头像',
+  `comment_content` varchar(1000) DEFAULT NULL COMMENT '内容',
+  `comment_agent` varchar(200) DEFAULT NULL COMMENT '浏览器信息',
+  `comment_ip` varchar(50) DEFAULT NULL COMMENT 'IP',
+  `comment_create_time` datetime DEFAULT NULL COMMENT '评论时间',
+  `comment_role` int(1) DEFAULT NULL COMMENT '角色，是否管理员',
+  `comment_user_id` int(11) DEFAULT NULL COMMENT '评论ID,可能为空',
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
@@ -325,17 +321,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `link`;
 CREATE TABLE `link` (
-  `link_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `link_url` varchar(255) DEFAULT NULL,
-  `link_name` varchar(255) DEFAULT NULL,
-  `link_image` varchar(255) DEFAULT NULL,
-  `link_description` varchar(255) DEFAULT NULL,
-  `link_owner_nickname` varchar(40) DEFAULT NULL,
-  `link_owner_contact` varchar(255) DEFAULT NULL,
-  `link_update_time` datetime DEFAULT NULL,
-  `link_create_time` datetime DEFAULT NULL,
-  `link_order` int(2) unsigned DEFAULT '1',
-  `link_status` int(1) unsigned DEFAULT '1',
+  `link_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '链接ID',
+  `link_url` varchar(255) DEFAULT NULL COMMENT 'URL',
+  `link_name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `link_image` varchar(255) DEFAULT NULL COMMENT '头像',
+  `link_description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `link_owner_nickname` varchar(40) DEFAULT NULL COMMENT '所属人名称',
+  `link_owner_contact` varchar(255) DEFAULT NULL COMMENT '联系方式',
+  `link_update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `link_create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `link_order` int(2) unsigned DEFAULT '1' COMMENT '排序号',
+  `link_status` int(1) unsigned DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`link_id`),
   UNIQUE KEY `link_name` (`link_name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
@@ -345,8 +341,10 @@ CREATE TABLE `link` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `link` VALUES (1, 'http://liuyanzhao.com', '言曌博客', NULL, '一个码农的成长之路', NULL, '你好，我的丘丘是847064370', '2017-10-07 16:51:03', '2017-10-07 16:29:35', 1, 1);
-INSERT INTO `link` VALUES (6, 'http://codergroup.cn/', '开发者社区', NULL, '', NULL, 'admin@liuyanzhao.com', '2020-04-18 21:28:57', '2017-10-07 16:51:49', 1, 0);
-INSERT INTO `link` VALUES (9, 'http://baidu.com', '百度', NULL, '11111', NULL, '22222', '2020-10-10 21:33:55', '2020-10-10 21:33:55', NULL, 0);
+INSERT INTO `link` VALUES (2, 'https://liuyanzhao.com/shop.html', '付费商品', NULL, '言曌博客付费商品', NULL, '言曌博客付费商品', '2021-03-19 18:01:28', '2021-03-19 18:01:28', 1, 1);
+INSERT INTO `link` VALUES (3, 'https://liuyanzhao.com/my-service.html', '人工服务', NULL, '人工服务', NULL, NULL, '2021-03-19 18:02:31', '2021-03-19 18:02:31', 1, 1);
+INSERT INTO `link` VALUES (4, 'https://github.com/saysky', 'GitHub主页', NULL, NULL, NULL, NULL, '2021-03-19 18:02:31', '2021-03-19 18:02:31', 1, 1);
+INSERT INTO `link` VALUES (5, 'https://shop250529942.world.taobao.com/', '淘宝店', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -354,12 +352,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
-  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu_name` varchar(255) DEFAULT NULL,
-  `menu_url` varchar(255) DEFAULT NULL,
-  `menu_level` int(11) DEFAULT NULL,
-  `menu_icon` varchar(255) DEFAULT NULL,
-  `menu_order` int(11) DEFAULT NULL,
+  `menu_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menu_name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `menu_url` varchar(255) DEFAULT NULL COMMENT 'URL',
+  `menu_level` int(11) DEFAULT NULL COMMENT '等级',
+  `menu_icon` varchar(255) DEFAULT NULL COMMENT '图标',
+  `menu_order` int(11) DEFAULT NULL COMMENT '排序值',
   PRIMARY KEY (`menu_id`),
   UNIQUE KEY `menu_name` (`menu_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -380,13 +378,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `notice`;
 CREATE TABLE `notice` (
-  `notice_id` int(11) NOT NULL AUTO_INCREMENT,
-  `notice_title` varchar(255) DEFAULT NULL,
-  `notice_content` varchar(10000) DEFAULT NULL,
-  `notice_create_time` datetime DEFAULT NULL,
-  `notice_update_time` datetime DEFAULT NULL,
-  `notice_status` int(1) unsigned DEFAULT '1',
-  `notice_order` int(2) DEFAULT NULL,
+  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_title` varchar(255) DEFAULT NULL COMMENT '公告标题',
+  `notice_content` varchar(10000) DEFAULT NULL COMMENT '内容',
+  `notice_create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `notice_update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `notice_status` int(1) unsigned DEFAULT '1' COMMENT '状态',
+  `notice_order` int(2) DEFAULT NULL COMMENT '排序值',
   PRIMARY KEY (`notice_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
@@ -432,15 +430,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `page`;
 CREATE TABLE `page` (
-  `page_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `page_key` varchar(50) DEFAULT NULL,
-  `page_title` varchar(50) DEFAULT NULL,
-  `page_content` mediumtext,
-  `page_create_time` datetime DEFAULT NULL,
-  `page_update_time` datetime DEFAULT NULL,
-  `page_view_count` int(10) unsigned DEFAULT '0',
-  `page_comment_count` int(5) unsigned DEFAULT '0',
-  `page_status` int(1) unsigned DEFAULT '1',
+  `page_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自定义页面ID',
+  `page_key` varchar(50) DEFAULT NULL COMMENT 'key',
+  `page_title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `page_content` mediumtext COMMENT '内容',
+  `page_create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `page_update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `page_view_count` int(10) unsigned DEFAULT '0' COMMENT '访问量',
+  `page_comment_count` int(5) unsigned DEFAULT '0' COMMENT '评论数',
+  `page_status` int(1) unsigned DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`page_id`),
   UNIQUE KEY `page_key` (`page_key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
@@ -462,9 +460,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
-  `tag_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(50) DEFAULT NULL,
-  `tag_description` varchar(255) DEFAULT NULL,
+  `tag_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '标签ID',
+  `tag_name` varchar(50) DEFAULT NULL COMMENT '标签名称',
+  `tag_description` varchar(100) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`tag_id`),
   UNIQUE KEY `tag_name` (`tag_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
@@ -515,18 +513,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(255) NOT NULL DEFAULT '',
-  `user_pass` varchar(255) NOT NULL DEFAULT '',
-  `user_nickname` varchar(255) NOT NULL DEFAULT '',
-  `user_email` varchar(100) DEFAULT '',
-  `user_url` varchar(100) DEFAULT '',
-  `user_avatar` varchar(255) DEFAULT NULL,
-  `user_last_login_ip` varchar(255) DEFAULT NULL,
-  `user_register_time` datetime DEFAULT NULL,
-  `user_last_login_time` datetime DEFAULT NULL,
-  `user_status` int(1) unsigned DEFAULT '1',
-  `user_role` varchar(20) NOT NULL DEFAULT 'user',
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `user_name` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
+  `user_pass` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
+  `user_nickname` varchar(100) NOT NULL DEFAULT '' COMMENT '昵称',
+  `user_email` varchar(100) DEFAULT '' COMMENT '邮箱',
+  `user_url` varchar(100) DEFAULT '' COMMENT '个人主页',
+  `user_avatar` varchar(100) DEFAULT NULL COMMENT '头像',
+  `user_last_login_ip` varchar(30) DEFAULT NULL COMMENT '上传登录IP',
+  `user_register_time` datetime DEFAULT NULL COMMENT '注册时间',
+  `user_last_login_time` datetime DEFAULT NULL COMMENT '上传登录时间',
+  `user_status` int(1) unsigned DEFAULT '1' COMMENT '状态',
+  `user_role` varchar(20) NOT NULL DEFAULT 'user' COMMENT '角色',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)
