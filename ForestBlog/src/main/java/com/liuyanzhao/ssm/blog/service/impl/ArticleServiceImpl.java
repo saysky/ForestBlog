@@ -1,5 +1,6 @@
 package com.liuyanzhao.ssm.blog.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuyanzhao.ssm.blog.enums.ArticleCommentStatus;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -229,6 +231,10 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleLikeCount(0);
         article.setArticleCommentCount(0);
         article.setArticleOrder(1);
+        if (StringUtils.isEmpty(article.getArticleThumbnail())) {
+            article.setArticleThumbnail("/img/thumbnail/random/img_" + RandomUtil.randomNumbers(1) + ".jpg");
+        }
+
         articleMapper.insert(article);
         //添加分类和文章关联
         for (int i = 0; i < article.getCategoryList().size(); i++) {

@@ -91,6 +91,20 @@
             <div class="layui-form-mid layui-word-aux">输入1-10的数字,order越大排序越前</div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">缩略图</label>
+            <div class="layui-input-inline">
+                <div class="layui-upload">
+                    <div class="layui-upload-list" style="">
+                        <img class="layui-upload-img"  id="demo1" width="100" src="${article.articleThumbnail}"
+                             height="100">
+                        <p id="demoText"></p>
+                    </div>
+                    <button type="button" class="layui-btn" id="test1">上传图片</button>
+                    <input type="hidden" name="articleThumbnail" id="articleThumbnail" value="${article.articleThumbnail}" >
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
                 <input type="radio" name="articleStatus" value="1" title="发布"
@@ -107,15 +121,44 @@
         </div>
     </form>
 
-    <blockquote class="layui-elem-quote layui-quote-nm">
-        温馨提示：
-        1、插入代码前，可以点击 <a href="http://liuyanzhao.com/code-highlight.html" target="_blank">代码高亮</a>,将代码转成HTML格式
-    </blockquote>
 
 </rapid:override>
 
 
 <rapid:override name="footer-script">
+
+    <script>
+        //上传图片
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#test1',
+                url: '/admin/upload/img',
+                before: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    $("#articleThumbnail").attr("value", res.data.src);
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                },
+                error: function () {
+                    var demoText = $('#demoText');
+                    demoText.html('' +
+                        '<span style="color: #FF5722;">上传失败</span>' +
+                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+        });
+    </script>
 
     <script>
 

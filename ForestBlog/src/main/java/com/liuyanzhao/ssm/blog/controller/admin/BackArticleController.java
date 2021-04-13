@@ -108,6 +108,7 @@ public class BackArticleController {
         } else {
             article.setArticleSummary(summaryText);
         }
+        article.setArticleThumbnail(articleParam.getArticleThumbnail());
         article.setArticleContent(articleParam.getArticleContent());
         article.setArticleStatus(articleParam.getArticleStatus());
         //填充分类
@@ -203,6 +204,7 @@ public class BackArticleController {
             return "redirect:/403";
         }
         Article article = new Article();
+        article.setArticleThumbnail(articleParam.getArticleThumbnail());
         article.setArticleId(articleParam.getArticleId());
         article.setArticleTitle(articleParam.getArticleTitle());
         article.setArticleContent(articleParam.getArticleContent());
@@ -262,6 +264,7 @@ public class BackArticleController {
         } else {
             article.setArticleSummary(summaryText);
         }
+        article.setArticleThumbnail(articleParam.getArticleThumbnail());
         article.setArticleContent(articleParam.getArticleContent());
         article.setArticleStatus(articleParam.getArticleStatus());
         //填充分类

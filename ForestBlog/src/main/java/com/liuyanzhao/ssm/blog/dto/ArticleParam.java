@@ -25,6 +25,8 @@ public class ArticleParam {
 
     private Integer articleStatus;
 
+    private String articleThumbnail;
+
     private List<Integer> articleTagIds;
 
 }

@@ -40,6 +40,8 @@ public class Article implements Serializable{
 
     private String articleSummary;
 
+    private String articleThumbnail;
+
     private User user;
 
     private List<Tag> tagList;
