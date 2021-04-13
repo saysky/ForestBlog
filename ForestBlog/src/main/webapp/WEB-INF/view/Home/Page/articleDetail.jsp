@@ -120,7 +120,7 @@
 
                     <footer class="single-footer">
                         <ul class="single-meta">
-                            <c:if test="${sessionScope.user!=null}">
+                            <c:if test="${sessionScope.user!=null && (sessionScope.user.userId == article.articleUserId || sessionScope.user.userRole == 'admin')}">
                                 <li class="edit-link">
                                     <a target="_blank" class="post-edit-link"
                                        href="/admin/article/edit/${article.articleId}">编辑</a>

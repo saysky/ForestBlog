@@ -299,7 +299,7 @@
 
     <select id="findArticleByCategoryIds" resultType="com.liuyanzhao.ssm.blog.entity.Article">
         SELECT
-        article.article_id, article.article_user_id, article.article_title,
+        distinct article.article_id, article.article_user_id, article.article_title,
         article.article_view_count, article.article_comment_count,
         article.article_like_count, article.article_create_time, article.article_update_time,
         article.article_is_comment, article.article_status, article.article_order,
