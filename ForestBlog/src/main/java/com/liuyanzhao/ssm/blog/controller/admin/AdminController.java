@@ -110,6 +110,9 @@ public class AdminController {
         } else if (!user.getUserPass().equals(password)) {
             map.put("code", 0);
             map.put("msg", "密码错误！");
+        } else if (user.getUserStatus() == 0) {
+            map.put("code", 0);
+            map.put("msg", "账号已禁用！");
         } else {
             //登录成功
             map.put("code", 1);
