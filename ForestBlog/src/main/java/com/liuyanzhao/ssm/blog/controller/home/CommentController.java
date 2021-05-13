@@ -62,7 +62,7 @@ public class CommentController {
         } else {
             comment.setCommentRole(Role.VISITOR.getValue());
         }
-        comment.setCommentAuthorAvatar(MyUtils.getGravatar(comment.getCommentAuthorEmail()));
+        comment.setCommentAuthorAvatar(user.getUserAvatar());
 
         //过滤字符，防止XSS攻击
         comment.setCommentContent(HtmlUtil.escape(comment.getCommentContent()));
