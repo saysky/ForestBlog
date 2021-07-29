@@ -64,7 +64,8 @@ public class TagController {
         //获得热评文章
         List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
         model.addAttribute("mostCommentArticleList", mostCommentArticleList);
-        model.addAttribute("pageUrlPrefix", "/tag?pageIndex");
+        model.addAttribute("pageUrlPrefix", "/tag/"+tagId+"?pageIndex");
+
         return "Home/Page/articleListByTag";
     }
 

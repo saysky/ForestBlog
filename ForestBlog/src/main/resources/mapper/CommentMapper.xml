@@ -15,6 +15,7 @@
         <result column="comment_ip" property="commentIp" jdbcType="VARCHAR"/>
         <result column="comment_create_time" property="commentCreateTime" jdbcType="TIMESTAMP"/>
         <result column="comment_role" property="commentRole" jdbcType="INTEGER"/>
+        <result column="comment_user_id" property="commentUserId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="tb">comment</sql>
@@ -22,7 +23,7 @@
     <sql id="Base_Column_List">
     comment_id, comment_pid, comment_pname, comment_article_id, comment_author_name,
     comment_author_email, comment_author_url, comment_author_avatar, comment_content, comment_agent,
-     comment_ip,comment_create_time, comment_role
+     comment_ip,comment_create_time, comment_role,comment_user_id
   </sql>
 
     <select id="getCommentById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -38,19 +39,31 @@
         <include refid="tb"/>
         where comment_id = #{commentId,jdbcType=INTEGER}
     </delete>
+    <delete id="deleteByUserId">
+        delete from
+        <include refid="tb"/>
+        WHERE comment_user_id = #{userId}
+    </delete>
+    <delete id="deleteByArticleId">
+        delete from
+        <include refid="tb"/>
+        WHERE comment_article_id = #{articleId}
+    </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Comment" useGeneratedKeys="true" keyProperty="commentId">
+    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Comment" useGeneratedKeys="true"
+            keyProperty="commentId">
         insert into
         <include refid="tb"/>
         (comment_pid, comment_pname, comment_article_id,
         comment_author_name, comment_author_email,
         comment_author_url, comment_author_avatar, comment_content, comment_agent,
-        comment_ip, comment_create_time, comment_role)
+        comment_ip, comment_create_time, comment_role, comment_user_id)
         values (#{commentPid,jdbcType=INTEGER}, #{commentPname,jdbcType=VARCHAR}, #{commentArticleId,jdbcType=INTEGER},
         #{commentAuthorName,jdbcType=VARCHAR}, #{commentAuthorEmail,jdbcType=VARCHAR},
         #{commentAuthorUrl,jdbcType=VARCHAR},#{commentAuthorAvatar}, #{commentContent,jdbcType=VARCHAR},
         #{commentAgent,jdbcType=VARCHAR},
-        #{commentIp,jdbcType=VARCHAR}, #{commentCreateTime,jdbcType=TIMESTAMP}, #{commentRole,jdbcType=INTEGER})
+        #{commentIp,jdbcType=VARCHAR}, #{commentCreateTime,jdbcType=TIMESTAMP}, #{commentRole,jdbcType=INTEGER},
+        #{commentUserId,jdbcType=INTEGER})
     </insert>
 
     <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Comment">
@@ -69,6 +82,7 @@
             <if test="commentCreateTime != null">comment_create_time = #{commentCreateTime,jdbcType=TIMESTAMP},</if>
             <if test="commentAuthorAvatar != null">comment_author_avatar = #{commentAuthorAvatar},</if>
             <if test="commentRole != null">comment_role = #{commentRole,jdbcType=INTEGER},</if>
+            <if test="commentUserId != null">comment_user_id = #{commentUserId,jdbcType=INTEGER},</if>
         </set>
         where comment_id = #{commentId,jdbcType=INTEGER}
     </update>
@@ -91,6 +105,26 @@
         <include refid="Base_Column_List"/>
         FROM
         <include refid="tb"/>
+        <where>
+            <if test="userId != null">
+                comment_user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY comment_id DESC
+    </select>
+
+    <select id="getReceiveComment" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            comment_article_id IN (
+            <foreach collection="list" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+        </where>
         ORDER BY comment_id DESC
     </select>
 
@@ -107,7 +141,11 @@
         <include refid="Base_Column_List"/>
         FROM
         <include refid="tb"/>
-        WHERE comment_role = 0
+        <where>
+            <if test="userId != null">
+                comment_user_id = #{userId}
+            </if>
+        </where>
         ORDER BY comment_id DESC
         LIMIT #{limit}
     </select>

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class OptionsServiceImpl implements OptionsService {
 
 
-    @Autowired(required = false)
+    @Autowired
     private OptionsMapper optionsMapper;
 
     @Override

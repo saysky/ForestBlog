@@ -6,7 +6,7 @@
 <%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
 
 <rapid:override name="title">
-    - 编辑用户
+    - 添加用户
 </rapid:override>
 <rapid:override name="header-style">
     <style>
@@ -26,7 +26,7 @@
          <span class="layui-breadcrumb" lay-separator="/">
               <a href="/admin">首页</a>
               <a href="/admin/user">用户列表</a>
-              <a><cite>编辑用户</cite></a>
+              <a><cite>添加用户</cite></a>
         </span>
     </blockquote>
     <br><br>

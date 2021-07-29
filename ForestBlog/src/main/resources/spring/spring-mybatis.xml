@@ -20,7 +20,7 @@
     <!--配置druid连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="driverClassName" value="${mysql.driver}" />
         <property name="url" value="${mysql.url}" />
         <property name="username" value="${mysql.username}" />
         <property name="password" value="${mysql.password}" />
@@ -53,6 +53,7 @@
     </bean>
 
 
+    <!--  mybatis核心配置  -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--数据库连接池-->
         <property name="dataSource" ref="dataSource"/>

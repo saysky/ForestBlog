@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,10 +25,10 @@ import java.util.List;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired(required = false)
+    @Autowired
     private CommentMapper commentMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleMapper articleMapper;
 
     @Override
@@ -64,11 +66,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize) {
+    public PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize, HashMap<String, Object> criteria) {
         PageHelper.startPage(pageIndex, pageSize);
         List<Comment> commentList = null;
         try {
-            commentList = commentMapper.listComment();
+            commentList = commentMapper.listComment(criteria);
             for (int i = 0; i < commentList.size(); i++) {
                 Article article = articleMapper.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), commentList.get(i).getCommentArticleId());
                 commentList.get(i).setArticle(article);
@@ -81,15 +83,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> listComment() {
-        List<Comment> commentList = null;
+    public PageInfo<Comment> listReceiveCommentByPage(Integer pageIndex, Integer pageSize, Integer userId) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<Comment> commentList = new ArrayList<>();
         try {
-            commentList = commentMapper.listComment();
+            List<Integer> articleIds = articleMapper.listArticleIdsByUserId(userId);
+            if (articleIds != null && articleIds.size() > 0) {
+                commentList = commentMapper.getReceiveComment(articleIds);
+                for (int i = 0; i < commentList.size(); i++) {
+                    Article article = articleMapper.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), commentList.get(i).getCommentArticleId());
+                    commentList.get(i).setArticle(article);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("获得评论列表失败：cause:{}", e);
+            log.error("分页获得评论失败,pageIndex:{}, pageSize:{}, cause:{}", pageIndex, pageSize, e);
         }
-        return commentList;
+        return new PageInfo<>(commentList);
     }
 
     @Override
@@ -125,10 +135,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> listRecentComment(Integer limit) {
+    public List<Comment> listRecentComment(Integer userId, Integer limit) {
         List<Comment> commentList = null;
         try {
-            commentList = commentMapper.listRecentComment(limit);
+            commentList = commentMapper.listRecentComment(userId, limit);
             for (int i = 0; i < commentList.size(); i++) {
                 Article article = articleMapper.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), commentList.get(i).getCommentArticleId());
                 commentList.get(i).setArticle(article);

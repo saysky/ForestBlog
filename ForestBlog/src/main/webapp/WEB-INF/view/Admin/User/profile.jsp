@@ -43,11 +43,10 @@
         </span>
     </blockquote>
     <br><br>
-    <form class="layui-form" action="/admin/user/editSubmit" id="userForm"
+    <form class="layui-form" action="/admin/profile/save" id="userForm"
           method="post">
-        <input type="hidden" name="userId" id="userId" value="${user.userId}">
         <div class="layui-form-item">
-            <a class="layui-btn layui-btn-primary"  href="/admin/user/edit/${user.userId}">编辑</a>
+            <a class="layui-btn layui-btn-primary"  href="/admin/profile/edit">编辑</a>
             <label class="layui-form-label">头像</label>
             <div class="layui-input-inline">
                 <div class="layui-upload">

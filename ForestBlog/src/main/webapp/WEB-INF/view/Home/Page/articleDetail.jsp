@@ -120,7 +120,7 @@
 
                     <footer class="single-footer">
                         <ul class="single-meta">
-                            <c:if test="${sessionScope.user!=null}">
+                            <c:if test="${sessionScope.user!=null && (sessionScope.user.userId == article.articleUserId || sessionScope.user.userRole == 'admin')}">
                                 <li class="edit-link">
                                     <a target="_blank" class="post-edit-link"
                                        href="/admin/article/edit/${article.articleId}">编辑</a>
@@ -298,21 +298,18 @@
                         <a rel="nofollow" id="cancel-comment-reply-link"
                            href="/article/${article.articleId}#respond"
                            style="">取消回复</a>
+                        <c:if test="${sessionScope.user == null}">
+                            <span style="color:red" >您未登录，登录后才能评论，<a href="/login" target="_blank">前往登录</a></span>
+                        </c:if>
                     </h3>
+
                     <form id="comment_form" method="post">
                         <c:if test="${sessionScope.user!=null}">
                             <div class="user_avatar">
-                                <img alt="言曌"
-                                     src="${sessionScope.user.userAvatar}"
+                                <img src="${sessionScope.user.userAvatar}"
                                      class="avatar avatar-64 photo" height="64" width="64">
                                 登录者：${sessionScope.user.userNickname}
                                 <br> <a href="javascript:void(0)" onclick="logout()">登出</a>
-                                <input type="hidden" name="commentRole" value="1">
-                                <input type="hidden" name="commentAuthorName"
-                                       value="${sessionScope.user.getUserNickname()}">
-                                <input type="hidden" name="commentAuthorEmail"
-                                       value="${sessionScope.user.getUserEmail()}">
-                                <input type="hidden" name="commentAuthorUrl" value="${sessionScope.user.getUserUrl()}">
                             </div>
                         </c:if>
                         <p class="comment-form-comment">
@@ -321,28 +318,6 @@
                         <div id="comment-author-info">
                             <input type="hidden" name="commentPid" value="0">
                             <input type="hidden" name="commentPname" value="">
-                            <c:if test="${sessionScope.user == null}">
-                                <input type="hidden" name="commentRole" value="0">
-                                <p class="comment-form-author">
-                                    <label for="author_name">
-                                        昵称<span class="required">*</span>
-                                    </label>
-                                    <input type="text" name="commentAuthorName" id="author_name" class="" value=""
-                                           tabindex="2" required>
-                                </p>
-                                <p class="comment-form-email">
-                                    <label for="author_email">
-                                        邮箱<span class="required">*</span>
-                                    </label>
-                                    <input type="email" name="commentAuthorEmail" id="author_email" class="" value=""
-                                           tabindex="3" required>
-                                </p>
-                                <p class="comment-form-url">
-                                    <label for="author_url">网址</label>
-                                    <input type="url" name="commentAuthorUrl" id="author_url" class="" value=""
-                                           tabindex="4">
-                                </p>
-                            </c:if>
                         </div>
                         <div class="clear"></div>
                         <p class="form-submit">
@@ -384,7 +359,7 @@
                                                     </span>
                                                     <fmt:formatDate value="${c.commentCreateTime}"
                                                                     pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                    <c:if test="${sessionScope.user != null}">
+                                                    <c:if test="${sessionScope.user != null && sessionScope.user.userId == article.articleUserId}">
                                                         <a href="javascript:void(0)"
                                                            onclick="deleteComment(${c.commentId})">删除</a>
                                                         <a class="comment-edit-link"
@@ -483,20 +458,6 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            if ($('#author_name').val() == '') {
-                var author = localStorage.getItem("author");
-                $("#author_name").val(author == 'undefined' ? '' : author);
-            }
-            if ($('#author_email').val() == '') {
-                var email = localStorage.getItem("email");
-                $("#author_email").val(email == 'undefined' ? '' : email);
-            }
-            if ($('#author_url').val() == '') {
-                var url = localStorage.getItem("url");
-                $("#author_url").val(url == 'undefined' ? '' : url);
-            }
-        });
 
         var articleId = $("#articleDetail").attr("data-id");
         increaseViewCount(articleId);

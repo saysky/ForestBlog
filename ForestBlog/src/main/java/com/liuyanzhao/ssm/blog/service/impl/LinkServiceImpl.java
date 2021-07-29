@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class LinkServiceImpl implements LinkService {
 	
-	@Autowired(required = false)
+	@Autowired
 	private LinkMapper linkMapper;
 	
 	@Override

@@ -7,8 +7,8 @@ package com.liuyanzhao.ssm.blog.enums;
 
 public enum Role {
 
-    ADMIN(1, "博主"),
-    VISITOR(0, "访客");
+    OWNER(1, "博主"),
+    VISITOR(0, "其他用户");
 
     private Integer value;
 

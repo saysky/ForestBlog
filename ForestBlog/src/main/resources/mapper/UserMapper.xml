@@ -13,13 +13,14 @@
         <result column="user_register_time" property="userRegisterTime" jdbcType="TIMESTAMP"/>
         <result column="user_last_login_time" property="userLastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="user_status" property="userStatus" jdbcType="INTEGER"/>
+        <result column="user_role" property="userRole" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="tb">user</sql>
 
     <sql id="Base_Column_List">
     user_id, user_name, user_pass, user_nickname, user_email, user_url, user_avatar, 
-    user_last_login_ip, user_register_time, user_last_login_time, user_status
+    user_last_login_ip, user_register_time, user_last_login_time, user_status, user_role
   </sql>
 
     <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -41,11 +42,11 @@
         (user_id, user_name, user_pass,
         user_nickname, user_email, user_url,
         user_avatar, user_last_login_ip, user_register_time,
-        user_last_login_time, user_status)
+        user_last_login_time, user_status, user_role)
         values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR},
         #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userUrl,jdbcType=VARCHAR},
         #{userAvatar,jdbcType=VARCHAR}, #{userLastLoginIp,jdbcType=VARCHAR}, #{userRegisterTime,jdbcType=TIMESTAMP},
-        #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER})
+        #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR})
     </insert>
 
     <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.User">
@@ -62,6 +63,7 @@
             <if test="userRegisterTime != null">user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP},</if>
             <if test="userLastLoginTime != null">user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP},</if>
             <if test="userStatus != null">user_status = #{userStatus,jdbcType=INTEGER},</if>
+            <if test="userRole != null">user_role = #{userRole,jdbcType=VARCHAR},</if>
         </set>
         where user_id = #{userId,jdbcType=INTEGER}
     </update>

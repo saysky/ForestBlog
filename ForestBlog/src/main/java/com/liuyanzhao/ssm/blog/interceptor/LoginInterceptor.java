@@ -1,7 +1,6 @@
 package com.liuyanzhao.ssm.blog.interceptor;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
  * @author liuyanzhao
  */
 @Component
-public class SecurityInterceptor extends HandlerInterceptorAdapter {
+public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws IOException {
@@ -23,6 +22,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect("/login");
             return false;
         }
+
         return true;
     }
 

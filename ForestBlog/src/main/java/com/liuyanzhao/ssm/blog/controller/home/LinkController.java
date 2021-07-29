@@ -38,7 +38,7 @@ public class LinkController {
 	}
 
 
-	@RequestMapping(value = "/applyLinkSubmit",method = {RequestMethod.POST})
+	@RequestMapping(value = "/applyLinkSubmit",method = {RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
 	@ResponseBody
 	public void applyLinkSubmit(Link link)  {
 		link.setLinkStatus(LinkStatus.HIDDEN.getValue());

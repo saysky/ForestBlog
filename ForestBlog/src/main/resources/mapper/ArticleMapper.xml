@@ -15,19 +15,20 @@
         <result column="article_create_time" property="articleCreateTime" jdbcType="TIMESTAMP"/>
         <result column="article_update_time" property="articleUpdateTime" jdbcType="TIMESTAMP"/>
         <result column="article_status" property="articleStatus" jdbcType="INTEGER"/>
+        <result column="article_thumbnail" property="articleThumbnail" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="tb">article</sql>
 
     <sql id="Base_Column_List">
     article_id, article_user_id, article_title, article_content,article_summary, article_view_count, article_comment_count, article_like_count, article_create_time,
-    article_update_time, article_is_comment, article_status, article_order
+    article_update_time, article_is_comment, article_status, article_order, article_thumbnail
     </sql>
 
 
     <select id="listAllNotWithContent" resultType="com.liuyanzhao.ssm.blog.entity.Article">
         SELECT
-        article_id, article_user_id, article_title, article_create_time
+        article_id, article_user_id, article_title, article_create_time, article_thumbnail
         FROM
         <include refid="tb"/>
         WHERE article_status = 1
@@ -82,6 +83,10 @@
             </foreach>
         </if>
     </delete>
+    <delete id="deleteByUserId">
+        DELETE FROM <include refid="tb"/>
+        WHERE article_user_id = #{userId}
+    </delete>
 
     <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Article" useGeneratedKeys="true"
             keyProperty="articleId">
@@ -91,14 +96,14 @@
         article_view_count, article_comment_count,
         article_like_count, article_create_time, article_update_time,
         article_is_comment, article_status, article_order,
-        article_content, article_summary)
+        article_content, article_summary,article_thumbnail)
         values (#{articleUserId,jdbcType=INTEGER}, #{articleTitle,jdbcType=VARCHAR},
         #{articleViewCount,jdbcType=INTEGER},
         #{articleCommentCount,jdbcType=INTEGER},
         #{articleLikeCount,jdbcType=INTEGER}, #{articleCreateTime,jdbcType=TIMESTAMP},
         #{articleUpdateTime,jdbcType=TIMESTAMP},
         #{articleIsComment,jdbcType=INTEGER}, #{articleStatus,jdbcType=INTEGER}, #{articleOrder,jdbcType=INTEGER},
-        #{articleContent,jdbcType=LONGVARCHAR}, #{articleSummary,jdbcType=VARCHAR})
+        #{articleContent,jdbcType=LONGVARCHAR}, #{articleSummary,jdbcType=VARCHAR}, #{articleThumbnail})
     </insert>
 
 
@@ -118,6 +123,7 @@
             <if test="articleOrder != null">article_order = #{articleOrder,jdbcType=INTEGER},</if>
             <if test="articleContent != null">article_content = #{articleContent,jdbcType=LONGVARCHAR},</if>
             <if test="articleSummary != null">article_summary = #{articleSummary,jdbcType=VARCHAR},</if>
+            <if test="articleThumbnail != null">article_thumbnail = #{articleThumbnail,jdbcType=VARCHAR},</if>
         </set>
         where article_id = #{articleId,jdbcType=INTEGER}
     </update>
@@ -282,7 +288,7 @@
         article.article_view_count, article.article_comment_count,
         article.article_like_count, article.article_create_time, article.article_update_time,
         article.article_is_comment, article.article_status, article.article_order,
-         article.article_summary
+        article.article_summary, article.article_thumbnail
         FROM article, article_category_ref
         WHERE
         article.article_status = 1 AND
@@ -293,11 +299,11 @@
 
     <select id="findArticleByCategoryIds" resultType="com.liuyanzhao.ssm.blog.entity.Article">
         SELECT
-        article.article_id, article.article_user_id, article.article_title,
+        distinct article.article_id, article.article_user_id, article.article_title,
         article.article_view_count, article.article_comment_count,
         article.article_like_count, article.article_create_time, article.article_update_time,
         article.article_is_comment, article.article_status, article.article_order,
-        article.article_summary
+        article.article_summary, article.article_thumbnail
         FROM article, article_category_ref
         <where>
             article.article_status = 1 AND
@@ -318,10 +324,24 @@
         SELECT
         article_id, article_user_id, article_title, article_view_count, article_comment_count, article_like_count,
         article_create_time,
-        article_update_time, article_is_comment, article_status, article_order
+        article_update_time, article_is_comment, article_status, article_order, article_thumbnail
         FROM
         <include refid="tb"/>
+        <where>
+            <if test="userId != null">
+                article_user_id = #{userId}
+            </if>
+        </where>
         ORDER BY article_id DESC
-        LIMIT #{value}
+        LIMIT #{limit}
+    </select>
+
+    <select id="listArticleIdsByUserId" resultType="java.lang.Integer">
+        SELECT
+            article_id
+        FROM
+            <include refid="tb"/>
+        WHERE
+            article_user_id = #{userId}
     </select>
 </mapper>

@@ -17,8 +17,7 @@
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
-
-    <context:component-scan base-package="com.liuyanzhao.ssm.blog" />
+    <context:component-scan base-package="com.liuyanzhao.ssm.blog"/>
 
     <!-- 一个配置节解决映射器和适配器的配置注解配置 -->
     <mvc:annotation-driven></mvc:annotation-driven>
@@ -26,7 +25,7 @@
     <!-- 配置视图解析器
         进行jsp解析，默认使用jstl标签，classpath下得有jstl的包
     -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--配置前缀和后缀，也可以不指定-->
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
@@ -39,7 +38,6 @@
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="resolveLazily" value="true"/>
     </bean>
-
 
 
     <!-- 静态资源映射 -->
@@ -56,11 +54,75 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.SecurityInterceptor"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.SecurityInterceptor"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/page"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/page/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/tag"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/tag/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/category"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/category/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/user"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/user/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/menu"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/menu/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/options"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/options/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/link"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/link/**"/>
+            <bean class="com.liuyanzhao.ssm.blog.interceptor.AdminInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>

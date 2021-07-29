@@ -20,10 +20,10 @@ import java.util.List;
 @Slf4j
 public class TagServiceImpl implements TagService {
 
-    @Autowired(required = false)
+    @Autowired
     private TagMapper tagMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleTagRefMapper articleTagRefMapper;
 
     @Override

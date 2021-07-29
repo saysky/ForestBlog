@@ -75,7 +75,7 @@ public class CategoryController {
         //获得热评文章
         List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
         model.addAttribute("mostCommentArticleList", mostCommentArticleList);
-        model.addAttribute("pageUrlPrefix", "/category/"+pageIndex+"?pageIndex");
+        model.addAttribute("pageUrlPrefix", "/category/"+cateId+"?pageIndex");
         return "Home/Page/articleListByCategory";
     }
 

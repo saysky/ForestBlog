@@ -13,13 +13,13 @@
             <div class="user-login">
                 <c:choose>
                     <c:when test="${sessionScope.user==null}">
-                        <a href="/admin">登录</a>
+                        <a href="/login">登录</a> | <a href="/register">注册</a>
                     </c:when>
                     <c:otherwise>
                         <a href="/admin">进入后台</a>
                     </c:otherwise>
                 </c:choose>
-                <a href="https://liuyanzhao.com/bulletin/my-service" target="_blank" style="color:red;">毕设代做/有偿服务</a>
+                <a href="https://liuyanzhao.com/shop.html" target="_blank" style="color:red;">毕设代做/有偿服务</a>
             </div>
             <div class="menu-topmenu-container">
                 <ul id="menu-topmenu" class="top-menu">

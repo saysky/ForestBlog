@@ -24,6 +24,14 @@ public interface ArticleMapper {
     Integer deleteById(Integer articleId);
 
     /**
+     * 根据用户ID删除
+     *
+     * @param userId 用户ID
+     * @return 影响函数
+     */
+    Integer deleteByUserId(Integer userId);
+
+    /**
      * 添加文章
      *
      * @param article 文章
@@ -49,6 +57,7 @@ public interface ArticleMapper {
 
     /**
      * 文章归档
+     *
      * @return
      */
     List<Article> listAllNotWithContent();
@@ -86,7 +95,7 @@ public interface ArticleMapper {
      * 根据id查询用户信息
      *
      * @param status 状态
-     * @param id 文章ID
+     * @param id     文章ID
      * @return 文章
      */
     Article getArticleByStatusAndId(@Param(value = "status") Integer status, @Param(value = "id") Integer id);
@@ -101,8 +110,8 @@ public interface ArticleMapper {
      */
     @Deprecated
     List<Article> pageArticle(@Param(value = "status") Integer status,
-                                    @Param(value = "pageIndex") Integer pageIndex,
-                                    @Param(value = "pageSize") Integer pageSize);
+                              @Param(value = "pageIndex") Integer pageIndex,
+                              @Param(value = "pageSize") Integer pageSize);
 
 
     /**
@@ -140,11 +149,10 @@ public interface ArticleMapper {
     /**
      * 热评文章
      *
-     * @param limit  查询数量
+     * @param limit 查询数量
      * @return 文章列表
      */
     List<Article> listArticleByCommentCount(@Param(value = "limit") Integer limit);
-
 
 
     /**
@@ -195,7 +203,7 @@ public interface ArticleMapper {
      * @param limit 查询数量
      * @return 列表
      */
-    List<Article> listArticleByLimit(Integer limit);
+    List<Article> listArticleByLimit(@Param("userId") Integer userId, @Param("limit") Integer limit);
 
     /**
      * 批量删除文章
@@ -204,4 +212,12 @@ public interface ArticleMapper {
      * @return 影响行数
      */
     Integer deleteBatch(@Param("ids") List<Integer> ids);
+
+    /**
+     * 获得一个用户的文章id集合
+     *
+     * @param userId
+     * @return
+     */
+    List<Integer> listArticleIdsByUserId(Integer userId);
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class PageServiceImpl implements PageService {
 
-    @Autowired(required = false)
+    @Autowired
     private PageMapper pageMapper;
 
     @Override

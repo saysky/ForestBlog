@@ -1526,8 +1526,10 @@ a, button, input {
 
 .thumbnail a img {
     float: left;
-    width: auto;
-    height: auto;
+    /*width: auto;*/
+    /*height: auto;*/
+    height: 150px;
+    width: 200px;
     max-width: 100%;
 }
 
@@ -2351,7 +2353,7 @@ img.alignleft {
     float: left;
     width: 48%;
     text-align: center;
-    padding: 10px 0 0 0;
+    /*padding: 10px 0 0 0;*/
     border: 1px dashed #ccc;
 }
 

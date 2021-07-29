@@ -66,6 +66,20 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">缩略图</label>
+            <div class="layui-input-inline">
+                <div class="layui-upload">
+                    <div class="layui-upload-list" style="">
+                        <img class="layui-upload-img"  id="demo1" width="100"
+                             height="100">
+                        <p id="demoText"></p>
+                    </div>
+                    <button type="button" class="layui-btn" id="test1">上传图片</button>
+                    <input type="hidden" name="articleThumbnail" id="articleThumbnail" >
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
                 <input type="radio" name="articleStatus" value="1" title="发布" checked>
@@ -75,16 +89,9 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary" onclick="getCateIds()">重置</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
-        <blockquote class="layui-elem-quote layui-quote-nm">
-            温馨提示：<br>
-            1、文章内容的数据表字段类型为MEDIUMTEXT,每篇文章内容请不要超过500万字 <br>
-            2、写文章之前，请确保标签和分类存在，否则可以先新建；请勿刷新页面，博客不会自动保存 <br>
-            3、插入代码前，可以点击 <a href="http://liuyanzhao.com/code-highlight.html" target="_blank">代码高亮</a>,将代码转成HTML格式
-
-        </blockquote>
 
     </form>
 
@@ -92,6 +99,39 @@
 </rapid:override>
 
 <rapid:override name="footer-script">
+
+    <script>
+        //上传图片
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#test1',
+                url: '/admin/upload/img',
+                before: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    $("#articleThumbnail").attr("value", res.data.src);
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                },
+                error: function () {
+                    var demoText = $('#demoText');
+                    demoText.html('' +
+                        '<span style="color: #FF5722;">上传失败</span>' +
+                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+        });
+    </script>
 
     <script>
         layui.use(['form', 'layedit', 'laydate'], function() {

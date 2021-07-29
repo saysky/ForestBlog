@@ -48,7 +48,7 @@
                     ${sessionScope.user.userName}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/user/profile">基本资料</a></dd>
+                    <dd><a href="/admin/profile">基本资料</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -60,7 +60,9 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+
+            <c:if test="${sessionScope.user != null && sessionScope.user.userRole == 'admin'}">
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">文章</a>
                     <dl class="layui-nav-child">
@@ -99,9 +101,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:;">
-                        用户
-                    </a>
+                    <a href="javascript:;">用户</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/admin/user">全部用户</a></dd>
                         <dd><a href="/admin/user/insert">添加用户</a></dd>
@@ -115,6 +115,26 @@
                     </dl>
                 </li>
             </ul>
+            </c:if>
+
+            <c:if test="${sessionScope.user != null && sessionScope.user.userRole == 'user'}">
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">文章</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/admin/article">我的文章</a></dd>
+                            <dd><a href="/admin/article/insert">写文章</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">评论</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/admin/comment">我的评论</a></dd>
+                            <dd><a href="/admin/comment/receive">评论我的</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </c:if>
         </div>
     </div>
 
@@ -129,7 +149,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © <a href="http://blog.liuyanzhao.com">言曌博客</a> 2017  欢迎加入开发者交流群 590480292，博主免费回答大家日常问题。同时博主代做毕设，解决开发问题，详情参看 <a href="https://liuyanzhao.com/bulletin/my-service/" target="_blank">有偿服务</a>
+        © <a href="http://blog.liuyanzhao.com">言曌博客</a> 2017  欢迎加入开发者交流群 590480292，博主免费回答大家日常问题。同时博主代做毕设，解决开发问题，详情参看 <a href="https://liuyanzhao.com/shop.html" target="_blank">有偿服务</a>
     </div>
 </div>
 
