@@ -10,7 +10,7 @@
 
 主要涉及技术包括的包括 Maven、Spring、SpringMVC、MyBatis、JSP、MySQL等。 <br/>
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html) <br/>
-预览地址 [https://forestblog.liuyanzhao.com](https://forestblog.liuyanzhao.com)
+预览地址 [http://forestblog.liuyanzhao.com](http://forestblog.liuyanzhao.com)
 
 **博主提供有偿服务**
 - 远程调试环境和运行项目 50
@@ -22,7 +22,7 @@
 
 ## 效果预览
 因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。<br/>
-目前 SENS 部署了，效果和该项目前端相似，预览地址 https://blog.liuyanzhao.com 。<br/>
+目前 SENS 部署了，效果和该项目前端相似，预览地址 http://blog.liuyanzhao.com 。<br/>
 以及博主个人博客主站 https://liuyanzhao.com 也是基于 springboot+vuejs 开发。<br/>
 <br/>
 
