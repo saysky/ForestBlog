@@ -1,3 +1,4 @@
+2022 最新消息 SpringBoot轻量级推荐博客 [https://github.com/saysky/recommendedblog](https://github.com/saysky/recommendedblog)<br/>
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
 最新消息 SpringBoot/SSM/Duubo多个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)<br/>
 [更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
