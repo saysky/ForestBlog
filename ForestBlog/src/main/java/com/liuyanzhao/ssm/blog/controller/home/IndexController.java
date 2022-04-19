@@ -93,7 +93,7 @@ public class IndexController {
         //最新评论
         List<Comment> recentCommentList = commentService.listRecentComment(null, 10);
         model.addAttribute("recentCommentList", recentCommentList);
-        model.addAttribute("pageUrlPrefix", "/search?pageIndex");
+        model.addAttribute("pageUrlPrefix", "/search?keywords=" + keywords + "&pageIndex");
         return "Home/Page/search";
     }
 
