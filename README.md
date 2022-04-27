@@ -1,3 +1,8 @@
+## 博主开发的其他博客或论坛项目全部在这里
+**[https://liuyanzhao.com/shop.html?k=博客](https://liuyanzhao.com/shop.html?k=博客)**   <br/>
+**[https://liuyanzhao.com/shop.html?k=论坛](https://liuyanzhao.com/shop.html?k=论坛)** <br/>
+- -------------------------------------------------------------------------------
+
 2022 最新消息 SpringBoot轻量级推荐博客 [https://github.com/saysky/recommendedblog](https://github.com/saysky/recommendedblog)<br/>
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
 最新消息 SpringBoot/SSM/Duubo多个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)<br/>
