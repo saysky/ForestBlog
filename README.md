@@ -1,3 +1,4 @@
+最新消息，博主已开通B站账号：[Java刘哥](https://space.bilibili.com/160340478)，欢迎关注，分享自己原创免费Java实战课程、各种框架实战和技巧、以及公司项目经验
 ## 博主开发的其他博客或论坛项目全部在这里
 **[https://liuyanzhao.com/shop.html?k=博客](https://liuyanzhao.com/shop.html?k=博客)**   <br/>
 **[https://liuyanzhao.com/shop.html?k=论坛](https://liuyanzhao.com/shop.html?k=论坛)** <br/>
