@@ -193,7 +193,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20170516</version>
+            <version>20180130</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.rapid-framework</groupId>
