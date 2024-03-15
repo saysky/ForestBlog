@@ -37,11 +37,7 @@
 - 完整毕业设计定制 1000
 - [更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
 
-## 效果预览
-因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。<br/>
-目前 SENS 部署了，效果和该项目前端相似，预览地址 http://blog.liuyanzhao.com 。<br/>
-以及博主个人博客主站 https://liuyanzhao.com 也是基于 springboot+vuejs 开发。<br/>
-<br/>
+
 
 前台效果图  <br/>
 ![image](uploads/home.png)
