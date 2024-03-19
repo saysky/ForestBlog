@@ -156,7 +156,7 @@ public class AdminController {
         if (checkUserName != null) {
             return new JsonResult().fail("用户名已存在");
         }
-        User checkEmail = userService.getUserByEmail(username);
+        User checkEmail = userService.getUserByEmail(email);
         if (checkEmail != null) {
             return new JsonResult().fail("电子邮箱已存在");
         }
