@@ -62,13 +62,13 @@
         <!--mapper.xml所在位置-->
         <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml" />
         <!--指定需要使用别名的PO类所在的包-->
-        <property name="typeAliasesPackage" value="com.liuyanzhao.ssm.blog.entity" />
+        <property name="typeAliasesPackage" value="com.personally.blog.entity" />
     </bean>
 
     <!--mapper扫描器-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--如果需要扫描多个包，中间使用半角逗号隔开-->
-        <property name="basePackage" value="com.liuyanzhao.ssm.blog.mapper"></property>
+        <property name="basePackage" value="com.personally.blog.mapper"></property>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
@@ -94,7 +94,7 @@
     </tx:advice>
 
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.liuyanzhao.ssm.blog.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.personally.blog.service.impl.*.*(..))"/>
     </aop:config>
 
 

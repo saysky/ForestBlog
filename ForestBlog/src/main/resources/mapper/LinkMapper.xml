@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.ssm.blog.mapper.LinkMapper" >
-  <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Link" >
+<mapper namespace="com.personally.blog.mapper.LinkMapper" >
+  <resultMap id="BaseResultMap" type="com.personally.blog.entity.Link" >
     <id column="link_id" property="linkId" jdbcType="INTEGER" />
     <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
     <result column="link_name" property="linkName" jdbcType="VARCHAR" />
@@ -34,7 +34,7 @@
     where link_id = #{linkId,jdbcType=INTEGER}
   </delete>
   
-  <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Link" useGeneratedKeys="true" keyProperty="linkId">
+  <insert id="insert" parameterType="com.personally.blog.entity.Link" useGeneratedKeys="true" keyProperty="linkId">
     insert into link (link_id, link_url, link_name, 
       link_image, link_description, link_owner_nickname, 
       link_owner_contact, link_update_time, link_create_time, 
@@ -45,7 +45,7 @@
       #{linkOrder,jdbcType=INTEGER}, #{linkStatus,jdbcType=INTEGER})
   </insert>
   
-  <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Link" >
+  <update id="update" parameterType="com.personally.blog.entity.Link" >
     update link
     <set >
       <if test="linkUrl != null" > link_url = #{linkUrl,jdbcType=VARCHAR},</if>
@@ -72,7 +72,7 @@
   </select>
 
   <!--获取链接列表-->
-  <select id="listLink" resultType="com.liuyanzhao.ssm.blog.entity.Link">
+  <select id="listLink" resultType="com.personally.blog.entity.Link">
     SELECT
     <include refid="Base_Column_List"/>
     FROM  <include refid="tb"/>

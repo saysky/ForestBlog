@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.ssm.blog.mapper.MenuMapper" >
-  <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Menu" >
+<mapper namespace="com.personally.blog.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.personally.blog.entity.Menu" >
     <id column="menu_id" property="menuId" jdbcType="INTEGER" />
     <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
     <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
@@ -25,7 +25,7 @@
     delete from <include refid="tb"/>
     where menu_id = #{menuId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Menu" useGeneratedKeys="true" keyProperty="menuId">
+  <insert id="insert" parameterType="com.personally.blog.entity.Menu" useGeneratedKeys="true" keyProperty="menuId">
     insert into <include refid="tb"/>
     (menu_id, menu_name, menu_url,
       menu_level, menu_icon, menu_order)
@@ -33,7 +33,7 @@
       #{menuLevel,jdbcType=INTEGER}, #{menuIcon,jdbcType=VARCHAR}, #{menuOrder,jdbcType=INTEGER})
   </insert>
 
-  <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Menu" >
+  <update id="update" parameterType="com.personally.blog.entity.Menu" >
     update <include refid="tb"/>
     <set >
       <if test="menuName != null" > menu_name = #{menuName,jdbcType=VARCHAR},</if>
@@ -48,7 +48,7 @@
 
 
   <!--获得菜单列表-->
-  <select id="listMenu"  resultType="com.liuyanzhao.ssm.blog.entity.Menu">
+  <select id="listMenu"  resultType="com.personally.blog.entity.Menu">
     SELECT
     <include refid="Base_Column_List"/>
     FROM <include refid="tb"/>

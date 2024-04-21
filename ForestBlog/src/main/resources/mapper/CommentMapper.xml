@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.ssm.blog.mapper.CommentMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Comment">
+<mapper namespace="com.personally.blog.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.personally.blog.entity.Comment">
         <id column="comment_id" property="commentId" jdbcType="INTEGER"/>
         <result column="comment_pid" property="commentPid" jdbcType="INTEGER"/>
         <result column="comment_pname" property="commentPname" jdbcType="VARCHAR"/>
@@ -50,7 +50,7 @@
         WHERE comment_article_id = #{articleId}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Comment" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.personally.blog.entity.Comment" useGeneratedKeys="true"
             keyProperty="commentId">
         insert into
         <include refid="tb"/>
@@ -66,7 +66,7 @@
         #{commentUserId,jdbcType=INTEGER})
     </insert>
 
-    <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <update id="update" parameterType="com.personally.blog.entity.Comment">
         update
         <include refid="tb"/>
         <set>
@@ -88,7 +88,7 @@
     </update>
 
 
-    <select id="listCommentByArticleId" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <select id="listCommentByArticleId" resultType="com.personally.blog.entity.Comment">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -100,7 +100,7 @@
 
 
     <!--获取评论列表-->
-    <select id="listComment" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <select id="listComment" resultType="com.personally.blog.entity.Comment">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -113,7 +113,7 @@
         ORDER BY comment_id DESC
     </select>
 
-    <select id="getReceiveComment" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <select id="getReceiveComment" resultType="com.personally.blog.entity.Comment">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -136,7 +136,7 @@
     </select>
 
     <!--获得最近评论，访客的评论-->
-    <select id="listRecentComment" parameterType="Integer" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <select id="listRecentComment" parameterType="Integer" resultType="com.personally.blog.entity.Comment">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -150,7 +150,7 @@
         LIMIT #{limit}
     </select>
 
-    <select id="listChildComment" resultType="com.liuyanzhao.ssm.blog.entity.Comment">
+    <select id="listChildComment" resultType="com.personally.blog.entity.Comment">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

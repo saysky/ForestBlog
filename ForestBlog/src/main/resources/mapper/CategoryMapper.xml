@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.ssm.blog.mapper.CategoryMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Category">
+<mapper namespace="com.personally.blog.mapper.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.personally.blog.entity.Category">
         <id column="category_id" property="categoryId" jdbcType="INTEGER"/>
         <result column="category_pid" property="categoryPid" jdbcType="INTEGER"/>
         <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
@@ -17,7 +17,7 @@
   </sql>
 
 
-    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Category" useGeneratedKeys="true" keyProperty="categoryId">
+    <insert id="insert" parameterType="com.personally.blog.entity.Category" useGeneratedKeys="true" keyProperty="categoryId">
         insert into
         <include refid="tb"/>
         (category_pid, category_name,category_description, category_order, category_icon)
@@ -26,7 +26,7 @@
     </insert>
 
 
-    <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Category">
+    <update id="update" parameterType="com.personally.blog.entity.Category">
         update
         <include refid="tb"/>
         <set>
@@ -47,7 +47,7 @@
     </select>
 
 
-    <select id="listCategory" resultType="com.liuyanzhao.ssm.blog.entity.Category">
+    <select id="listCategory" resultType="com.personally.blog.entity.Category">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -55,7 +55,7 @@
         order by category_order desc,category_id asc
     </select>
 
-    <select id="getCategoryById" parameterType="Integer" resultType="com.liuyanzhao.ssm.blog.entity.Category">
+    <select id="getCategoryById" parameterType="Integer" resultType="com.personally.blog.entity.Category">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -74,7 +74,7 @@
 
     <!--根据父分类找子分类-->
     <select id="findChildCategory" parameterType="Integer"
-            resultType="com.liuyanzhao.ssm.blog.entity.Category">
+            resultType="com.personally.blog.entity.Category">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -84,7 +84,7 @@
     </select>
 
     <!--根据分类名查找分类-->
-    <select id="getCategoryByName" parameterType="String" resultType="com.liuyanzhao.ssm.blog.entity.Category">
+    <select id="getCategoryByName" parameterType="String" resultType="com.personally.blog.entity.Category">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

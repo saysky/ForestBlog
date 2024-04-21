@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liuyanzhao.ssm.blog.mapper.ArticleMapper">
-    <resultMap id="BaseResultMap" type="com.liuyanzhao.ssm.blog.entity.Article">
+<mapper namespace="com.personally.blog.mapper.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.personally.blog.entity.Article">
         <id column="article_id" property="articleId" jdbcType="INTEGER"/>
         <result column="article_user_id" property="articleUserId" jdbcType="INTEGER"/>
         <result column="article_title" property="articleTitle" jdbcType="VARCHAR"/>
@@ -26,7 +26,7 @@
     </sql>
 
 
-    <select id="listAllNotWithContent" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listAllNotWithContent" resultType="com.personally.blog.entity.Article">
         SELECT
         article_id, article_user_id, article_title, article_create_time, article_thumbnail
         FROM
@@ -88,7 +88,7 @@
         WHERE article_user_id = #{userId}
     </delete>
 
-    <insert id="insert" parameterType="com.liuyanzhao.ssm.blog.entity.Article" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.personally.blog.entity.Article" useGeneratedKeys="true"
             keyProperty="articleId">
         insert into
         <include refid="tb"/>
@@ -107,7 +107,7 @@
     </insert>
 
 
-    <update id="update" parameterType="com.liuyanzhao.ssm.blog.entity.Article">
+    <update id="update" parameterType="com.personally.blog.entity.Article">
         update
         <include refid="tb"/>
         <set>
@@ -152,7 +152,7 @@
     </select>
 
     <!--获得所有文章-->
-    <select id="listArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -161,7 +161,7 @@
         ORDER BY article_status ASC, article_order DESC, article_id DESC
     </select>
 
-    <select id="getArticleByStatusAndId" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="getArticleByStatusAndId" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -175,7 +175,7 @@
     </select>
 
     <!--通过分页查询文章-->
-    <select id="pageArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="pageArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -190,7 +190,7 @@
     </select>
 
     <!--获得访问量较多的文章-->
-    <select id="listArticleByViewCount" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listArticleByViewCount" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -203,7 +203,7 @@
 
 
     <!--获得下一篇的文章-->
-    <select id="getAfterArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="getAfterArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -215,7 +215,7 @@
         limit 1
     </select>
     <!--获得上一篇的文章-->
-    <select id="getPreArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="getPreArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -228,7 +228,7 @@
     </select>
 
     <!--获得随机文章-->
-    <select id="listRandomArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listRandomArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -240,7 +240,7 @@
     </select>
 
     <!--获得评论数较多的文章列表-->
-    <select id="listArticleByCommentCount" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listArticleByCommentCount" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -263,7 +263,7 @@
     </update>
 
     <!--获得最后更新的记录-->
-    <select id="getLastUpdateArticle" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="getLastUpdateArticle" resultType="com.personally.blog.entity.Article">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -282,7 +282,7 @@
         WHERE article_user_id=#{id} AND article_status = 1
     </select>
 
-    <select id="findArticleByCategoryId" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="findArticleByCategoryId" resultType="com.personally.blog.entity.Article">
         SELECT
         article.article_id, article.article_user_id, article.article_title,
         article.article_view_count, article.article_comment_count,
@@ -297,7 +297,7 @@
         LIMIT #{limit}
     </select>
 
-    <select id="findArticleByCategoryIds" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="findArticleByCategoryIds" resultType="com.personally.blog.entity.Article">
         SELECT
         distinct article.article_id, article.article_user_id, article.article_title,
         article.article_view_count, article.article_comment_count,
@@ -320,7 +320,7 @@
     </select>
 
 
-    <select id="listArticleByLimit" resultType="com.liuyanzhao.ssm.blog.entity.Article">
+    <select id="listArticleByLimit" resultType="com.personally.blog.entity.Article">
         SELECT
         article_id, article_user_id, article_title, article_view_count, article_comment_count, article_like_count,
         article_create_time,
