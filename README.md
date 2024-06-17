@@ -1,9 +1,24 @@
+最新消息，博主已开通B站账号：[Java刘哥](https://space.bilibili.com/160340478)，欢迎关注，分享自己原创免费Java实战课程、各种框架实战和技巧、以及公司项目经验
+## 博主开发的其他博客或论坛项目全部在这里
+**[https://liuyanzhao.com/shop.html?k=博客](https://liuyanzhao.com/shop.html?k=博客)**   <br/>
+**[https://liuyanzhao.com/shop.html?k=论坛](https://liuyanzhao.com/shop.html?k=论坛)** <br/>
+- -------------------------------------------------------------------------------
+博主提供风吟博客二次开发功能 <br/>
+目前已完成但不限于以下功能（需要相关源码可以联系博主）
+- 风吟博客+协同过滤推荐功能 2022年5月
+- 风吟博客+websocket私信聊天功能 2022年4月
+- 风吟博客+ElasticSearch文章搜索高亮功能 2022年3月
+- 风吟博客改造成其他博客、论坛、知识分享平台  不计其数
+
+- ----------------------------------
+
+
 2022 最新消息 SpringBoot轻量级推荐博客 [https://github.com/saysky/recommendedblog](https://github.com/saysky/recommendedblog)<br/>
 最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
 最新消息 SpringBoot/SSM/Duubo多个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)<br/>
 [更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
 
-
+- ------------------------------------------------------------
 # 关于项目
 该博客是基于SSM实现的个人博客系统，适合初学SSM和个人博客制作的同学学习。<br/>
 最新版本支持用户注册，包含用户和管理员两个角色 。<br/>
