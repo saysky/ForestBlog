@@ -1,32 +1,16 @@
-2022 最新消息 SpringBoot轻量级推荐博客 [https://github.com/saysky/recommendedblog](https://github.com/saysky/recommendedblog)<br/>
-最新消息，SpringBoot博客已经开源，[SENS](https://github.com/saysky/SENS) <br/>
-最新消息 SpringBoot/SSM/Duubo多个版本 [初云博客-SpringBoot版本](https://github.com/saysky/ChuyunBlog)<br/>
-[更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
-
-
+最新消息，博主已开通B站账号：[Java刘哥](https://space.bilibili.com/160340478)
+## 博主开发的其他博客或论坛项目全部在这里
+**[全部原创项目](https://liuyanzhao.com/shop.html)**   <br/>
+**[https://liuyanzhao.com/shop.html?k=博客](https://liuyanzhao.com/shop.html?k=博客)**   <br/>
+**[https://liuyanzhao.com/shop.html?k=论坛](https://liuyanzhao.com/shop.html?k=论坛)** 	<br/>
+- ------------------------------------------------------------
 # 关于项目
 该博客是基于SSM实现的个人博客系统，适合初学SSM和个人博客制作的同学学习。<br/>
-最新版本支持用户注册，包含用户和管理员两个角色 。<br/>
 博主已写了一篇该项目的毕业论文和录制了2个小时的代码讲解可以供大家学习，需要的可以联系博主，微信847064370。<br/>
 
 主要涉及技术包括的包括 Maven、Spring、SpringMVC、MyBatis、JSP、MySQL等。 <br/>
 详细介绍：[https://liuyanzhao.com/6347.html](https://liuyanzhao.com/6347.html) <br/>
-预览地址 [http://forestblog.liuyanzhao.com](http://forestblog.liuyanzhao.com)
-
-**博主提供有偿服务**
-- 远程调试环境和运行项目 100
-- 项目论文 300
-- 项目详细讲解2-3小时 300
-- 部署到云服务器 300
-- 项目和部分功能定制 200-500
-- 完整毕业设计定制 1000-1500
-- [更多项目、博主付费商品](https://liuyanzhao.com/shop.html)
-
-## 效果预览
-因博主服务器数量有限，目前该SSM博客已下线，不提供实时预览，大家可以本地部署。<br/>
-目前 SENS 部署了，效果和该项目前端相似，预览地址 http://blog.liuyanzhao.com 。<br/>
-以及博主个人博客主站 https://liuyanzhao.com 也是基于 springboot+vuejs 开发。<br/>
-<br/>
+预览地址：[http://forestblog.liuyanzhao.com](http://forestblog.liuyanzhao.com) <br/>
 
 前台效果图  <br/>
 ![image](uploads/home.png)
@@ -129,10 +113,9 @@ Github地址：https://github.com/saysky/ForestBlog
 - 2017年10月10日
 - 首次完整提交
 
-## 请喝一杯奶茶
-请我喝一杯奶茶吧！
-插条广告：博主最近有点时间，长期接毕设定制，软件定制，Java问题解决 <br/>
-具体查看[有偿服务](https://liuyanzhao.com/bulletin/my-service)  <br/>
+## 广告
+插条广告：博主长期接毕设定制，软件定制，Java问题解决 <br/>
+具体查看[有偿服务](https://liuyanzhao.com/notice/my-service.html)  <br/>
 博主付费商品：[https://liuyanzhao.com/shop.html](https://liuyanzhao.com/shop.html)
 
-![image](uploads/donate.png)
+
