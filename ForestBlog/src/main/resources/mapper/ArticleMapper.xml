@@ -223,7 +223,7 @@
         <where>
             article_id &lt; #{id} AND article_status = 1
         </where>
-        ORDER BY article_id
+        ORDER BY article_id DESC
         limit 1
     </select>
 
