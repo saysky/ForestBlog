@@ -1,475 +1,748 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
-
-<rapid:override name="title">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${article.articleTitle}</title>
-</rapid:override>
-
-<rapid:override name="header-style">
-    <rapid:override name="header-style">
-        <link rel="stylesheet" href="/css/highlight.css">
-        <style>
-            .entry-title {
-                background: #f8f8f8;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #3498db;
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: #2980b9;
+        }
+        
+        /* 面包屑导航 */
+        .breadcrumb {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb i {
+            margin: 0 10px;
+            color: #ccc;
+        }
+        
+        /* 主要内容区域布局 */
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .main-content {
+            flex: 1;
+        }
+        
+        .sidebar {
+            width: 300px;
+        }
+        
+        /* 文章卡片 */
+        .article-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .article-header {
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .article-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .article-meta i {
+            margin-right: 5px;
+        }
+        
+        .article-content {
+            padding: 30px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .article-content h1, 
+        .article-content h2, 
+        .article-content h3 {
+            margin: 25px 0 15px;
+            color: #2c3e50;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+        }
+        
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        /* 文章底部操作栏 */
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .action-btn:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .action-btn.like.active {
+            background: #ffeaea;
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .article-info {
+            display: flex;
+            gap: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* 分类和标签 */
+        .article-taxonomy {
+            padding: 20px 30px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .taxonomy-item {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #f0f7ff;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #3498db;
+        }
+        
+        .taxonomy-item.tag {
+            background: #f0f8f0;
+            color: #27ae60;
+        }
+        
+        /* 版权声明 */
+        .copyright-notice {
+            background: #fff9e6;
+            padding: 20px 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid #f1c40f;
+        }
+        
+        /* 相关文章和猜你喜欢 */
+        .related-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .widget {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+        }
+        
+        .widget-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+        }
+        
+        .widget-list {
+            list-style: none;
+        }
+        
+        .widget-list li {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+        
+        .widget-list li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        /* 上一篇下一篇导航 */
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        
+        .nav-item {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item.prev {
+            margin-right: 15px;
+            text-align: left;
+        }
+        
+        .nav-item.next {
+            margin-left: 15px;
+            text-align: right;
+        }
+        
+        .nav-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        
+        .nav-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        /* 评论区域 */
+        .comments-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .comments-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+        
+        .comment-form {
+            margin-bottom: 40px;
+        }
+        
+        .comment-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border 0.3s;
+        }
+        
+        .comment-textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .comment-submit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .comment-submit:hover {
+            background: #2980b9;
+        }
+        
+        .comment-list {
+            list-style: none;
+        }
+        
+        .comment {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .comment-meta {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-left: auto;
+        }
+        
+        .comment-content {
+            color: #444;
+            line-height: 1.6;
+        }
+        
+        .comment-reply {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #3498db;
+            cursor: pointer;
+        }
+        
+        .comment-reply:hover {
+            text-decoration: underline;
+        }
+        
+        /* 侧边栏 */
+        .sidebar-widget {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .content-wrapper {
+                flex-direction: column;
             }
-        </style>
-    </rapid:override>
-</rapid:override>
-
-<rapid:override name="breadcrumb">
-    <%--面包屑导航 start--%>
-    <nav class="breadcrumb">
-        <a class="crumbs" href="/">
-            <i class="fa fa-home"></i>首页
-        </a>
-        <c:choose>
-            <c:when test="${article.categoryList != null && article.categoryList.size() > 0}">
-                <c:forEach items="${article.categoryList}" var="c">
-                    <i class="fa fa-angle-right"></i>
-                    <a href="/category/${c.categoryId}">
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .related-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .article-actions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .article-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-item.prev, 
+            .nav-item.next {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb">
+            <a class="crumbs" href="/">
+                <i class="fa fa-home"></i>首页
+            </a>
+            <c:choose>
+                <c:when test="${article.categoryList != null && article.categoryList.size() > 0}">
+                    <c:forEach items="${article.categoryList}" var="c">
+                        <i class="fa fa-angle-right"></i>
+                        <a href="/category/${c.categoryId}">
                             ${c.categoryName}
-                    </a>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <i class="fa fa-angle-right"></i>
-                <a>未分类</a>
-            </c:otherwise>
-        </c:choose>
-        <i class="fa fa-angle-right"></i>
-        正文
-    </nav>
-    <%--面包屑导航 end--%>
-</rapid:override>
-
-
-<rapid:override name="left">
-    <%--博客主体-左侧文章正文 start--%>
-    <div id="primary" class="content-area">
-        <main id="main" class="site-main" role="main">
-            <article class="post" id="articleDetail" data-id="${article.articleId}">
-                <header class="entry-header">
-                    <h1 class="entry-title">
-                            ${article.articleTitle}
-                    </h1>
-                </header><!-- .entry-header -->
-                <div class="entry-content">
-                    <div class="single-content">
-                            ${article.articleContent}
-                    </div>
-                    <div class="s-weixin">
-                        <ul class="weimg1">
-                            <li><strong>微信</strong></li>
-                            <li>赶快加我聊天吧</li>
-                            <li><img src="/img/weixin.jpg"></li>
-                        </ul>
-                        <ul class="weimg2">
-                            <li><strong>博客交流群</strong></li>
-                            <li>海纳百川，大家来水</li>
-                            <li><img src="/img/qqGroup.jpg" alt="weinxin"></li>
-                        </ul>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="clear"></div>
-                    <div id="social">
-                        <div class="social-main">
-                            <span class="like">
-                                <a href="javascript:;" data-action="ding" data-id="1" title="点赞"
-                                   class="favorite" onclick="increaseLikeCount()">
-                                    <i class="fa fa-thumbs-up"></i>赞
-                                    <i class="count"
-                                       id="count-${article.articleId}">${article.articleLikeCount}</i>
-                                </a>
-                            </span>
-                            <div class="shang-p">
-                                <div class="shang-empty"><span></span></div>
-                                <span class="shang-s">
-                                    <a onclick="PaymentUtils.show();" style="cursor:pointer">赏</a>
-                                </span>
-                            </div>
-                            <div class="share-sd">
-                                        <span class="share-s" style="margin-top: 25px!important;">
-                                            <a href="javascript:void(0)" id="share-s" title="分享">
-                                                <i class="fa fa-share-alt"></i>分享
-                                            </a>
-                                        </span>
-                                <div id="share">
-                                    <ul class="bdsharebuttonbox bdshare-button-style1-16" data-bd-bind="1503997585792">
-                                        <li><a title="更多" class="bds_more fa fa-plus-square" data-cmd="more"
-                                               onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到QQ空间" class="fa fa-qq" data-cmd="qzone" onclick="return false;"
-                                               href="#"></a></li>
-                                        <li><a title="分享到新浪微博" class="fa fa-weibo" data-cmd="tsina"
-                                               onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到腾讯微博" class="fa fa-pinterest-square" data-cmd="tqq"
-                                               onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到人人网" class="fa fa-renren" data-cmd="renren"
-                                               onclick="return false;" href="#"></a></li>
-                                        <li><a title="分享到微信" class="fa fa-weixin" data-cmd="weixin"
-                                               onclick="return false;" href="#"></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
-
-                    <footer class="single-footer">
-                        <ul class="single-meta">
-                            <c:if test="${sessionScope.user!=null && (sessionScope.user.userId == article.articleUserId || sessionScope.user.userRole == 'admin')}">
-                                <li class="edit-link">
-                                    <a target="_blank" class="post-edit-link"
-                                       href="/admin/article/edit/${article.articleId}">编辑</a>
-                                </li>
-                            </c:if>
-                            <li class="comment">
-                                <a href="/article/${article.articleId}#comments"
-                                   rel="external nofollow">
-                                    <i class="fa fa-comment-o"></i>
-                                    <i class="comment-count">${commentList.size()}</i>
-                                </a>
-                            </li>
-                            <li class="views">
-                                <i class="fa fa-eye"></i> <span
-                                    class="articleViewCount">${article.articleViewCount}</span>
-                                views
-                            </li>
-                            <li class="r-hide">
-                                <a href="javascript:pr()" title="侧边栏">
-                                    <i class="fa fa-caret-left"></i>
-                                    <i class="fa fa-caret-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul id="fontsize">
-                            <li>A+</li>
-                        </ul>
-                        <div class="single-cat-tag">
-                            <div class="single-cat">所属分类：
-                                <c:forEach items="${article.categoryList}" var="c">
-                                    <a href="/category/${c.categoryId}">
-                                            ${c.categoryName}
-                                    </a>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </footer><!-- .entry-footer -->
-
-
-                    <div class="clear"></div>
-                </div><!-- .entry-content -->
-            </article><!-- #post -->
-
-                <%--所属标签 start--%>
-            <div class="single-tag">
-                <ul class="" data-wow-delay="0.3s">
-                    <c:forEach items="${article.tagList}" var="t">
-                        <li>
-                            <a href="/tag/${t.tagId}" rel="tag"
-                               style="background:#666666">
-                                    ${t.tagName}
-                            </a>
-                        </li>
+                        </a>
                     </c:forEach>
-                </ul>
-            </div>
-                <%--所属标签 end--%>
-
-
-                <%--版权声明 start--%>
-            <div class="authorbio wow fadeInUp">
-                <img alt="${article.user.userNickname}" src="${article.user.userAvatar}"
-                     class="avatar avatar-64 photo" height="64" width="64">
-                <ul class="postinfo">
-                    <li></li>
-                    <li><strong>版权声明：</strong>本站原创文章，于<fmt:formatDate
-                            value="${article.articleCreateTime}"
-                            pattern="yyyy-MM-dd"/>，由
-                        <strong>
-                                ${article.user.userNickname}
-                        </strong>
-                        发表。
-                    </li>
-                    <li class="reprinted"><strong>转载请注明：</strong>
-                        <a href="/article/${article.articleId}"
-                           rel="bookmark"
-                           title="本文固定链接 /article/${article.articleId}">
-                                ${article.articleTitle} | ${options.optionSiteTitle}</a>
-                    </li>
-                </ul>
-                <div class="clear"></div>
-            </div>
-                <%--版权声明 end--%>
-
-                <%--相关文章 start--%>
-            <div id="single-widget">
-                <div class="wow fadeInUp" data-wow-delay="0.3s">
-                    <aside id="related_post-2" class="widget">
-                        <h3 class="widget-title">
-                            <span class="s-icon"></span>相关文章
-                        </h3>
-                        <div id="related_post_widget">
-                            <ul>
-                                <c:forEach items="${similarArticleList}" var="s">
-                                    <li>
-                                        <a href="/article/${s.articleId}">${s.articleTitle}</a>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                </c:when>
+                <c:otherwise>
+                    <i class="fa fa-angle-right"></i>
+                    <a>未分类</a>
+                </c:otherwise>
+            </c:choose>
+            <i class="fa fa-angle-right"></i>
+            正文
+        </nav>
+        
+        <!-- 主要内容区域 -->
+        <div class="content-wrapper">
+            <div class="main-content">
+                <!-- 文章内容 -->
+                <article class="article-card">
+                    <div class="article-header">
+                        <h1 class="article-title">${article.articleTitle}</h1>
+                        <div class="article-meta">
+                            <span><i class="far fa-user"></i> ${article.user.userNickname}</span>
+                            <span><i class="far fa-calendar"></i> <fmt:formatDate value="${article.articleCreateTime}" pattern="yyyy-MM-dd"/></span>
+                            <span><i class="far fa-eye"></i> ${article.articleViewCount} 次阅读</span>
+                            <span><i class="far fa-comments"></i> ${commentList.size()} 条评论</span>
                         </div>
-                        <div class="clear"></div>
-                    </aside>
-                        <%--猜你喜欢 start--%>
-                    <aside id="hot_post-8" class="widget hot_post">
-                        <h3 class="widget-title"><span class="s-icon"></span>猜你喜欢</h3>
-                        <div id="hot_post_widget">
-                            <ul>
-                                <c:forEach items="${mostViewArticleList}" var="m">
-                                    <li>
-                                        <a href="/article/${m.articleId}">
-                                                ${m.articleTitle}
-                                        </a>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                    </div>
+                    
+                    <div class="article-content">
+                        ${article.articleContent}
+                    </div>
+                    
+                    <div class="article-actions">
+                        <div class="action-buttons">
+                            <button class="action-btn like" onclick="increaseLikeCount()">
+                                <i class="far fa-thumbs-up"></i>
+                                <span class="count" id="count-${article.articleId}">${article.articleLikeCount}</span> 赞
+                            </button>
+                            <button class="action-btn share" onclick="PaymentUtils.show()">
+                                <i class="fas fa-share-alt"></i> 分享
+                            </button>
+                            <c:if test="${sessionScope.user!=null && (sessionScope.user.userId == article.articleUserId || sessionScope.user.userRole == 'admin')}">
+                                <a class="action-btn" href="/admin/article/edit/${article.articleId}" target="_blank">
+                                    <i class="far fa-edit"></i> 编辑
+                                </a>
+                            </c:if>
                         </div>
-                        <div class="clear"></div>
-                    </aside>
-                        <%--猜你喜欢 end--%>
+                        <div class="article-info">
+                            <span>本文由 ${article.user.userNickname} 创作</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 分类和标签 -->
+                    <div class="article-taxonomy">
+                        <div class="taxonomy-item">
+                            <i class="fas fa-folder"></i> 
+                            <c:forEach items="${article.categoryList}" var="c">
+                                <a href="/category/${c.categoryId}">${c.categoryName}</a>
+                            </c:forEach>
+                        </div>
+                        
+                        <c:forEach items="${article.tagList}" var="t">
+                            <div class="taxonomy-item tag">
+                                <i class="fas fa-tag"></i> 
+                                <a href="/tag/${t.tagId}">${t.tagName}</a>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </article>
+                
+                <!-- 版权声明 -->
+                <div class="copyright-notice">
+                    <p><strong>版权声明：</strong>本站原创文章，于<fmt:formatDate value="${article.articleCreateTime}" pattern="yyyy-MM-dd"/>，由<strong>${article.user.userNickname}</strong>发表。</p>
+                    <p><strong>转载请注明：</strong><a href="/article/${article.articleId}" rel="bookmark" title="本文固定链接 /article/${article.articleId}">${article.articleTitle} | ${options.optionSiteTitle}</a></p>
                 </div>
-                <div class="clear"></div>
-            </div>
-                <%--相关文章 end--%>
-
-                <%--上一篇下一篇 start--%>
-            <nav class="nav-single">
-                <c:choose>
-                    <c:when test="${preArticle!=null}">
-                        <a href="/article/${preArticle.articleId}" rel="next">
-                            <span class="meta-nav">
-                                <span class="post-nav">上一篇
-                                 <i class="fa fa-angle-left"></i>
-                                </span>
-                                <br>${preArticle.articleTitle}
-                            </span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                              <span class="meta-nav">
-                                    <span class="post-nav">
-                                        没有了<br>
-                                    </span>已是第一篇文章
-                                </span>
-                    </c:otherwise>
-                </c:choose>
-                <c:choose>
-                    <c:when test="${afterArticle!=null}">
-                        <a href="/article/${afterArticle.articleId}" rel="next">
-                            <span class="meta-nav">
-                                <span class="post-nav">下一篇
-                                 <i class="fa fa-angle-right"></i>
-                                </span>
-                                <br>${afterArticle.articleTitle}
-                            </span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                            <span class="meta-nav">
-                                <span class="post-nav">
-                                    没有了<br>
-                                </span>已是最后文章
-                             </span>
-                    </c:otherwise>
-                </c:choose>
-
-                <div class="clear"></div>
-            </nav>
-                <%--上一篇下一篇 end--%>
-
-                <%--评论区域 start--%>
-            <div class="scroll-comments"></div>
-            <div id="comments" class="comments-area">
-                <div id="respond" class="comment-respond">
-                    <h3 id="reply-title" class="comment-reply-title"><span id="reply-title-word">发表评论</span>
-                        <a rel="nofollow" id="cancel-comment-reply-link"
-                           href="/article/${article.articleId}#respond"
-                           style="">取消回复</a>
+                
+                <!-- 相关文章和猜你喜欢 -->
+                <div class="related-section">
+                    <div class="widget">
+                        <h3 class="widget-title">相关文章</h3>
+                        <ul class="widget-list">
+                            <c:forEach items="${similarArticleList}" var="s">
+                                <li><a href="/article/${s.articleId}">${s.articleTitle}</a></li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                    
+                    <div class="widget">
+                        <h3 class="widget-title">猜你喜欢</h3>
+                        <ul class="widget-list">
+                            <c:forEach items="${mostViewArticleList}" var="m">
+                                <li><a href="/article/${m.articleId}">${m.articleTitle}</a></li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 上一篇下一篇导航 -->
+                <div class="article-navigation">
+                    <c:choose>
+                        <c:when test="${preArticle!=null}">
+                            <a href="/article/${preArticle.articleId}" class="nav-item prev">
+                                <div class="nav-label">上一篇</div>
+                                <div class="nav-title">${preArticle.articleTitle}</div>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="nav-item prev">
+                                <div class="nav-label">上一篇</div>
+                                <div class="nav-title">已是第一篇文章</div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                    
+                    <c:choose>
+                        <c:when test="${afterArticle!=null}">
+                            <a href="/article/${afterArticle.articleId}" class="nav-item next">
+                                <div class="nav-label">下一篇</div>
+                                <div class="nav-title">${afterArticle.articleTitle}</div>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="nav-item next">
+                                <div class="nav-label">下一篇</div>
+                                <div class="nav-title">已是最后文章</div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                
+                <!-- 评论区域 -->
+                <div class="comments-section">
+                    <h3 class="comments-title">评论 (${commentList.size()})</h3>
+                    
+                    <!-- 评论表单 -->
+                    <div class="comment-form">
                         <c:if test="${sessionScope.user == null}">
-                            <span style="color:red" >您未登录，登录后才能评论，<a href="/login" target="_blank">前往登录</a></span>
+                            <p style="color: #e74c3c; margin-bottom: 15px;">您未登录，登录后才能评论，<a href="/login" target="_blank">前往登录</a></p>
                         </c:if>
-                    </h3>
-
-                    <form id="comment_form" method="post">
+                        
                         <c:if test="${sessionScope.user!=null}">
-                            <div class="user_avatar">
-                                <img src="${sessionScope.user.userAvatar}"
-                                     class="avatar avatar-64 photo" height="64" width="64">
-                                登录者：${sessionScope.user.userNickname}
-                                <br> <a href="javascript:void(0)" onclick="logout()">登出</a>
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <img src="${sessionScope.user.userAvatar}" class="comment-avatar" alt="用户头像">
+                                <span>登录者：${sessionScope.user.userNickname}</span>
+                                <a href="javascript:void(0)" onclick="logout()" style="margin-left: auto; font-size: 14px;">登出</a>
                             </div>
                         </c:if>
-                        <p class="comment-form-comment">
-                            <textarea id="comment" name="commentContent" rows="4" tabindex="1" required></textarea>
-                        </p>
-                        <div id="comment-author-info">
-                            <input type="hidden" name="commentPid" value="0">
-                            <input type="hidden" name="commentPname" value="">
-                        </div>
-                        <div class="clear"></div>
-                        <p class="form-submit">
-                            <input id="submit" name="submit" type="submit" tabindex="5" value="提交评论">
-                            <input type="hidden" name="commentArticleId"
-                                   value="${article.articleId}" id="article_id">
+                        
+                        <form id="comment_form" method="post">
+                            <textarea id="comment" name="commentContent" class="comment-textarea" placeholder="写下您的评论..." required></textarea>
+                            <input type="hidden" name="commentArticleId" value="${article.articleId}">
                             <input type="hidden" name="commentPid" id="comment_pid" value="0">
-                        </p>
-                    </form>
-                </div>
-
-                <ol class="comment-list">
-                    <c:set var="floor" value="0"/>
-                    <c:forEach items="${commentList}" var="c">
-                        <c:if test="${c.commentPid == 0}">
-                            <c:set var="floor" value="${floor + 1}"/>
-                            <li class="comments-anchor">
-                                <ul id="anchor-comment-${c.commentId}"></ul>
-                            </li>
-                            <li class="comment">
-                                <div id="div-comment-${c.commentId}" class="comment-body">
-                                    <div class="comment-author vcard">
-                                        <img class="avatar" src="${c.commentAuthorAvatar}" alt="avatar"
-                                             style="display: block;">
-                                        <strong>${c.commentAuthorName} </strong>
-                                        <c:if test="${c.commentRole == 1}">
-                                            <i class="fa fa-black-tie" style="color: #c40000;"></i>
-                                            <span class=""
-                                                  style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
-                                        </c:if>
-                                        <span class="comment-meta commentmetadata">
-                                            <span class="ua-info" style="display: inline;">
-                                                <br>
-                                                <span class="comment-aux">
-                                                    <span class="reply">
-                                                        <a rel="nofollow" class="comment-reply-link" href="#respond"
-                                                           onclick="replyComment()">回复
-                                                        </a>
-                                                    </span>
-                                                    <fmt:formatDate value="${c.commentCreateTime}"
-                                                                    pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                    <c:if test="${sessionScope.user != null && sessionScope.user.userId == article.articleUserId}">
-                                                        <a href="javascript:void(0)"
-                                                           onclick="deleteComment(${c.commentId})">删除</a>
-                                                        <a class="comment-edit-link"
-                                                           href="/admin/comment/edit/${c.commentId}"
-                                                           target="_blank">编辑</a>
-                                                    </c:if>
-                                                    <span class="floor"> &nbsp;${floor}楼 </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                        <p>
-                                            <c:if test="${c.commentPid!=0}">
-                                                <span class="at">@ ${c.commentPname}</span>
+                            <button type="submit" class="comment-submit">提交评论</button>
+                        </form>
+                    </div>
+                    
+                    <!-- 评论列表 -->
+                    <ul class="comment-list">
+                        <c:set var="floor" value="0"/>
+                        <c:forEach items="${commentList}" var="c">
+                            <c:if test="${c.commentPid == 0}">
+                                <c:set var="floor" value="${floor + 1}"/>
+                                <li class="comment">
+                                    <div class="comment-header">
+                                        <img src="${c.commentAuthorAvatar}" class="comment-avatar" alt="评论者头像">
+                                        <div class="comment-author">
+                                            ${c.commentAuthorName}
+                                            <c:if test="${c.commentRole == 1}">
+                                                <span style="color: #e74c3c; font-size: 12px; background: #ffeaea; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">博主</span>
                                             </c:if>
-                                                ${c.commentContent}
-                                        </p>
+                                        </div>
+                                        <div class="comment-meta">
+                                            <fmt:formatDate value="${c.commentCreateTime}" pattern="yyyy-MM-dd HH:mm"/>
+                                            <span style="margin-left: 10px;">${floor}楼</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <ul class="children">
+                                    <div class="comment-content">
+                                        ${c.commentContent}
+                                    </div>
+                                    <div class="comment-reply" onclick="replyComment(${c.commentId}, '${c.commentAuthorName}')">回复</div>
+                                    
+                                    <!-- 子评论 -->
                                     <c:set var="floor2" value="0"/>
                                     <c:forEach items="${commentList}" var="c2">
                                         <c:if test="${c.commentId == c2.commentPid}">
                                             <c:set var="floor2" value="${floor2+1}"/>
-                                            <li class="comments-anchor">
-                                                <ul id="anchor-comment-${c2.commentId}"></ul>
-                                            </li>
-                                            <li class="comment">
-                                                <div id="div-comment-${c.commentId}" class="comment-body">
-                                                    <div class="comment-author vcard">
-                                                        <img class="avatar" src="${c2.commentAuthorAvatar}" alt="avatar"
-                                                             style="display: block;">
-                                                        <strong>${c2.commentAuthorName} </strong>
+                                            <div class="comment" style="margin-left: 40px; border-left: 3px solid #f0f0f0; padding-left: 20px;">
+                                                <div class="comment-header">
+                                                    <img src="${c2.commentAuthorAvatar}" class="comment-avatar" alt="评论者头像">
+                                                    <div class="comment-author">
+                                                        ${c2.commentAuthorName}
                                                         <c:if test="${c2.commentRole==1}">
-                                                            <i class="fa fa-black-tie" style="color: #c40000;"></i>
-                                                            <span class=""
-                                                                  style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
+                                                            <span style="color: #e74c3c; font-size: 12px; background: #ffeaea; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">博主</span>
                                                         </c:if>
-                                                        <span class="comment-meta">
-                                                    <span class="ua-info" style="display: inline;">
-                                                    <br>
-                                                    <span class="comment-aux">
-                                                        <span class="reply">
-                                                            <a rel="nofollow" class="comment-reply-link" href="#respond"
-                                                               onclick="replyComment()">回复
-                                                            </a>
-                                                        </span>
-                                                        <fmt:formatDate value="${c2.commentCreateTime}"
-                                                                        pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                        <c:if test="${sessionScope.user != null}">
-                                                            <a href="javascript:void(0)"
-                                                               onclick="deleteComment(${c2.commentId})">删除</a>
-                                                            <a class="comment-edit-link"
-                                                               href="/admin/comment/edit/${c2.commentId}"
-                                                               target="_blank">编辑</a>
-                                                        </c:if>
-                                                        <span class="floor"> &nbsp;${floor2}层 </span>
-                                                    </span>
-                                                </span>
-                                                    </span>
-                                                        <p>
-                                                            <c:if test="${c2.commentPid!=0}">
-                                                                <c:if test="${c2.commentPid!=0}">
-                                                                    <span class="at">@ ${c2.commentPname}</span>
-                                                                </c:if>
-                                                                ${c2.commentContent}
-                                                            </c:if>
-                                                        </p>
+                                                    </div>
+                                                    <div class="comment-meta">
+                                                        <fmt:formatDate value="${c2.commentCreateTime}" pattern="yyyy-MM-dd HH:mm"/>
+                                                        <span style="margin-left: 10px;">${floor2}层</span>
                                                     </div>
                                                 </div>
-                                            </li>
+                                                <div class="comment-content">
+                                                    <span style="color: #3498db;">@${c2.commentPname}</span> ${c2.commentContent}
+                                                </div>
+                                                <div class="comment-reply" onclick="replyComment(${c.commentId}, '${c2.commentAuthorName}')">回复</div>
+                                            </div>
                                         </c:if>
                                     </c:forEach>
-                                </ul>
-                            </li>
-                        </c:if>
-                    </c:forEach>
-                </ol>
+                                </li>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
-                <%--评论框 end--%>
-
-        </main>
-        <!-- .site-main -->
+            
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <!-- 这里可以放置侧边栏内容 -->
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">关于博主</h3>
+                    <p>这里是关于博主的介绍信息...</p>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">热门文章</h3>
+                    <ul class="widget-list">
+                        <li><a href="#">热门文章示例一</a></li>
+                        <li><a href="#">热门文章示例二</a></li>
+                        <li><a href="#">热门文章示例三</a></li>
+                        <li><a href="#">热门文章示例四</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">标签云</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <a href="#" style="background: #f0f7ff; color: #3498db; padding: 5px 10px; border-radius: 15px; font-size: 14px;">Java</a>
+                        <a href="#" style="background: #f0f8f0; color: #27ae60; padding: 5px 10px; border-radius: 15px; font-size: 14px;">Spring</a>
+                        <a href="#" style="background: #fff0f0; color: #e74c3c; padding: 5px 10px; border-radius: 15px; font-size: 14px;">数据库</a>
+                        <a href="#" style="background: #f5f0ff; color: #9b59b6; padding: 5px 10px; border-radius: 15px; font-size: 14px;">前端</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <%--博客主体-左侧文章正文end--%>
-</rapid:override>
 
-
-<%--侧边栏 start--%>
-<rapid:override name="right">
-    <%@include file="../Public/part/sidebar-1.jsp" %>
-</rapid:override>
-<%--侧边栏 end--%>
-
-<rapid:override name="footer-script">
-    <script src="/js/jquery.cookie.js"></script>
-
-    <script type="text/javascript">
-
-
-        var articleId = $("#articleDetail").attr("data-id");
-        increaseViewCount(articleId);
-        layui.code({
-            elem: 'pre',//默认值为.layui-code
-            // skin: 'notepad', //如果要默认风格，不用设定该key。
-            about: false
+    <script>
+        // 点赞功能
+        function increaseLikeCount() {
+            const likeBtn = document.querySelector('.action-btn.like');
+            const countElement = document.querySelector('.count');
+            let count = parseInt(countElement.textContent);
+            
+            if (!likeBtn.classList.contains('active')) {
+                count++;
+                countElement.textContent = count;
+                likeBtn.classList.add('active');
+                likeBtn.innerHTML = '<i class="fas fa-thumbs-up"></i> <span class="count">' + count + '</span> 赞';
+                
+               
+            }
+        }
+        
+        // 回复评论功能
+        function replyComment(commentId, authorName) {
+            const commentTextarea = document.getElementById('comment');
+            commentTextarea.focus();
+            commentTextarea.value = '@' + authorName + ' ';
+            document.getElementById('comment_pid').value = commentId;
+            
+            // 滚动到评论框
+            commentTextarea.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 登出功能
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                window.location.href = '/logout';
+            }
+        }
+        
+        // 增加阅读量（页面加载时执行）
+        window.addEventListener('load', function() {
+           
         });
-
     </script>
-
-</rapid:override>
-
-
-<%@ include file="../Public/framework.jsp" %>
+</body>
+</html>
