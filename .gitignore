@@ -7,7 +7,7 @@
 .project
 .settings
 .springBeans
-
+.gitignore
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -33,3 +33,6 @@ mvnw.cmd
 mvnw
 sens-log/
 /templates
+
+### .claude ###
+.claude/
